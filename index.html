@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neaterry6 — Developer Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 0 auto 20px;
+            border: 4px solid #21262d;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #f0f6fc;
+            margin-bottom: 8px;
+        }
+        .username {
+            color: #58a6ff;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+        .bio {
+            color: #8b949e;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f0f6fc;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section {
+            background: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            color: #f0f6fc;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #58a6ff;
+            border-radius: 2px;
+        }
+        .repo-list {
+            list-style: none;
+        }
+        .repo-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #21262d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .repo-list li:last-child {
+            border-bottom: none;
+        }
+        .repo-name {
+            color: #58a6ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .repo-name:hover {
+            text-decoration: underline;
+        }
+        .repo-desc {
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        .repo-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-top: 8px;
+        }
+        .tag {
+            background: #21262d;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill {
+            background: #21262d;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #c9d1d9;
+        }
+        .contact {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .contact a {
+            color: #58a6ff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid #388bfd33;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .contact a:hover {
+            background: #388bfd22;
+            border-color: #58a6ff;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #8b949e;
+            font-size: 0.85rem;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #238636;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="avatar">👨‍💻</div>
+            <h1>Neaterry6</h1>
+            <div class="username">@neaterry6</div>
+            <p class="bio">Full-stack developer & AI enthusiast. Building WhatsApp bots, APIs, and automation tools. Passionate about open source and creative coding.</p>
+            <div class="badge">🟢 Open to work</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">15+</div>
+                <div class="stat-label">Repositories</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">5K+</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">100+</div>
+                <div class="stat-label">Projects</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Featured Projects</div>
+            <ul class="repo-list">
+                <li>
+                    <div>
+                        <a class="repo-name" href="https://github.com/Neaterry6/broken-api">broken-api</a>
+                        <div class="repo-desc">Custom WhatsApp API with multi-session support, buttons, webhooks, and automation</div>
+                        <div class="repo-meta">
+                            <span>⭐ 12</span>
+                            <span>🍴 3</span>
+                            <span class="tag">JavaScript</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a class="repo-name" href="https://github.com/Neaterry6/whatapp-ai">whatapp-ai</a>
+                        <div class="repo-desc">BROKEN Bot v15 — WhatsApp AI bot with games, music, lyrics, social features</div>
+                        <div class="repo-meta">
+                            <span>⭐ 8</span>
+                            <span>🍴 2</span>
+                            <span class="tag">JavaScript</span>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a class="repo-name" href="https://github.com/Neaterry6/broken-wa-api">broken-wa-api</a>
+                        <div class="repo-desc">Standalone WhatsApp API with SDK, scraper endpoints, and admin dashboard</div>
+                        <div class="repo-meta">
+                            <span>⭐ 5</span>
+                            <span>🍴 1</span>
+                            <span class="tag">JavaScript</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Skills & Tech</div>
+            <div class="skills">
+                <span class="skill">Node.js</span>
+                <span class="skill">JavaScript</span>
+                <span class="skill">Baileys</span>
+                <span class="skill">Express</span>
+                <span class="skill">WhatsApp API</span>
+                <span class="skill">Python</span>
+                <span class="skill">SQLite</span>
+                <span class="skill">Web Scraping</span>
+                <span class="skill">AI/ML</span>
+                <span class="skill">GitHub Actions</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Connect</div>
+            <div class="contact">
+                <a href="https://github.com/Neaterry6">🐙 GitHub</a>
+                <a href="https://wa.me/your-number">💬 WhatsApp</a>
+                <a href="mailto:your@email.com">📧 Email</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Made with ❤️ by Neaterry6</p>
+            <p>Powered by GitHub Pages</p>
+        </div>
+    </div>
+</body>
+</html>

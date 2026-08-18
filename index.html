@@ -1,31 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neaterry6 — Developer & AI Engineer</title>
+    <title>Heisbroken — Developer Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: { 900: '#050508', 800: '#0a0a0f', 700: '#0f0f18' },
-                        cyan: { 400: '#00f5d4', 500: '#00bbf9' },
-                        purple: { 500: '#9d4edd', 600: '#7b2cbf' },
-                        pink: { 500: '#ff006e' },
-                        gray: { 400: '#8d99ae', 500: '#6b7280', 600: '#4a5568' }
-                    },
-                    fontFamily: {
-                        mono: ['JetBrains Mono', 'monospace'],
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { scrollbar-width: thin; scrollbar-color: #30363d transparent; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -36,1011 +16,397 @@
             font-family: 'Inter', sans-serif;
             background: #050508;
             color: #c9d1d9;
-            overflow-x: hidden;
         }
         
-        /* Boot Loader */
-        #boot-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: #050508;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'JetBrains Mono', monospace;
-            transition: opacity 0.5s ease;
-        }
-        #boot-screen.hidden { opacity: 0; pointer-events: none; }
-        
-        .terminal-window {
-            width: 90%;
-            max-width: 700px;
-            background: rgba(10, 10, 15, 0.9);
-            border: 1px solid rgba(0, 245, 212, 0.2);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 0 40px rgba(0, 245, 212, 0.05);
-        }
-        
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
-        .terminal-dot.red { background: #ff5f57; }
-        .terminal-dot.yellow { background: #febc2e; }
-        .terminal-dot.green { background: #28c840; }
-        .terminal-title { margin-left: 12px; font-size: 12px; color: #6b7280; }
-        
-        .boot-line { 
-            font-size: 13px; 
-            line-height: 1.8; 
-            color: #c9d1d9;
-            opacity: 0;
-            animation: fadeIn 0.3s forwards;
-        }
-        .boot-line .cyan { color: #00f5d4; }
-        .boot-line .green { color: #3fb950; }
-        .boot-line .purple { color: #a371f7; }
-        .boot-line .gray { color: #6b7280; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 2px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00f5d4, #9d4edd, #ff006e);
-            border-radius: 2px;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5);
-        }
-        
-        /* Background Grid */
         .bg-grid {
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(0, 245, 212, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 245, 212, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(0, 245, 212, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 212, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
             pointer-events: none;
             z-index: 0;
         }
         
-        .bg-glow {
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 30%, rgba(0, 245, 212, 0.03) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 70%, rgba(157, 78, 221, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
+        .glow { box-shadow: 0 0 60px rgba(0, 245, 212, 0.1); }
         
-        /* Top Progress Bar */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00f5d4, #9d4edd, #ff006e);
-            z-index: 1000;
-            transform-origin: left;
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5);
-        }
-        
-        /* Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: rgba(5, 5, 8, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 18px;
-            color: #f0f6fc;
-            text-decoration: none;
-        }
-        .nav-logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #00f5d4, #9d4edd);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 8px;
-        }
-        .nav-link {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #8b949e;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .nav-link:hover {
-            color: #00f5d4;
-            background: rgba(0, 245, 212, 0.1);
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 24px 80px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-content {
-            text-align: center;
-            max-width: 800px;
-        }
-        
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(0, 245, 212, 0.1);
-            border: 1px solid rgba(0, 245, 212, 0.2);
-            border-radius: 100px;
-            font-size: 13px;
-            color: #00f5d4;
-            margin-bottom: 24px;
-        }
-        .hero-badge .pulse {
-            width: 8px;
-            height: 8px;
-            background: #3fb950;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .hero-title {
-            font-size: clamp(48px, 10vw, 96px);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #f0f6fc 0%, #00f5d4 50%, #9d4edd 100%);
+        .gradient-text {
+            background: linear-gradient(135deg, #00f5d4 0%, #9d4edd 50%, #ff006e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .hero-subtitle {
-            font-size: 20px;
-            color: #8b949e;
-            margin-bottom: 32px;
-            line-height: 1.6;
-        }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn-primary {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #00f5d4, #00bbf9);
-            color: #050508;
-            font-weight: 600;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(0, 245, 212, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 245, 212, 0.4);
-        }
-        
-        .btn-secondary {
-            padding: 14px 28px;
-            background: transparent;
-            color: #c9d1d9;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .btn-secondary:hover {
-            border-color: #00f5d4;
-            color: #00f5d4;
-            background: rgba(0, 245, 212, 0.05);
-        }
-        
-        /* Stats Section */
-        .stats-section {
-            padding: 80px 24px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        .nav-blur { backdrop-filter: blur(20px); background: rgba(5, 5, 8, 0.8); }
         
         .stat-card {
-            background: rgba(15, 15, 24, 0.6);
+            background: linear-gradient(135deg, rgba(15, 15, 24, 0.8), rgba(10, 10, 15, 0.9));
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 32px 24px;
-            text-align: center;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-        .stat-card:hover {
-            border-color: rgba(0, 245, 212, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .stat-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-        .stat-value {
-            font-size: 36px;
-            font-weight: 800;
-            color: #f0f6fc;
-            margin-bottom: 4px;
-        }
-        .stat-label {
-            font-size: 14px;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        /* Projects Section */
-        .projects-section {
-            padding: 80px 24px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .section-title {
-            font-size: 36px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 48px;
-            background: linear-gradient(135deg, #f0f6fc, #00f5d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
         }
         
         .project-card {
             background: rgba(15, 15, 24, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
         }
-        .project-card:hover {
-            border-color: rgba(0, 245, 212, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
+        .project-card:hover { border-color: rgba(0, 245, 212, 0.3); }
         
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-        
-        .project-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-        
-        .project-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #f0f6fc;
-            margin-bottom: 4px;
-        }
-        .project-desc {
-            font-size: 14px;
-            color: #8b949e;
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-        
-        .project-meta {
-            display: flex;
-            gap: 16px;
-            font-size: 13px;
-            color: #6b7280;
-        }
-        .project-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .tag {
-            padding: 4px 12px;
+        .skill-tag {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 100px;
-            font-size: 12px;
-            color: #8b949e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
-        /* Skills Section */
-        .skills-section {
-            padding: 80px 24px;
-            position: relative;
-            z-index: 1;
+        .btn-glow {
+            background: linear-gradient(135deg, #00f5d4, #00bbf9);
+            box-shadow: 0 4px 20px rgba(0, 245, 212, 0.3);
         }
-        
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 16px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .skill-card {
-            background: rgba(15, 15, 24, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .skill-card:hover {
-            border-color: rgba(0, 245, 212, 0.3);
-            transform: translateY(-2px);
-        }
-        .skill-icon {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        .skill-name {
-            font-size: 14px;
-            font-weight: 500;
-            color: #c9d1d9;
-        }
-        
-        /* Contact Section */
-        .contact-section {
-            padding: 80px 24px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .contact-card {
-            background: rgba(15, 15, 24, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .contact-card:hover {
-            border-color: rgba(0, 245, 212, 0.3);
-            transform: translateY(-2px);
-        }
-        .contact-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-        .contact-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: #f0f6fc;
-            margin-bottom: 4px;
-        }
-        .contact-value {
-            font-size: 14px;
-            color: #8b949e;
-        }
-        
-        /* Footer */
-        .footer {
-            padding: 40px 24px;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: #6b7280;
-            font-size: 14px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Floating Chat */
-        .floating-chat {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 50;
-        }
-        
-        .chat-toggle {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #9d4edd, #ff006e);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(157, 78, 221, 0.4);
-            transition: all 0.3s;
-            border: none;
-        }
-        .chat-toggle:hover {
-            transform: scale(1.1);
-        }
-        
-        .chat-window {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 360px;
-            max-width: calc(100vw - 48px);
-            background: rgba(10, 10, 15, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            overflow: hidden;
-            display: none;
-            backdrop-filter: blur(20px);
-        }
-        .chat-window.open { display: block; }
-        
-        .chat-header {
-            padding: 16px;
-            background: rgba(0, 245, 212, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .chat-avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #00f5d4, #9d4edd);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .chat-title { font-weight: 600; color: #f0f6fc; }
-        .chat-status { font-size: 12px; color: #3fb950; }
-        
-        .chat-messages {
-            padding: 16px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .chat-message {
-            margin-bottom: 12px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .chat-message.bot { color: #00f5d4; }
-        .chat-message.user { color: #8b949e; text-align: right; }
-        
-        .chat-input {
-            padding: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            gap: 8px;
-        }
-        .chat-input input {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: #c9d1d9;
-            font-size: 14px;
-            outline: none;
-        }
-        .chat-input input:focus { border-color: #00f5d4; }
-        .chat-input button {
-            background: linear-gradient(135deg, #9d4edd, #ff006e);
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            color: white;
-            cursor: pointer;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .nav-links { display: none; }
-            .hero-title { font-size: 48px; }
-        }
+        .btn-glow:hover { box-shadow: 0 8px 30px rgba(0, 245, 212, 0.5); }
     </style>
 </head>
-<body>
-    <!-- Boot Screen -->
-    <div id="boot-screen">
-        <div class="terminal-window">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
-                <span class="terminal-title">neaterry6-bootloader.sh</span>
-            </div>
-            <div id="boot-lines" class="space-y-2 min-h-[160px]"></div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Background Effects -->
+<body class="min-h-screen">
     <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
-    <div class="scroll-progress" id="scroll-progress"></div>
     
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="#" class="nav-logo">
-            <div class="nav-logo-icon">👨‍💻</div>
-            <span>Heisbroken</span>
-        </a>
-        <div class="nav-links">
-            <a href="#about" class="nav-link">About</a>
-            <a href="#projects" class="nav-link">Projects</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#contact" class="nav-link">Contact</a>
-            <a href="https://github.com/Neaterry6" target="_blank" class="nav-link">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-purple-600 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+                <span class="font-bold text-xl text-white">Heisbroken</span>
             </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">About</a>
+                <a href="#stats" class="text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Stats</a>
+                <a href="#projects" class="text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Projects</a>
+                <a href="#skills" class="text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Skills</a>
+                <a href="https://github.com/Neaterry6" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span class="text-sm font-medium">GitHub</span>
+                </a>
+            </div>
         </div>
     </nav>
     
-    <!-- Hero Section -->
-    <section class="hero" id="about">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span class="pulse"></span>
+    <!-- Hero -->
+    <section class="min-h-screen flex items-center justify-center pt-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm mb-8">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                 Available for opportunities
             </div>
-            <h1 class="hero-title">Heisbroken</h1>
-            <p class="hero-subtitle">
+            
+            <h1 class="text-6xl md:text-8xl font-black mb-6 gradient-text">Heisbroken</h1>
+            
+            <p class="text-xl md:text-2xl text-gray-400 mb-4 font-light">
+                🎀🎧✍️ Full Stack Developer & AI Engineer
+            </p>
+            
+            <p class="text-gray-500 max-w-2xl mx-auto mb-12 leading-relaxed">
                 I'm akewushola heisbroken — a tech enthusiast, programmer, and bot developer passionate about AI, WhatsApp automation, and creative coding.
             </p>
-            <div class="hero-buttons">
-                <a href="#projects" class="btn-primary">View Projects</a>
-                <a href="https://github.com/Neaterry6" target="_blank" class="btn-secondary">GitHub Profile</a>
+            
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#projects" class="btn-glow px-8 py-4 rounded-xl font-semibold text-gray-900 hover:scale-105 transition-transform">
+                    View Projects
+                </a>
+                <a href="https://github.com/Neaterry6" target="_blank" class="px-8 py-4 rounded-xl font-semibold border border-white/10 hover:bg-white/5 hover:border-white/20 transition-all">
+                    GitHub Profile
+                </a>
+            </div>
+            
+            <div class="mt-16 flex justify-center gap-8 text-gray-500 text-sm">
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Westland University, Iwo Osun State
+                </span>
             </div>
         </div>
     </section>
     
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📦</div>
-                <div class="stat-value">248</div>
-                <div class="stat-label">Repositories</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
-                <div class="stat-value">1,247</div>
-                <div class="stat-label">Total Stars</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-value">19</div>
-                <div class="stat-label">Followers</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">🍴</div>
-                <div class="stat-value">486</div>
-                <div class="stat-label">Forks</div>
+    <!-- Stats -->
+    <section id="stats" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">GitHub Statistics</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="stat-card rounded-2xl p-8 text-center card-hover">
+                    <div class="text-4xl mb-3">📦</div>
+                    <div class="text-4xl font-black text-white mb-1">248</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wider">Repositories</div>
+                </div>
+                <div class="stat-card rounded-2xl p-8 text-center card-hover">
+                    <div class="text-4xl mb-3">⭐</div>
+                    <div class="text-4xl font-black text-white mb-1">1,247</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wider">Total Stars</div>
+                </div>
+                <div class="stat-card rounded-2xl p-8 text-center card-hover">
+                    <div class="text-4xl mb-3">👥</div>
+                    <div class="text-4xl font-black text-white mb-1">19</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wider">Followers</div>
+                </div>
+                <div class="stat-card rounded-2xl p-8 text-center card-hover">
+                    <div class="text-4xl mb-3">🍴</div>
+                    <div class="text-4xl font-black text-white mb-1">486</div>
+                    <div class="text-sm text-gray-500 uppercase tracking-wider">Forks</div>
+                </div>
             </div>
         </div>
     </section>
     
-    <!-- Projects Section -->
-    <section class="projects-section" id="projects">
-        <h2 class="section-title">Featured Projects</h2>
-        <div class="projects-grid">
-            <a href="https://github.com/Neaterry6/broken-api" target="_blank" class="project-card">
-                <div class="project-header">
-                    <div class="project-icon" style="background: linear-gradient(135deg, #00f5d4, #00bbf9);">🔌</div>
-                    <div class="project-meta">
-                        <span>⭐ 47</span>
-                        <span>🍴 12</span>
-                    </div>
-                </div>
-                <div class="project-title">broken-api</div>
-                <div class="project-desc">Custom WhatsApp API built on Baileys — multi-session, buttons, webhooks, automation with full SDK support.</div>
-                <div class="project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">Baileys</span>
-                    <span class="tag">REST API</span>
-                </div>
-            </a>
+    <!-- Projects -->
+    <section id="projects" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4 gradient-text">Featured Projects</h2>
+            <p class="text-gray-500 text-center mb-12">Projects I've built and maintained</p>
             
-            <a href="https://github.com/Neaterry6/whatapp-ai" target="_blank" class="project-card">
-                <div class="project-header">
-                    <div class="project-icon" style="background: linear-gradient(135deg, #9d4edd, #ff006e);">🤖</div>
-                    <div class="project-meta">
-                        <span>⭐ 23</span>
-                        <span>🍴 8</span>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Project 1 -->
+                <a href="https://github.com/Neaterry6/broken-api" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-2xl">🔌</div>
+                            <div>
+                                <h3 class="font-bold text-white text-lg">broken-api</h3>
+                                <p class="text-sm text-gray-500">JavaScript • Updated Aug 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">⭐ 47</span>
+                            <span class="flex items-center gap-1">🍴 12</span>
+                        </div>
                     </div>
-                </div>
-                <div class="project-title">whatapp-ai</div>
-                <div class="project-desc">BROKEN Bot v15 — WhatsApp AI bot with games, music, lyrics, social features, LID reply routing fix.</div>
-                <div class="project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">AI</span>
-                    <span class="tag">WhatsApp</span>
-                </div>
-            </a>
-            
-            <a href="https://github.com/Neaterry6/broken-wa-api" target="_blank" class="project-card">
-                <div class="project-header">
-                    <div class="project-icon" style="background: linear-gradient(135deg, #3fb950, #00f5d4);">📡</div>
-                    <div class="project-meta">
-                        <span>⭐ 18</span>
-                        <span>🍴 5</span>
+                    <p class="text-gray-400 mb-4">Custom WhatsApp API built on Baileys — multi-session, buttons, webhooks, automation with full SDK support.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Multi-Session</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Buttons</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Webhooks</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">SDK</span>
                     </div>
-                </div>
-                <div class="project-title">broken-wa-api</div>
-                <div class="project-desc">Standalone WhatsApp API with 20+ scraper endpoints — npm, Spotify, YouTube, Pinterest, AI, Temp Mail.</div>
-                <div class="project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">Scrapers</span>
-                    <span class="tag">SDK</span>
-                </div>
-            </a>
-            
-            <a href="https://github.com/Neaterry6/Broken-agent" target="_blank" class="project-card">
-                <div class="project-header">
-                    <div class="project-icon" style="background: linear-gradient(135deg, #f0883e, #db6d28);">💬</div>
-                    <div class="project-meta">
-                        <span>⭐ 31</span>
-                        <span>🍴 9</span>
+                </a>
+                
+                <!-- Project 2 -->
+                <a href="https://github.com/Neaterry6/whatapp-ai" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">🤖</div>
+                            <div>
+                                <h3 class="font-bold text-white text-lg">whatapp-ai</h3>
+                                <p class="text-sm text-gray-500">JavaScript • Updated Aug 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">⭐ 23</span>
+                            <span class="flex items-center gap-1">🍴 8</span>
+                        </div>
                     </div>
-                </div>
-                <div class="project-title">Broken-agent</div>
-                <div class="project-desc">AI Chat Workspace with code editor, live preview, admin dashboard — supports Agnes, NVIDIA, BlockRun models.</div>
-                <div class="project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">AI Chat</span>
-                    <span class="tag">Editor</span>
-                </div>
-            </a>
-            
-            <a href="https://github.com/Neaterry6/BROKEN-Movies-V2" target="_blank" class="project-card">
-                <div class="project-header">
-                    <div class="project-icon" style="background: linear-gradient(135deg, #f778ba, #db6d28);">🎬</div>
-                    <div class="project-meta">
-                        <span>⭐ 12</span>
-                        <span>🍴 4</span>
+                    <p class="text-gray-400 mb-4">BROKEN Bot v15 — WhatsApp AI bot with games, music, lyrics, social features, LID reply routing fix.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">AI Chat</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Games</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Music</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Memory</span>
                     </div>
-                </div>
-                <div class="project-title">BROKEN-Movies-V2</div>
-                <div class="project-desc">Movie & series streaming website powered by BROKEN API — search, download, stream.</div>
-                <div class="project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">Streaming</span>
-                    <span class="tag">API</span>
-                </div>
-            </a>
-            
-            <a href="https://github.com/Neaterry6/awesome-free-models" target="_blank" class="project-card">
-                <div class="project-header">
-                    <div class="project-icon" style="background: linear-gradient(135deg, #58a6ff, #388bfd);">🧠</div>
-                    <div class="project-meta">
-                        <span>⭐ 8</span>
-                        <span>🍴 2</span>
+                </a>
+                
+                <!-- Project 3 -->
+                <a href="https://github.com/Neaterry6/broken-wa-api" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-2xl">📡</div>
+                            <div>
+                                <h3 class="font-bold text-white text-lg">broken-wa-api</h3>
+                                <p class="text-sm text-gray-500">JavaScript • Updated Aug 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">⭐ 18</span>
+                            <span class="flex items-center gap-1">🍴 5</span>
+                        </div>
                     </div>
-                </div>
-                <div class="project-title">awesome-free-models</div>
-                <div class="project-desc">Curated list of free AI models, APIs, and tools for developers.</div>
-                <div class="project-tags">
-                    <span class="tag">Resources</span>
-                    <span class="tag">AI</span>
-                    <span class="tag">List</span>
-                </div>
-            </a>
-        </div>
-    </section>
-    
-    <!-- Skills Section -->
-    <section class="skills-section" id="skills">
-        <h2 class="section-title">Tech Stack</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <div class="skill-icon">⚡</div>
-                <div class="skill-name">Node.js</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">📜</div>
-                <div class="skill-name">JavaScript</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🐍</div>
-                <div class="skill-name">Python</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">💬</div>
-                <div class="skill-name">Baileys</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🚂</div>
-                <div class="skill-name">Express</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🗄️</div>
-                <div class="skill-name">SQLite</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🤖</div>
-                <div class="skill-name">AI/ML</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🕷️</div>
-                <div class="skill-name">Scraping</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🐙</div>
-                <div class="skill-name">Git</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🐳</div>
-                <div class="skill-name">Docker</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">🐧</div>
-                <div class="skill-name">Linux</div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">☁️</div>
-                <div class="skill-name">Railway</div>
+                    <p class="text-gray-400 mb-4">Standalone WhatsApp API with 20+ scraper endpoints — npm, Spotify, YouTube, Pinterest, AI, Temp Mail.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Scrapers</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">AI/ML</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">REST API</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">SDK</span>
+                    </div>
+                </a>
+                
+                <!-- Project 4 -->
+                <a href="https://github.com/Neaterry6/Broken-agent" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-2xl">💬</div>
+                            <div>
+                                <h3 class="font-bold text-white text-lg">Broken-agent</h3>
+                                <p class="text-sm text-gray-500">JavaScript • Updated Aug 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">⭐ 31</span>
+                            <span class="flex items-center gap-1">🍴 9</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">AI Chat Workspace with code editor, live preview, admin dashboard — supports Agnes, NVIDIA, BlockRun models.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">AI Chat</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Code Editor</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Preview</span>
+                    </div>
+                </a>
+                
+                <!-- Project 5 -->
+                <a href="https://github.com/Neaterry6/BROKEN-Movies-V2" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-2xl">🎬</div>
+                            <div>
+                                <h3 class="font-bold text-white text-lg">BROKEN-Movies-V2</h3>
+                                <p class="text-sm text-gray-500">JavaScript • Updated Jul 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">⭐ 12</span>
+                            <span class="flex items-center gap-1">🍴 4</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">Movie & series streaming website powered by BROKEN API — search, download, stream.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Streaming</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Movies</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">API</span>
+                    </div>
+                </a>
+                
+                <!-- Project 6 -->
+                <a href="https://github.com/Neaterry6/awesome-free-models" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-2xl">🧠</div>
+                            <div>
+                                <h3 class="font-bold text-white text-lg">awesome-free-models</h3>
+                                <p class="text-sm text-gray-500">JavaScript • Updated Jul 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">⭐ 8</span>
+                            <span class="flex items-center gap-1">🍴 2</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-4">Curated list of free AI models, APIs, and tools for developers.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Resources</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">AI</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">List</span>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
     
-    <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="contact-grid">
-            <a href="https://github.com/Neaterry6" target="_blank" class="contact-card">
-                <div class="contact-icon">
-                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    <!-- Skills -->
+    <section id="skills" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Tech Stack</h2>
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-cyan-500/30 transition-colors">
+                    <div class="text-2xl mb-2">⚡</div>
+                    <div class="text-sm font-medium text-gray-300">Node.js</div>
                 </div>
-                <div class="contact-name">GitHub</div>
-                <div class="contact-value">@neaterry6</div>
-            </a>
-            <a href="https://wa.me/your-number" target="_blank" class="contact-card">
-                <div class="contact-icon">💬</div>
-                <div class="contact-name">WhatsApp</div>
-                <div class="contact-value">Message me</div>
-            </a>
-            <a href="mailto:your@email.com" class="contact-card">
-                <div class="contact-icon">📧</div>
-                <div class="contact-name">Email</div>
-                <div class="contact-value">your@email.com</div>
-            </a>
-            <a href="#" class="contact-card">
-                <div class="contact-icon">🐦</div>
-                <div class="contact-name">Twitter</div>
-                <div class="contact-value">@neaterry6</div>
-            </a>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-yellow-500/30 transition-colors">
+                    <div class="text-2xl mb-2">📜</div>
+                    <div class="text-sm font-medium text-gray-300">JavaScript</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-blue-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🐍</div>
+                    <div class="text-sm font-medium text-gray-300">Python</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-green-500/30 transition-colors">
+                    <div class="text-2xl mb-2">💬</div>
+                    <div class="text-sm font-medium text-gray-300">Baileys</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-orange-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🚂</div>
+                    <div class="text-sm font-medium text-gray-300">Express</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-cyan-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🗄️</div>
+                    <div class="text-sm font-medium text-gray-300">SQLite</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-purple-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🤖</div>
+                    <div class="text-sm font-medium text-gray-300">AI/ML</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-pink-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🕷️</div>
+                    <div class="text-sm font-medium text-gray-300">Scraping</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-red-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🐙</div>
+                    <div class="text-sm font-medium text-gray-300">Git/GitHub</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-blue-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🐳</div>
+                    <div class="text-sm font-medium text-gray-300">Docker</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-green-500/30 transition-colors">
+                    <div class="text-2xl mb-2">🐧</div>
+                    <div class="text-sm font-medium text-gray-300">Linux</div>
+                </div>
+                <div class="skill-tag rounded-xl p-4 text-center hover:border-yellow-500/30 transition-colors">
+                    <div class="text-2xl mb-2">☁️</div>
+                    <div class="text-sm font-medium text-gray-300">Railway</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact -->
+    <section class="py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12 gradient-text">Get In Touch</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="https://github.com/Neaterry6" target="_blank" class="skill-tag rounded-xl p-6 hover:border-cyan-500/30 transition-all group">
+                    <svg class="w-8 h-8 mx-auto mb-3 text-gray-400 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <div class="font-medium text-white">GitHub</div>
+                    <div class="text-xs text-gray-500">@neaterry6</div>
+                </a>
+                <a href="https://wa.me/your-number" target="_blank" class="skill-tag rounded-xl p-6 hover:border-green-500/30 transition-all group">
+                    <svg class="w-8 h-8 mx-auto mb-3 text-gray-400 group-hover:text-green-400 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335 .157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <div class="font-medium text-white">WhatsApp</div>
+                    <div class="text-xs text-gray-500">Message me</div>
+                </a>
+                <a href="mailto:your@email.com" class="skill-tag rounded-xl p-6 hover:border-blue-500/30 transition-all group">
+                    <svg class="w-8 h-8 mx-auto mb-3 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <div class="font-medium text-white">Email</div>
+                    <div class="text-xs text-gray-500">your@email.com</div>
+                </a>
+                <a href="#" class="skill-tag rounded-xl p-6 hover:border-red-500/30 transition-all group">
+                    <svg class="w-8 h-8 mx-auto mb-3 text-gray-400 group-hover:text-red-400 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                    <div class="font-medium text-white">Twitter</div>
+                    <div class="text-xs text-gray-500">@neaterry6</div>
+                </a>
+            </div>
         </div>
     </section>
     
     <!-- Footer -->
-    <footer class="footer">
-        <p>© 2020-2026 <strong style="color: #f0f6fc;">Heisbroken</strong> — All Rights Reserved</p>
+    <footer class="py-8 text-center text-gray-600 text-sm border-t border-white/5">
+        <p>© 2020-2026 <strong class="text-gray-400">Heisbroken</strong> — All Rights Reserved</p>
         <p class="mt-2">Powered by <a href="https://pages.github.com" class="text-cyan-400 hover:underline" target="_blank">GitHub Pages</a></p>
     </footer>
     
-    <!-- Floating AI Chat -->
-    <div class="floating-chat">
-        <div class="chat-window" id="chat-window">
-            <div class="chat-header">
-                <div class="chat-avatar">🤖</div>
-                <div>
-                    <div class="chat-title">Neaterry6 Assistant</div>
-                    <div class="chat-status">● Online</div>
-                </div>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="chat-message bot">👋 Hey! I'm Heisbroken's AI assistant. Ask me about his projects, skills, or how to contact him!</div>
-            </div>
-            <div class="chat-input">
-                <input type="text" placeholder="Type your message..." id="chat-input">
-                <button onclick="sendMessage()">Send</button>
-            </div>
-        </div>
-        <button class="chat-toggle" onclick="toggleChat()">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-        </button>
-    </div>
-    
     <script>
-        // Boot Animation
-        const bootLines = [
-            { text: 'Initializing BROKEN OS kernel v3.0...', type: 'cyan' },
-            { text: 'Mounting responsive CSS modules...', type: 'gray' },
-            { text: 'Loading neural AI assistant proxy model...', type: 'purple' },
-            { text: 'Indexing freelance photography catalogs...', type: 'gray' },
-            { text: 'Syncing latest design project references...', type: 'gray' },
-            { text: 'Establishing secure API handshake...', type: 'cyan' },
-            { text: 'Systems integrity: green ✔', type: 'green' },
-        ];
-        
-        let bootIndex = 0;
-        const bootContainer = document.getElementById('boot-lines');
-        const progressFill = document.getElementById('progress-fill');
-        
-        function addBootLine() {
-            if (bootIndex < bootLines.length) {
-                const line = bootLines[bootIndex];
-                const div = document.createElement('div');
-                div.className = 'boot-line';
-                div.innerHTML = `<span class="${line.type}">></span> ${line.text}`;
-                bootContainer.appendChild(div);
-                progressFill.style.width = `${((bootIndex + 1) / bootLines.length) * 100}%`;
-                bootIndex++;
-                setTimeout(addBootLine, 300);
-            } else {
-                setTimeout(() => {
-                    document.getElementById('boot-screen').classList.add('hidden');
-                }, 500);
-            }
-        }
-        
-        setTimeout(addBootLine, 500);
-        
-        // Scroll Progress
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            document.getElementById('scroll-progress').style.transform = `scaleX(${scrollPercent / 100})`;
-        });
-        
-        // Chat Toggle
-        function toggleChat() {
-            const chatWindow = document.getElementById('chat-window');
-            chatWindow.classList.toggle('open');
-        }
-        
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const messages = document.getElementById('chat-messages');
-            const text = input.value.trim();
-            
-            if (!text) return;
-            
-            // Add user message
-            const userMsg = document.createElement('div');
-            userMsg.className = 'chat-message user';
-            userMsg.textContent = text;
-            messages.appendChild(userMsg);
-            input.value = '';
-            
-            // Bot response
-            setTimeout(() => {
-                const botMsg = document.createElement('div');
-                botMsg.className = 'chat-message bot';
-                
-                const responses = [
-                    "Heisbroken is a full-stack developer specializing in WhatsApp bots, AI systems, and automation tools.",
-                    "Check out his GitHub: github.com/Neaterry6 for all his projects!",
-                    "He's built over 100 projects including broken-api, whatapp-ai, and BROKEN-agent.",
-                    "You can reach him via WhatsApp or check his GitHub profile!",
-                    "His main tech stack: Node.js, JavaScript, Python, Baileys, Express, SQLite."
-                ];
-                
-                botMsg.textContent = responses[Math.floor(Math.random() * responses.length)];
-                messages.appendChild(botMsg);
-                messages.scrollTop = messages.scrollHeight;
-            }, 500);
-            
-            messages.scrollTop = messages.scrollHeight;
-        }
-        
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
             });
-        });
-        
-        // Enter key for chat
-        document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
         });
     </script>
 </body>

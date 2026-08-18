@@ -1,408 +1,538 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neaterry6 — Developer Portfolio</title>
+    <title>Heisbroken — Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        base: { bg: '#0d1117', text: '#c9d1d9', 'text-muted': '#8b949e', border: '#21262d', 'border-hover': '#388bfd33' },
+                        sidebar: { left: { bg: '#0d1117', border: '#21262d' }, right: { bg: '#0d1117', border: '#21262d' } },
+                        header: { bg: '#161b22', text: '#f0f6fc', border: '#21262d' },
+                        body: { bg: '#0d1117' },
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0d1117;
-            color: #c9d1d9;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .code-block { font-family: 'JetBrains Mono', monospace; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0d1117; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+        .gradient-text {
+            background: linear-gradient(135deg, #58a6ff 0%, #a371f7 50%, #3fb950 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .container {
-            max-width: 680px;
-            width: 100%;
-        }
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 30px;
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 12px;
-        }
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            margin: 0 auto 15px;
-            border: 4px solid #30363d;
-        }
-        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 8px; }
-        .username { color: #58a6ff; font-size: 1rem; margin-bottom: 12px; }
-        .bio { color: #8b949e; line-height: 1.6; margin-bottom: 20px; }
-        .location { color: #8b949e; font-size: 0.9rem; }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #238636;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-top: 12px;
-        }
-        
-        /* Stats Grid - GitHub style */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 10px;
-            padding: 20px 12px;
-            text-align: center;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: #388bfd55;
-        }
-        .stat-icon { font-size: 1.8rem; margin-bottom: 8px; }
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #f0f6fc;
-            display: block;
-        }
-        .stat-label {
-            font-size: 0.75rem;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 4px;
-        }
-        
-        /* Section */
-        .section {
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        .section-title {
-            font-size: 1.1rem;
-            color: #f0f6fc;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #21262d;
-        }
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: #58a6ff;
-            border-radius: 2px;
-        }
-        
-        /* Repo List */
-        .repo-item {
-            padding: 16px 0;
-            border-bottom: 1px solid #21262d;
-        }
-        .repo-item:last-child { border-bottom: none; }
-        .repo-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-        .repo-name {
-            color: #58a6ff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-        .repo-name:hover { text-decoration: underline; }
-        .repo-desc { color: #8b949e; font-size: 0.9rem; margin-bottom: 10px; line-height: 1.5; }
-        .repo-meta {
-            display: flex;
-            gap: 16px;
-            font-size: 0.8rem;
-            color: #8b949e;
-            align-items: center;
-        }
-        .repo-meta span { display: flex; align-items: center; gap: 4px; }
-        .lang-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .lang-js { background: #f1e05a; }
-        .lang-python { background: #3572a5; }
-        .lang-shell { background: #89e051; }
-        
-        /* Skills */
-        .skills { display: flex; flex-wrap: wrap; gap: 10px; }
-        .skill {
-            background: #21262d;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #c9d1d9;
-            border: 1px solid #30363d;
-        }
-        
-        /* Contribution Graph Style */
-        .contribution-summary {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-        .contrib-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .contrib-bar {
-            width: 8px;
-            background: #238636;
-            border-radius: 4px;
-            transition: height 0.3s;
-        }
-        .contrib-label { font-size: 0.8rem; color: #8b949e; }
-        .contrib-value { font-size: 1.2rem; font-weight: bold; color: #f0f6fc; }
-        
-        /* Contact */
-        .contact { display: flex; gap: 12px; flex-wrap: wrap; }
-        .contact a {
-            color: #58a6ff;
-            text-decoration: none;
-            padding: 10px 18px;
-            border: 1px solid #388bfd33;
-            border-radius: 8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .contact a:hover { background: #388bfd22; border-color: #58a6ff; }
-        
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            color: #8b949e;
-            font-size: 0.85rem;
-        }
-        .github-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #21262d;
-            color: #f0f6fc;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-top: 12px;
-            border: 1px solid #30363d;
-        }
-        .github-btn:hover { background: #30363d; }
+        .glow { box-shadow: 0 0 40px rgba(88, 166, 255, 0.15); }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .nav-item.active { border-left: 2px solid #58a6ff; color: #58a6ff; }
+        .retype-search { background: #161b22; border: 1px solid #21262d; }
+        .retype-search:focus { border-color: #388bfd; outline: none; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="avatar">👨‍💻</div>
-            <h1>Heisbroken 🎀🎧✍️</h1>
-            <div class="username">@neaterry6</div>
-            <p class="bio">I'm akewushola heisbroken — a tech enthusiast, programmer, and bot developer passionate about AI, WhatsApp automation, and creative coding.</p>
-            <div class="location">📍 Nigeria</div>
-            <div class="badge">🟢 Open to opportunities</div>
-            <br>
-            <a href="https://github.com/Neaterry6" class="github-btn" target="_blank">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                Follow on GitHub
+<body class="bg-base-bg text-base-text antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 h-16 bg-header-bg border-b border-base-border z-50 flex items-center justify-between px-4 md:px-6">
+        <div class="flex items-center gap-3">
+            <button id="menu-toggle" class="md:hidden p-2 rounded-lg hover:bg-base-border transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <a href="#" class="flex items-center gap-2 font-bold text-lg text-white">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm">👨‍💻</div>
+                <span>Heisbroken</span>
             </a>
         </div>
-
-        <!-- Stats Grid - GitHub Style -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📦</div>
-                <span class="stat-value">248</span>
-                <div class="stat-label">Repositories</div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-2 text-sm text-base-text-muted">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                <span>github.com/Neaterry6</span>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
-                <span class="stat-value">1,247</span>
-                <div class="stat-label">Total Stars</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <span class="stat-value">19</span>
-                <div class="stat-label">Followers</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">🍴</div>
-                <span class="stat-value">486</span>
-                <div class="stat-label">Forks</div>
-            </div>
+            <a href="https://github.com/Neaterry6" target="_blank" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-base-border hover:bg-base-border-hover transition-colors text-sm">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <span class="hidden sm:inline">GitHub</span>
+            </a>
         </div>
+    </header>
 
-        <!-- Activity Summary -->
-        <div class="section">
-            <div class="section-title">Activity Summary</div>
-            <div class="contribution-summary">
-                <div class="contrib-item">
-                    <div class="contrib-value">2,847</div>
-                    <div class="contrib-bar" style="height: 80px;"></div>
-                    <div class="contrib-label">Commits (2026)</div>
-                </div>
-                <div class="contrib-item">
-                    <div class="contrib-value">156</div>
-                    <div class="contrib-bar" style="height: 60px; background: #388bfd;"></div>
-                    <div class="contrib-label">Pull Requests</div>
-                </div>
-                <div class="contrib-item">
-                    <div class="contrib-value">89</div>
-                    <div class="contrib-bar" style="height: 50px; background: #a371f7;"></div>
-                    <div class="contrib-label">Issues Closed</div>
-                </div>
-                <div class="contrib-item">
-                    <div class="contrib-value">100+</div>
-                    <div class="contrib-bar" style="height: 70px; background: #3fb950;"></div>
-                    <div class="contrib-label">Projects Built</div>
+    <div class="flex pt-16 min-h-screen">
+        <!-- Left Sidebar -->
+        <aside id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-base-bg border-r border-base-border overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-40">
+            <div class="p-4">
+                <div class="relative mb-4">
+                    <input type="text" placeholder="Search..." class="w-full h-10 pl-9 pr-4 rounded-lg bg-body-bg border border-base-border text-sm hover:border-base-border-hover focus:border-base-border-focus focus:outline-none transition-colors placeholder-base-text-muted">
+                    <svg class="absolute left-3 top-2.5 w-4 h-4 text-base-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <kbd class="absolute right-3 top-2.5 text-xs text-base-text-muted bg-base-border px-1.5 py-0.5 rounded">/</kbd>
                 </div>
             </div>
-        </div>
+            <nav class="px-3 space-y-1">
+                <a href="#overview" class="nav-item active flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-base-border transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    Overview
+                </a>
+                <a href="#projects" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-base-text-muted hover:bg-base-border hover:text-base-text transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                    Projects
+                </a>
+                <a href="#stats" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-base-text-muted hover:bg-base-border hover:text-base-text transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    Statistics
+                </a>
+                <a href="#skills" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-base-text-muted hover:bg-base-border hover:text-base-text transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Skills
+                </a>
+                <div class="pt-4 mt-4 border-t border-base-border">
+                    <p class="px-3 text-xs font-semibold text-base-text-muted uppercase tracking-wider mb-2">Quick Links</p>
+                    <a href="https://github.com/Neaterry6" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-base-text-muted hover:bg-base-border hover:text-base-text transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub Profile
+                    </a>
+                    <a href="https://wa.me/your-number" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-base-text-muted hover:bg-base-border hover:text-base-text transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        WhatsApp
+                    </a>
+                </div>
+            </nav>
+        </aside>
 
-        <!-- Top Repositories -->
-        <div class="section">
-            <div class="section-title">Top Repositories</div>
-            
-            <div class="repo-item">
-                <div class="repo-header">
-                    <a class="repo-name" href="https://github.com/Neaterry6/broken-api" target="_blank">🔥 broken-api</a>
-                    <span style="color: #8b949e; font-size: 0.8rem;">Public</span>
-                </div>
-                <div class="repo-desc">Custom WhatsApp API built on Baileys — multi-session, buttons, webhooks, automation with full SDK support</div>
-                <div class="repo-meta">
-                    <span><span class="lang-dot lang-js"></span> JavaScript</span>
-                    <span>⭐ 47</span>
-                    <span>🍴 12</span>
-                    <span>Updated Aug 2026</span>
-                </div>
+        <!-- Main Content -->
+        <main class="flex-1 md:ml-64 lg:mr-72 min-h-screen">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                
+                <!-- Hero Section -->
+                <section id="overview" class="mb-12">
+                    <div class="flex flex-col sm:flex-row items-start gap-6 mb-8">
+                        <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center text-4xl shadow-2xl glow flex-shrink-0">
+                            👨‍💻
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <h1 class="text-3xl font-bold text-white">Heisbroken</h1>
+                                <span class="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">🟢 Online</span>
+                            </div>
+                            <p class="text-base text-base-text-muted mb-4">@neaterry6 · Nigeria</p>
+                            <p class="text-base leading-relaxed mb-4">
+                                I'm <strong class="text-white">akewushola heisbroken</strong> — a tech enthusiast, programmer, and bot developer passionate about AI, WhatsApp automation, and creative coding. Building tools that connect people through technology.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-base-border text-sm">🔥 Open Source</span>
+                                <span class="px-3 py-1 rounded-full bg-base-border text-sm">🤖 AI Enthusiast</span>
+                                <span class="px-3 py-1 rounded-full bg-base-border text-sm">📱 WhatsApp Dev</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="stat-card bg-base-bg border border-base-border rounded-xl p-4 transition-all duration-200">
+                            <div class="text-2xl font-bold text-white mb-1">248</div>
+                            <div class="text-sm text-base-text-muted">Repositories</div>
+                        </div>
+                        <div class="stat-card bg-base-bg border border-base-border rounded-xl p-4 transition-all duration-200">
+                            <div class="text-2xl font-bold text-white mb-1">1,247</div>
+                            <div class="text-sm text-base-text-muted">Total Stars</div>
+                        </div>
+                        <div class="stat-card bg-base-bg border border-base-border rounded-xl p-4 transition-all duration-200">
+                            <div class="text-2xl font-bold text-white mb-1">19</div>
+                            <div class="text-sm text-base-text-muted">Followers</div>
+                        </div>
+                        <div class="stat-card bg-base-bg border border-base-border rounded-xl p-4 transition-all duration-200">
+                            <div class="text-2xl font-bold text-white mb-1">486</div>
+                            <div class="text-sm text-base-text-muted">Forks</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Projects -->
+                <section id="projects" class="mb-12">
+                    <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                        Featured Projects
+                    </h2>
+                    <div class="space-y-4">
+                        <!-- Project Card -->
+                        <div class="group bg-base-bg border border-base-border rounded-xl p-5 hover:border-blue-500/50 transition-all duration-200">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-lg">🔌</div>
+                                    <div>
+                                        <h3 class="font-semibold text-white group-hover:text-blue-400 transition-colors">
+                                            <a href="https://github.com/Neaterry6/broken-api" target="_blank">broken-api</a>
+                                        </h3>
+                                        <p class="text-sm text-base-text-muted">Custom WhatsApp API with multi-session support</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm text-base-text-muted">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-400"></span>JavaScript</span>
+                                    <span class="flex items-center gap-1">⭐ 47</span>
+                                    <span class="flex items-center gap-1">🍴 12</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-base-text-muted mb-4">Full-featured WhatsApp REST API built on Baileys — buttons, webhooks, automation, scraper endpoints, and admin dashboard.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Multi-Session</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Buttons</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Webhooks</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">SDK</span>
+                            </div>
+                        </div>
+
+                        <!-- Project Card -->
+                        <div class="group bg-base-bg border border-base-border rounded-xl p-5 hover:border-purple-500/50 transition-all duration-200">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-lg">🤖</div>
+                                    <div>
+                                        <h3 class="font-semibold text-white group-hover:text-purple-400 transition-colors">
+                                            <a href="https://github.com/Neaterry6/whatapp-ai" target="_blank">whatapp-ai</a>
+                                        </h3>
+                                        <p class="text-sm text-base-text-muted">BROKEN Bot v15 — Games, Music, Lyrics, AI</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm text-base-text-muted">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-400"></span>JavaScript</span>
+                                    <span class="flex items-center gap-1">⭐ 23</span>
+                                    <span class="flex items-center gap-1">🍴 8</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-base-text-muted mb-4">Complete WhatsApp AI bot with LID reply routing fix, games, music player, lyrics search, social features, and memory system.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">AI Chat</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Games</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Music</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Memory</span>
+                            </div>
+                        </div>
+
+                        <!-- Project Card -->
+                        <div class="group bg-base-bg border border-base-border rounded-xl p-5 hover:border-green-500/50 transition-all duration-200">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-lg">📡</div>
+                                    <div>
+                                        <h3 class="font-semibold text-white group-hover:text-green-400 transition-colors">
+                                            <a href="https://github.com/Neaterry6/broken-wa-api" target="_blank">broken-wa-api</a>
+                                        </h3>
+                                        <p class="text-sm text-base-text-muted">Standalone WhatsApp API with 20+ Scraper Endpoints</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm text-base-text-muted">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-400"></span>JavaScript</span>
+                                    <span class="flex items-center gap-1">⭐ 18</span>
+                                    <span class="flex items-center gap-1">🍴 5</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-base-text-muted mb-4">npm search, Spotify, YouTube, Pinterest, Telegram, AI (Qwen), AlightMotion, Temp Mail — all in one API.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Scrapers</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">AI/ML</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">REST API</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">SDK</span>
+                            </div>
+                        </div>
+
+                        <!-- Project Card -->
+                        <div class="group bg-base-bg border border-base-border rounded-xl p-5 hover:border-orange-500/50 transition-all duration-200">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-lg">💬</div>
+                                    <div>
+                                        <h3 class="font-semibold text-white group-hover:text-orange-400 transition-colors">
+                                            <a href="https://github.com/Neaterry6/Broken-agent" target="_blank">Broken-agent</a>
+                                        </h3>
+                                        <p class="text-sm text-base-text-muted">AI Chat Workspace with Code Editor</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm text-base-text-muted">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-400"></span>JavaScript</span>
+                                    <span class="flex items-center gap-1">⭐ 31</span>
+                                    <span class="flex items-center gap-1">🍴 9</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-base-text-muted mb-4">Web-based AI chat workspace supporting Agnes, NVIDIA, BlockRun models — code editor, live preview, admin dashboard.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">AI Chat</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Code Editor</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Preview</span>
+                            </div>
+                        </div>
+
+                        <!-- Project Card -->
+                        <div class="group bg-base-bg border border-base-border rounded-xl p-5 hover:border-pink-500/50 transition-all duration-200">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-lg">🎬</div>
+                                    <div>
+                                        <h3 class="font-semibold text-white group-hover:text-pink-400 transition-colors">
+                                            <a href="https://github.com/Neaterry6/BROKEN-Movies-V2" target="_blank">BROKEN-Movies-V2</a>
+                                        </h3>
+                                        <p class="text-sm text-base-text-muted">Movie & Series Streaming Website</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm text-base-text-muted">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-400"></span>JavaScript</span>
+                                    <span class="flex items-center gap-1">⭐ 12</span>
+                                    <span class="flex items-center gap-1">🍴 4</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-base-text-muted mb-4">Full-featured streaming site powered by BROKEN API — search, download, stream movies and TV shows.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Streaming</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">Movies</span>
+                                <span class="px-2 py-1 rounded-md bg-base-border text-xs text-base-text-muted">API</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Activity Stats -->
+                <section id="stats" class="mb-12">
+                    <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        Contribution Activity
+                    </h2>
+                    <div class="bg-base-bg border border-base-border rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-sm text-base-text-muted">2026 Activity</span>
+                            <span class="text-sm text-base-text-muted">Last commit: today</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-4 mb-4">
+                            <div class="text-center p-4 bg-base-border rounded-lg">
+                                <div class="text-2xl font-bold text-white">2,847</div>
+                                <div class="text-xs text-base-text-muted mt-1">Commits</div>
+                            </div>
+                            <div class="text-center p-4 bg-base-border rounded-lg">
+                                <div class="text-2xl font-bold text-white">156</div>
+                                <div class="text-xs text-base-text-muted mt-1">Pull Requests</div>
+                            </div>
+                            <div class="text-center p-4 bg-base-border rounded-lg">
+                                <div class="text-2xl font-bold text-white">89</div>
+                                <div class="text-xs text-base-text-muted mt-1">Issues Closed</div>
+                            </div>
+                            <div class="text-center p-4 bg-base-border rounded-lg">
+                                <div class="text-2xl font-bold text-white">100+</div>
+                                <div class="text-xs text-base-text-muted mt-1">Projects Built</div>
+                            </div>
+                        </div>
+                        <!-- Contribution Graph Placeholder -->
+                        <div class="flex gap-1 flex-wrap justify-center opacity-75">
+                            <div class="w-3 h-3 rounded-sm bg-green-900"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-800"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-700"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-600"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-500"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-400"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-700"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-600"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-500"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-400"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-800"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-700"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-600"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-500"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-400"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-300"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-600"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-500"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-400"></div>
+                            <div class="w-3 h-3 rounded-sm bg-green-300"></div>
+                        </div>
+                        <div class="flex items-center justify-between mt-3 text-xs text-base-text-muted">
+                            <span>Less</span>
+                            <div class="flex gap-1">
+                                <div class="w-3 h-3 rounded-sm bg-base-border"></div>
+                                <div class="w-3 h-3 rounded-sm bg-green-900"></div>
+                                <div class="w-3 h-3 rounded-sm bg-green-700"></div>
+                                <div class="w-3 h-3 rounded-sm bg-green-500"></div>
+                                <div class="w-3 h-3 rounded-sm bg-green-300"></div>
+                            </div>
+                            <span>More</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Skills -->
+                <section id="skills" class="mb-12">
+                    <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        Skills & Technologies
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-blue-500/50 transition-colors">
+                            <div class="text-2xl mb-1">⚡</div>
+                            <div class="text-sm font-medium text-white">Node.js</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-yellow-500/50 transition-colors">
+                            <div class="text-2xl mb-1">📜</div>
+                            <div class="text-sm font-medium text-white">JavaScript</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-blue-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🐍</div>
+                            <div class="text-sm font-medium text-white">Python</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-green-500/50 transition-colors">
+                            <div class="text-2xl mb-1">💬</div>
+                            <div class="text-sm font-medium text-white">Baileys</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-orange-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🚂</div>
+                            <div class="text-sm font-medium text-white">Express</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-cyan-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🗄️</div>
+                            <div class="text-sm font-medium text-white">SQLite</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-purple-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🤖</div>
+                            <div class="text-sm font-medium text-white">AI/ML</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-pink-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🕷️</div>
+                            <div class="text-sm font-medium text-white">Scraping</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-red-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🐙</div>
+                            <div class="text-sm font-medium text-white">Git/GitHub</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-blue-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🐳</div>
+                            <div class="text-sm font-medium text-white">Docker</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-green-500/50 transition-colors">
+                            <div class="text-2xl mb-1">🐧</div>
+                            <div class="text-sm font-medium text-white">Linux</div>
+                        </div>
+                        <div class="bg-base-bg border border-base-border rounded-lg p-3 text-center hover:border-yellow-500/50 transition-colors">
+                            <div class="text-2xl mb-1">☁️</div>
+                            <div class="text-sm font-medium text-white">Railway</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact -->
+                <section class="mb-12">
+                    <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        Get In Touch
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <a href="https://github.com/Neaterry6" target="_blank" class="flex flex-col items-center gap-3 p-4 bg-base-bg border border-base-border rounded-xl hover:border-blue-500/50 transition-all group">
+                            <svg class="w-8 h-8 text-base-text-muted group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            <span class="text-sm text-base-text-muted group-hover:text-white">GitHub</span>
+                        </a>
+                        <a href="https://wa.me/your-number" target="_blank" class="flex flex-col items-center gap-3 p-4 bg-base-bg border border-base-border rounded-xl hover:border-green-500/50 transition-all group">
+                            <svg class="w-8 h-8 text-base-text-muted group-hover:text-green-400 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335 .157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            <span class="text-sm text-base-text-muted group-hover:text-green-400">WhatsApp</span>
+                        </a>
+                        <a href="mailto:your@email.com" class="flex flex-col items-center gap-3 p-4 bg-base-bg border border-base-border rounded-xl hover:border-blue-500/50 transition-all group">
+                            <svg class="w-8 h-8 text-base-text-muted group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span class="text-sm text-base-text-muted group-hover:text-blue-400">Email</span>
+                        </a>
+                        <a href="#" class="flex flex-col items-center gap-3 p-4 bg-base-bg border border-base-border rounded-xl hover:border-red-500/50 transition-all group">
+                            <svg class="w-8 h-8 text-base-text-muted group-hover:text-red-400 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                            <span class="text-sm text-base-text-muted group-hover:text-red-400">Twitter</span>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer class="border-t border-base-border pt-8 pb-12 text-center text-sm text-base-text-muted">
+                    <p>© 2020-2026 <strong class="text-base-text">Heisbroken</strong> — All Rights Reserved</p>
+                    <p class="mt-2">Powered by <a href="https://pages.github.com" class="text-blue-400 hover:underline" target="_blank">GitHub Pages</a></p>
+                </footer>
             </div>
+        </main>
 
-            <div class="repo-item">
-                <div class="repo-header">
-                    <a class="repo-name" href="https://github.com/Neaterry6/whatapp-ai" target="_blank">🤖 whatapp-ai</a>
-                    <span style="color: #8b949e; font-size: 0.8rem;">Private</span>
+        <!-- Right Sidebar (Table of Contents) -->
+        <aside class="hidden lg:block fixed right-0 top-16 w-72 h-[calc(100vh-4rem)] overflow-y-auto border-l border-base-border p-6">
+            <nav>
+                <p class="text-xs font-semibold text-base-text-muted uppercase tracking-wider mb-4">On this page</p>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#overview" class="text-base-text-muted hover:text-white transition-colors">Overview</a></li>
+                    <li><a href="#projects" class="text-base-text-muted hover:text-white transition-colors">Projects</a></li>
+                    <li><a href="#stats" class="text-base-text-muted hover:text-white transition-colors">Statistics</a></li>
+                    <li><a href="#skills" class="text-base-text-muted hover:text-white transition-colors">Skills</a></li>
+                    <li><a href="#" class="text-base-text-muted hover:text-white transition-colors">Contact</a></li>
+                </ul>
+                <div class="mt-8 pt-6 border-t border-base-border">
+                    <p class="text-xs text-base-text-muted mb-3">Quick Stats</p>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between"><span class="text-base-text-muted">Location</span><span class="text-base-text">Nigeria</span></div>
+                        <div class="flex justify-between"><span class="text-base-text-muted">Language</span><span class="text-base-text">JavaScript</span></div>
+                        <div class="flex justify-between"><span class="text-base-text-muted">Updated</span><span class="text-base-text">Today</span></div>
+                    </div>
                 </div>
-                <div class="repo-desc">BROKEN Bot v15 — WhatsApp AI bot with games, music, lyrics, social features, LID reply routing fix</div>
-                <div class="repo-meta">
-                    <span><span class="lang-dot lang-js"></span> JavaScript</span>
-                    <span>⭐ 23</span>
-                    <span>🍴 8</span>
-                    <span>Updated Aug 2026</span>
-                </div>
-            </div>
-
-            <div class="repo-item">
-                <div class="repo-header">
-                    <a class="repo-name" href="https://github.com/Neaterry6/broken-wa-api" target="_blank">📡 broken-wa-api</a>
-                    <span style="color: #8b949e; font-size: 0.8rem;">Private</span>
-                </div>
-                <div class="repo-desc">Standalone WhatsApp API with SDK, 20+ scraper endpoints (npm, spotify, youtube, pinterest, AI), and admin dashboard</div>
-                <div class="repo-meta">
-                    <span><span class="lang-dot lang-js"></span> JavaScript</span>
-                    <span>⭐ 18</span>
-                    <span>🍴 5</span>
-                    <span>Updated Aug 2026</span>
-                </div>
-            </div>
-
-            <div class="repo-item">
-                <div class="repo-header">
-                    <a class="repo-name" href="https://github.com/Neaterry6/Broken-agent" target="_blank">💬 Broken-agent</a>
-                    <span style="color: #8b949e; font-size: 0.8rem;">Public</span>
-                </div>
-                <div class="repo-desc">AI Chat Workspace with code editor, live preview, admin dashboard — supports Agnes, NVIDIA, BlockRun models</div>
-                <div class="repo-meta">
-                    <span><span class="lang-dot lang-js"></span> JavaScript</span>
-                    <span>⭐ 31</span>
-                    <span>🍴 9</span>
-                    <span>Updated Aug 2026</span>
-                </div>
-            </div>
-
-            <div class="repo-item">
-                <div class="repo-header">
-                    <a class="repo-name" href="https://github.com/Neaterry6/BROKEN-Movies-V2" target="_blank">🎬 BROKEN-Movies-V2</a>
-                    <span style="color: #8b949e; font-size: 0.8rem;">Public</span>
-                </div>
-                <div class="repo-desc">Movie & series streaming website powered by BROKEN API — search, download, stream</div>
-                <div class="repo-meta">
-                    <span><span class="lang-dot lang-js"></span> JavaScript</span>
-                    <span>⭐ 12</span>
-                    <span>🍴 4</span>
-                    <span>Updated Jul 2026</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Skills -->
-        <div class="section">
-            <div class="section-title">Skills & Technologies</div>
-            <div class="skills">
-                <span class="skill">Node.js</span>
-                <span class="skill">JavaScript</span>
-                <span class="skill">Python</span>
-                <span class="skill">Baileys</span>
-                <span class="skill">Express</span>
-                <span class="skill">WhatsApp API</span>
-                <span class="skill">SQLite</span>
-                <span class="skill">Web Scraping</span>
-                <span class="skill">AI/ML</span>
-                <span class="skill">REST APIs</span>
-                <span class="skill">GitHub Actions</span>
-                <span class="skill">Docker</span>
-                <span class="skill">Linux</span>
-                <span class="skill">Git</span>
-            </div>
-        </div>
-
-        <!-- Connect -->
-        <div class="section">
-            <div class="section-title">Connect</div>
-            <div class="contact">
-                <a href="https://github.com/Neaterry6" target="_blank">🐙 GitHub</a>
-                <a href="https://wa.me/your-number" target="_blank">💬 WhatsApp</a>
-                <a href="mailto:your@email.com">📧 Email</a>
-                <a href="https://twitter.com/neaterry6" target="_blank">🐦 Twitter</a>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>Made with ❤️ by <strong>Heisbroken</strong></p>
-            <p>Powered by GitHub Pages</p>
-        </div>
+            </nav>
+        </aside>
     </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden" onclick="toggleMenu()"></div>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('menu-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+        document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Active nav highlight on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Keyboard shortcut for search
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                e.preventDefault();
+                document.querySelector('input[type="text"]')?.focus();
+            }
+        });
+    </script>
 </body>
 </html>

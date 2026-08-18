@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,8 +28,6 @@
             pointer-events: none;
             z-index: 0;
         }
-        
-        .glow { box-shadow: 0 0 60px rgba(0, 245, 212, 0.1); }
         
         .gradient-text {
             background: linear-gradient(135deg, #00f5d4 0%, #9d4edd 50%, #ff006e 100%);
@@ -64,6 +62,8 @@
             box-shadow: 0 4px 20px rgba(0, 245, 212, 0.3);
         }
         .btn-glow:hover { box-shadow: 0 8px 30px rgba(0, 245, 212, 0.5); }
+        
+        .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -94,22 +94,19 @@
     <!-- Hero -->
     <section class="min-h-screen flex items-center justify-center pt-20 px-6">
         <div class="max-w-4xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm mb-8">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                Available for opportunities
+            <!-- Typing SVG -->
+            <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=36&pause=1000&color=00F7FF&center=true&vCenter=true&repeat=true&width=800&lines=Hi+There!+I'm+Akewushola+Heisbroken;better+known+as+BROKEN;Full+Stack+Developer;AI+Engineer;WhatsApp+Bot+Dev" class="mb-8" alt="Typing SVG" />
+            
+            <!-- Capsule Render -->
+            <div class="mb-12">
+                <img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=BROKEN&fontAlign=50&fontAlignY=40&color=0:00F7FF,50:8A2BE2,100:FF0080&fontColor=ffffff&animation=fadeIn&desc=Full%20Stack%20Developer%20%E2%80%A2%20AI%20Engineer%20%E2%80%A2%20Bot%20Dev&descAlignY=55" alt="BROKEN" />
             </div>
             
-            <h1 class="text-6xl md:text-8xl font-black mb-6 gradient-text">Heisbroken</h1>
-            
-            <p class="text-xl md:text-2xl text-gray-400 mb-4 font-light">
-                🎀🎧✍️ Full Stack Developer & AI Engineer
+            <p class="text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+                I'm <strong class="text-white">akewushola heisbroken</strong> — a tech enthusiast, programmer, and bot developer passionate about AI, WhatsApp automation, and creative coding.
             </p>
             
-            <p class="text-gray-500 max-w-2xl mx-auto mb-12 leading-relaxed">
-                I'm akewushola heisbroken — a tech enthusiast, programmer, and bot developer passionate about AI, WhatsApp automation, and creative coding.
-            </p>
-            
-            <div class="flex flex-wrap gap-4 justify-center">
+            <div class="flex flex-wrap gap-4 justify-center mb-12">
                 <a href="#projects" class="btn-glow px-8 py-4 rounded-xl font-semibold text-gray-900 hover:scale-105 transition-transform">
                     View Projects
                 </a>
@@ -118,11 +115,13 @@
                 </a>
             </div>
             
-            <div class="mt-16 flex justify-center gap-8 text-gray-500 text-sm">
-                <span class="flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    Westland University, Iwo Osun State
-                </span>
+            <!-- Badges -->
+            <div class="flex flex-wrap gap-3 justify-center">
+                <img src="https://komarev.com/ghpvc/?username=Neaterry6&label=Profile%20Views&color=blueviolet&style=for-the-badge" alt="Profile Views" />
+                <img src="https://img.shields.io/github/followers/Neaterry6?logo=github&style=for-the-badge" alt="Followers" />
+                <img src="https://img.shields.io/github/stars/Neaterry6?logo=github&style=for-the-badge" alt="Stars" />
+                <img src="https://img.shields.io/badge/Open%20Source-Lover-blueviolet?style=for-the-badge" alt="Open Source" />
+                <img src="https://img.shields.io/badge/AI-Developer-00C896?style=for-the-badge" alt="AI Developer" />
             </div>
         </div>
     </section>
@@ -156,14 +155,31 @@
         </div>
     </section>
     
+    <!-- About -->
+    <section id="about" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">🚀 Who Am I?</h2>
+            <div class="stat-card rounded-2xl p-8 card-hover">
+                <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                    I'm <strong class="text-white">Akewushola Heisbroken</strong>, a passionate <strong class="text-cyan-400">Full Stack Developer</strong> from Nigeria who enjoys creating modern web applications, AI-powered tools, and software that solves real problems.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-6">
+                    When I'm not coding, you'll probably find me exploring new technologies and building creative projects.
+                </p>
+                <blockquote class="border-l-4 border-cyan-400 pl-6 py-4 bg-cyan-400/5 rounded-r-lg">
+                    <p class="text-xl text-white font-medium italic">Build products that people genuinely enjoy using.</p>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+    
     <!-- Projects -->
     <section id="projects" class="py-20 px-6">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-4 gradient-text">Featured Projects</h2>
-            <p class="text-gray-500 text-center mb-12">Projects I've built and maintained</p>
+            <p class="text-gray-500 text-center mb-12">What You'll Find Here</p>
             
             <div class="grid md:grid-cols-2 gap-6">
-                <!-- Project 1 -->
                 <a href="https://github.com/Neaterry6/broken-api" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
@@ -174,8 +190,8 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">⭐ 47</span>
-                            <span class="flex items-center gap-1">🍴 12</span>
+                            <span>⭐ 47</span>
+                            <span>🍴 12</span>
                         </div>
                     </div>
                     <p class="text-gray-400 mb-4">Custom WhatsApp API built on Baileys — multi-session, buttons, webhooks, automation with full SDK support.</p>
@@ -183,11 +199,9 @@
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Multi-Session</span>
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Buttons</span>
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Webhooks</span>
-                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">SDK</span>
                     </div>
                 </a>
                 
-                <!-- Project 2 -->
                 <a href="https://github.com/Neaterry6/whatapp-ai" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
@@ -198,8 +212,8 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">⭐ 23</span>
-                            <span class="flex items-center gap-1">🍴 8</span>
+                            <span>⭐ 23</span>
+                            <span>🍴 8</span>
                         </div>
                     </div>
                     <p class="text-gray-400 mb-4">BROKEN Bot v15 — WhatsApp AI bot with games, music, lyrics, social features, LID reply routing fix.</p>
@@ -207,11 +221,9 @@
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">AI Chat</span>
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Games</span>
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Music</span>
-                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Memory</span>
                     </div>
                 </a>
                 
-                <!-- Project 3 -->
                 <a href="https://github.com/Neaterry6/broken-wa-api" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
@@ -222,8 +234,8 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">⭐ 18</span>
-                            <span class="flex items-center gap-1">🍴 5</span>
+                            <span>⭐ 18</span>
+                            <span>🍴 5</span>
                         </div>
                     </div>
                     <p class="text-gray-400 mb-4">Standalone WhatsApp API with 20+ scraper endpoints — npm, Spotify, YouTube, Pinterest, AI, Temp Mail.</p>
@@ -231,11 +243,9 @@
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">Scrapers</span>
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">AI/ML</span>
                         <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">REST API</span>
-                        <span class="skill-tag px-3 py-1 rounded-full text-xs text-gray-400">SDK</span>
                     </div>
                 </a>
                 
-                <!-- Project 4 -->
                 <a href="https://github.com/Neaterry6/Broken-agent" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
@@ -246,8 +256,8 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">⭐ 31</span>
-                            <span class="flex items-center gap-1">🍴 9</span>
+                            <span>⭐ 31</span>
+                            <span>🍴 9</span>
                         </div>
                     </div>
                     <p class="text-gray-400 mb-4">AI Chat Workspace with code editor, live preview, admin dashboard — supports Agnes, NVIDIA, BlockRun models.</p>
@@ -258,7 +268,6 @@
                     </div>
                 </a>
                 
-                <!-- Project 5 -->
                 <a href="https://github.com/Neaterry6/BROKEN-Movies-V2" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
@@ -269,8 +278,8 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">⭐ 12</span>
-                            <span class="flex items-center gap-1">🍴 4</span>
+                            <span>⭐ 12</span>
+                            <span>🍴 4</span>
                         </div>
                     </div>
                     <p class="text-gray-400 mb-4">Movie & series streaming website powered by BROKEN API — search, download, stream.</p>
@@ -281,7 +290,6 @@
                     </div>
                 </a>
                 
-                <!-- Project 6 -->
                 <a href="https://github.com/Neaterry6/awesome-free-models" target="_blank" class="project-card rounded-2xl p-6 card-hover block">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
@@ -292,8 +300,8 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">⭐ 8</span>
-                            <span class="flex items-center gap-1">🍴 2</span>
+                            <span>⭐ 8</span>
+                            <span>🍴 2</span>
                         </div>
                     </div>
                     <p class="text-gray-400 mb-4">Curated list of free AI models, APIs, and tools for developers.</p>
@@ -400,7 +408,6 @@
     </footer>
     
     <script>
-        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();

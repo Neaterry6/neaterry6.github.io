@@ -98,9 +98,74 @@
         .light {
             --bg: #f6f8fa;
             --text: #24292f;
-            --card: rgba(255, 255, 255, 0.8);
+            --card: rgba(255, 255, 255, 0.85);
             --border: rgba(0, 0, 0, 0.1);
         }
+
+        /* ---------------------------------------------------------------
+           Light mode overrides.
+
+           The markup is written dark-first, so a lot of text and every
+           white-alpha overlay assumes a dark surface. Rather than rewrite
+           those utilities, remap only the ones that fail on a light
+           background. Anything already readable is left untouched.
+
+           Gradient text needs no rule here: -webkit-text-fill-color
+           transparent takes precedence over `color`.
+           --------------------------------------------------------------- */
+
+        /* text that was white-on-white */
+        .light .text-white { color: #0f141b !important; }
+
+        /* grey ramp, darkened one step so it holds contrast on white */
+        .light .text-gray-300 { color: #2b3440 !important; }
+        .light .text-gray-400 { color: #47535f !important; }
+        .light .text-gray-500 { color: #5b6673 !important; }
+        .light .text-gray-600 { color: #4a5568 !important; }
+
+        /* 400-level accents are too pale on a light surface */
+        .light .text-cyan-400 { color: #0a7f74 !important; }
+        .light .text-blue-400 { color: #1d5fbf !important; }
+        .light .text-green-400 { color: #0f7b3e !important; }
+        .light .text-purple-400 { color: #6b2fa8 !important; }
+        .light .text-orange-400 { color: #b45309 !important; }
+        .light .text-pink-400 { color: #be185d !important; }
+        .light .text-red-400 { color: #b91c1c !important; }
+
+        /* white-alpha fills and borders are invisible on white */
+        .light .bg-white\/5 { background-color: rgba(0, 0, 0, 0.04) !important; }
+        .light .bg-white\/10 { background-color: rgba(0, 0, 0, 0.06) !important; }
+        .light .hover\:bg-white\/5:hover { background-color: rgba(0, 0, 0, 0.05) !important; }
+        .light .hover\:bg-white\/10:hover { background-color: rgba(0, 0, 0, 0.08) !important; }
+
+        .light .border-white\/5 { border-color: rgba(0, 0, 0, 0.08) !important; }
+        .light .border-white\/10 { border-color: rgba(0, 0, 0, 0.13) !important; }
+        .light .border-white\/20 { border-color: rgba(0, 0, 0, 0.18) !important; }
+        .light .hover\:border-white\/20:hover { border-color: rgba(0, 0, 0, 0.22) !important; }
+
+        /* the grid and particles are tuned for a dark field */
+        .light .bg-grid { opacity: 0.6; }
+        .light .particle { background: rgba(0, 160, 150, 0.28); }
+
+        /* inline command chips sit on bg-black/40, which reads as muddy grey
+           over a light card; give them a proper light-chip treatment */
+        .light code {
+            background-color: rgba(0, 0, 0, 0.05) !important;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+            color: #0a6f66 !important;
+        }
+
+        /* chat bubbles use bg-cyan-500/10, so cyan-300 text loses contrast */
+        .light #chat-messages .text-cyan-300 { color: #0a6f66 !important; }
+        .light #chat-messages .text-gray-400 { color: #3d4854 !important; }
+
+        /* the floating toggle needs to stay visible in both themes */
+        .light #theme-toggle { background-color: rgba(0, 0, 0, 0.06); border-color: rgba(0, 0, 0, 0.14); }
+        .light #theme-toggle:hover { background-color: rgba(0, 0, 0, 0.10); }
+
+        /* section headings keep the gradient, but the plain ones need ink */
+        .light h1, .light h2, .light h3 { color: #0f141b; }
+        .light .gradient-text { color: transparent; }
         
         body {
             font-family: 'Inter', sans-serif;

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="brokenXoxo">
+  <defs>
+    <linearGradient id="bxRing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00f5d4"/>
+      <stop offset="45%" stop-color="#9d4edd"/>
+      <stop offset="100%" stop-color="#ff006e"/>
+    </linearGradient>
+    <linearGradient id="bxX" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#96fff2"/>
+      <stop offset="45%" stop-color="#c491ff"/>
+      <stop offset="100%" stop-color="#ff69aa"/>
+    </linearGradient>
+    <linearGradient id="bxTile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#141124"/>
+      <stop offset="100%" stop-color="#08080f"/>
+    </linearGradient>
+    <filter id="bxGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="0.75" y="0.75" width="118.5" height="118.5" rx="33.6" fill="url(#bxTile)"/>
+  <rect x="0.75" y="0.75" width="118.5" height="118.5" rx="33.6" fill="none" stroke="url(#bxRing)" stroke-width="3.8"/>
+  <g filter="url(#bxGlow)" stroke="url(#bxX)" stroke-width="16.8" stroke-linecap="round">
+    <line x1="31.8" y1="31.8" x2="88.2" y2="88.2"/>
+    <line x1="88.2" y1="31.8" x2="31.8" y2="88.2"/>
+  </g>
+</svg>

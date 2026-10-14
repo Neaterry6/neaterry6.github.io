@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page not found | brokenXoxo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/logo-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#050508; --text:#c9d1d9; --muted:#8d99ae; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg); color:var(--text); padding:28px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .grid{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:50px 50px;
+  }
+  .bloom{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(46% 42% at 50% 26%, rgba(157,78,221,.28), transparent 70%),
+      radial-gradient(34% 30% at 12% 82%, rgba(0,245,212,.16), transparent 70%),
+      radial-gradient(32% 30% at 88% 78%, rgba(255,0,110,.16), transparent 70%);
+  }
+  main{position:relative; z-index:1; max-width:620px}
+  img.mark{width:104px;height:104px;margin-bottom:26px}
+  .code{
+    font-size:74px; font-weight:900; letter-spacing:-2px; line-height:1;
+    background:linear-gradient(135deg,#00f5d4 0%,#9d4edd 50%,#ff006e 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    margin-bottom:14px;
+  }
+  h1{font-size:26px;font-weight:800;color:#eef2f7;margin-bottom:12px;letter-spacing:-.3px}
+  p{color:var(--muted);line-height:1.65;margin-bottom:28px}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  a.btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px; border-radius:12px; font-weight:600; font-size:15px;
+    text-decoration:none; transition:transform .2s, opacity .2s;
+  }
+  a.btn:hover{transform:translateY(-2px)}
+  a.primary{
+    background:linear-gradient(135deg,#00f5d4,#00bbf9); color:#0a0f16;
+    box-shadow:0 6px 24px rgba(0,245,212,.28);
+  }
+  a.ghost{border:1px solid rgba(255,255,255,.12); color:#c9d1d9}
+  a.ghost:hover{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.22)}
+</style>
+</head>
+<body>
+<div class="grid"></div>
+<div class="bloom"></div>
+<main>
+  <img class="mark" src="/logo-mark.svg" alt="brokenXoxo">
+  <div class="code">404</div>
+  <h1>This page took a wrong turn</h1>
+  <p>The link you followed doesn't exist here — it may have been renamed or moved.</p>
+  <div class="row">
+    <a class="btn primary" href="/">Back to portfolio</a>
+    <a class="btn ghost" href="https://github.com/Neaterry6" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</main>
+</body>
+</html>

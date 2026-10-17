@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://neaterry6.github.io';
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://izmretuwwzgvejbhaaku.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://wfgpcsfypnzvqvivmxnq.supabase.co';
 const KEY = process.env.SUPABASE_SERVICE_KEY || 'sb_publishable_vkKUPbVR14Oho0zgZgegAA_xfShW7CX';
 
 function esc(s) {

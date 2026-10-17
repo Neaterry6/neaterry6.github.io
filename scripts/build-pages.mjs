@@ -365,24 +365,31 @@ const FAVOURITE_GAMES = [
   ['Free Fire', 'Battle Royale', 'Fast matches, low device requirements, and the squad play is what keeps it installed.'],
   ['eFootball', 'Football', 'The football game I actually play. Manual defending once you learn it is genuinely rewarding.'],
   ['EA Sports FC', 'Football', 'Career mode and Ultimate Team. The yearly ritual.'],
-  ['Valorant', 'Tactical shooter', 'Aim duels and utility. The most punishing game on this list.'],
   ['GTA V', 'Open world', 'Still the benchmark for a city you can just exist in.'],
   ['Among Us', 'Social deduction', 'Only good with the right group, and then it is very good.'],
   ['Clash of Clans', 'Strategy', 'Years in. The base is the save file.'],
   ['Subway Surfers', 'Endless runner', 'The classic time-killer.']
 ];
 
-const STEAM_IDS = {
-  'Minecraft': null,          // not on Steam
-  'Call of Duty: Mobile': null,
-  'Free Fire': null,
-  'eFootball': null,
-  'EA Sports FC': null,
-  'Valorant': null,
-  'GTA V': 271590,
-  'Among Us': 945360,
-  'Clash of Clans': null,
-  'Subway Surfers': null
+// Cover art per game.
+//
+// Steam's CDN serves a 460x215 header for any appid, so anything with a Steam
+// listing uses that. The mobile titles have no Steam listing, so they get a
+// hand-made cover in /assets/img/games/ rather than falling back to a lettered
+// tile — a grid of grey initials reads as broken, not minimal.
+//
+// App IDs are verified against the store API, not guessed: an invalid id still
+// returns an image, just of the wrong game.
+const COVERS = {
+  'Minecraft': '/assets/img/games/minecraft.jpg',
+  'Call of Duty: Mobile': '/assets/img/games/codm.jpg',
+  'Free Fire': '/assets/img/games/free-fire.jpg',
+  'eFootball': 'https://cdn.cloudflare.steamstatic.com/steam/apps/1665460/header.jpg',
+  'EA Sports FC': 'https://cdn.cloudflare.steamstatic.com/steam/apps/2669320/header.jpg',
+  'GTA V': 'https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg',
+  'Among Us': 'https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg',
+  'Clash of Clans': '/assets/img/games/clash-of-clans.jpg',
+  'Subway Surfers': '/assets/img/games/subway-surfers.jpg'
 };
 
 const gamesBody = `        <div class="eyebrow">What I play</div>
@@ -392,9 +399,9 @@ const gamesBody = `        <div class="eyebrow">What I play</div>
         <h2>Daily</h2>
         <div class="media-grid">
 ${FAVOURITE_GAMES.slice(0, 5).map(([name, kind, why]) => {
-  const id = STEAM_IDS[name];
-  const cover = id
-    ? `<img loading="lazy" src="https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/header.jpg" alt="${name}" onerror="this.remove()">`
+  const art = COVERS[name];
+  const cover = art
+    ? `<img loading="lazy" src="${art}" alt="${name} cover" onerror="this.remove()">`
     : `<div class="media-ph">${name.charAt(0)}</div>`;
   return `            <article class="media-card">
                 <div class="media-art">${cover}</div>
@@ -410,9 +417,9 @@ ${FAVOURITE_GAMES.slice(0, 5).map(([name, kind, why]) => {
         <h2>Also in the rotation</h2>
         <div class="media-grid">
 ${FAVOURITE_GAMES.slice(5).map(([name, kind, why]) => {
-  const id = STEAM_IDS[name];
-  const cover = id
-    ? `<img loading="lazy" src="https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/header.jpg" alt="${name}" onerror="this.remove()">`
+  const art = COVERS[name];
+  const cover = art
+    ? `<img loading="lazy" src="${art}" alt="${name} cover" onerror="this.remove()">`
     : `<div class="media-ph">${name.charAt(0)}</div>`;
   return `            <article class="media-card">
                 <div class="media-art">${cover}</div>

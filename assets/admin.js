@@ -353,7 +353,12 @@
     if (!host) return;
 
     var rows = state.posts.slice().sort(function (a, b) {
-      return new Date(b.updated_at || b.created_at || 0) - new Date(a.updated_at || a.created_at || 0);
+      // Sort by the date actually shown in the row. Sorting on updated_at while
+      // displaying published_at put an 18-hour-old post above 5-hour-old ones,
+      // which reads as broken when the panel says "Recent".
+      var da = a.status === 'published' ? (a.published_at || a.updated_at) : a.updated_at;
+      var db = b.status === 'published' ? (b.published_at || b.updated_at) : b.updated_at;
+      return new Date(db || 0) - new Date(da || 0);
     }).slice(0, 6);
 
     if (!rows.length) {
@@ -369,9 +374,14 @@
           '<div class="adm-recent-title">' + esc(p.title) + '</div>' +
           '<div class="adm-recent-meta">' + (live ? 'published ' + fmtRelative(p.published_at) : 'draft, edited ' + fmtRelative(p.updated_at)) + '</div>' +
         '</div>' +
-        '<span class="adm-recent-views">' + (p.views || 0) + ' views</span>' +
+        '<span class="adm-recent-views">' + viewLabel(p.views || 0) + '</span>' +
       '</div>';
     }).join('');
+  }
+
+  // "1 views" is the kind of thing that makes a whole dashboard feel unfinished.
+  function viewLabel(n) {
+    return n + (n === 1 ? ' view' : ' views');
   }
 
   function renderTopPosts() {
@@ -388,17 +398,31 @@
       return;
     }
 
-    var max = rows[0].views || 1;
     host.innerHTML = rows.map(function (p) {
-      var pct = Math.max(3, Math.round(((p.views || 0) / max) * 100));
+      var pct = barWidth(p.views || 0, rows[0].views || 1);
       return '<div class="adm-bar-row">' +
         '<div class="adm-bar-top">' +
           '<span class="adm-bar-name">' + esc(p.title) + '</span>' +
-          '<span class="adm-bar-num">' + (p.views || 0) + '</span>' +
+          '<span class="adm-bar-num">' + viewLabel(p.views || 0) + '</span>' +
         '</div>' +
         '<div class="adm-bar-track"><div class="adm-bar-fill" style="width:' + pct + '%"></div></div>' +
       '</div>';
     }).join('');
+  }
+
+  /**
+   * Bar length on a square-root scale.
+   *
+   * A linear scale against the maximum makes the top row always 100% and every
+   * small value indistinguishable — with 1 view across three posts, all three
+   * bars were full width, which conveys no ranking at all. A square root
+   * compresses the top and expands the bottom, so 1 vs 100 still reads as
+   * obviously different while 1 vs 3 stays legible.
+   */
+  function barWidth(value, max) {
+    if (!value || !max) return 0;
+    var pct = Math.round(Math.sqrt(value / max) * 100);
+    return Math.max(6, Math.min(100, pct));
   }
 
   function renderLikesByPost() {
@@ -416,13 +440,12 @@
       return;
     }
 
-    var max = rows[0].n || 1;
     host.innerHTML = rows.map(function (r) {
-      var pct = Math.max(3, Math.round((r.n / max) * 100));
+      var pct = barWidth(r.n, rows[0].n || 1);
       return '<div class="adm-bar-row">' +
         '<div class="adm-bar-top">' +
           '<span class="adm-bar-name">' + esc(r.title) + '</span>' +
-          '<span class="adm-bar-num">' + r.n + '</span>' +
+          '<span class="adm-bar-num">' + r.n + (r.n === 1 ? ' like' : ' likes') + '</span>' +
         '</div>' +
         '<div class="adm-bar-track"><div class="adm-bar-fill" style="width:' + pct + '%"></div></div>' +
       '</div>';

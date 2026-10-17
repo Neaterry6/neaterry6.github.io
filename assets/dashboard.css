@@ -261,6 +261,10 @@
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 16px;
   margin-bottom: 16px;
+  /* Panels size to their own content. Stretching them to match the tallest
+     sibling left a tall empty block under the shorter one, which read as a
+     rendering fault rather than a layout choice. */
+  align-items: start;
 }
 
 .adm-panel {

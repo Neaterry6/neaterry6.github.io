@@ -22,6 +22,8 @@ const NAV = [
   ['/', 'Home', 'home'],
   ['/projects.html', 'Projects', 'projects'],
   ['/blog.html', 'Blog', 'blog'],
+  ['/anime.html', 'Anime', 'anime'],
+  ['/games.html', 'Games', 'games'],
   ['/uses.html', 'Uses', 'uses'],
   ['/now.html', 'Now', 'now'],
   ['/guestbook.html', 'Guestbook', 'guestbook']
@@ -279,13 +281,133 @@ const guestbookBody = `        <div class="eyebrow">Say something</div>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="/assets/guestbook.js?v=1"></script>`;
 
+// ------------------------------------------------------------------- anime
+//
+// The list below is the owner's favourites. Metadata — cover art, score,
+// episodes, year — is fetched live from Jikan (the public MyAnimeList API) in
+// the visitor's browser rather than baked in here. That keeps the page honest:
+// covers and scores are current, and nothing is invented. If Jikan is down the
+// cards still render with the title and the reason it is on the list.
+
+const FAVOURITE_ANIME = [
+  ['Attack on Titan', 'Shingeki no Kyojin', 'The one that got me into seasonal anime. The basement reveal still holds up.'],
+  ['Jujutsu Kaisen', 'Jujutsu Kaisen', 'Fight choreography that actually reads on screen. Mappa at full stretch.'],
+  ['Demon Slayer', 'Kimetsu no Yaiba', 'Ufotable animation is the whole argument. Watch it for the fights.'],
+  ['One Piece', 'One Piece', 'Twenty-plus years and still the best world-building in the medium.'],
+  ['Naruto Shippuden', 'Naruto: Shippuuden', 'Grew up on it. The Pain arc is still the high point.'],
+  ['Death Note', 'Death Note', 'The first half is a perfect thriller.'],
+  ['Fullmetal Alchemist: Brotherhood', 'Hagane no Renkinjutsushi: Fullmetal Alchemist', 'No wasted episodes. The standard everything else gets measured against.'],
+  ['Steins;Gate', 'Steins;Gate', 'Slow first half, then it does not let go.'],
+  ['Hunter x Hunter', 'Hunter x Hunter (2011)', 'Best power system in shonen. Chimera Ant arc is a whole genre shift.'],
+  ['Vinland Saga', 'Vinland Saga', 'A revenge story that argues against revenge.'],
+  ['Mob Psycho 100', 'Mob Psycho 100', 'The most expressive animation of the last decade.'],
+  ['Chainsaw Man', 'Chainsaw Man', 'Loud, ugly and completely deliberate about it.'],
+  ['Spy x Family', 'Spy x Family', 'Comfort watch. Anya carries it.'],
+  ['Tokyo Revengers', 'Tokyo Revengers', 'Time loops and gang politics. Messy but it hooks.'],
+  ['Blue Lock', 'Blue Lock', 'Football as a psychological war. Absurd and I love it.'],
+  ['Haikyuu!!', 'Haikyuu!!', 'The best sports anime, and it is not close.'],
+  ['Dr. Stone', 'Dr. Stone', 'Science as the power system. Genuinely educational.'],
+  ['Black Clover', 'Black Clover', 'Underdog shonen with a great ensemble.'],
+  ['Solo Leveling', 'Ore dake Level Up na Ken', 'Power fantasy executed properly.'],
+  ['Frieren', 'Sousou no Frieren', 'Quiet, melancholy and better written than most of this list.']
+];
+
+const animeBody = `        <div class="eyebrow">Watchlist</div>
+        <h1>Anime</h1>
+        <p class="lede">Everything I have actually finished or am keeping up with. Covers and scores pull live from MyAnimeList, so this stays current.</p>
+
+        <div class="filter-row" id="animeFilters">
+            <input id="animeSearch" type="search" placeholder="Filter by title..." autocomplete="off">
+            <span id="animeCount" class="count"></span>
+        </div>
+
+        <div id="animeGrid" class="media-grid">
+            <div class="empty"><div class="glyph">&#127916;</div><p>Loading covers…</p></div>
+        </div>
+
+        <script src="/assets/anime.js"></script>`;
+
+// ------------------------------------------------------------------- games
+//
+// Same approach as the anime page: the list of games is fixed, and the cover
+// art comes from the free Steam CDN endpoints. No key, no scraping.
+
+const FAVOURITE_GAMES = [
+  ['Minecraft', 'Sandbox', 'The game I always come back to. Building something from nothing, then wiring it with redstone.'],
+  ['Call of Duty: Mobile', 'Shooter', 'CODM is the daily one — ranked grind, quick scopes, and the movement ceiling is higher than people give it credit for.'],
+  ['Free Fire', 'Battle Royale', 'Fast matches, low device requirements, and the squad play is what keeps it installed.'],
+  ['eFootball', 'Football', 'The football game I actually play. Manual defending once you learn it is genuinely rewarding.'],
+  ['EA Sports FC', 'Football', 'Career mode and Ultimate Team. The yearly ritual.'],
+  ['Valorant', 'Tactical shooter', 'Aim duels and utility. The most punishing game on this list.'],
+  ['GTA V', 'Open world', 'Still the benchmark for a city you can just exist in.'],
+  ['Among Us', 'Social deduction', 'Only good with the right group, and then it is very good.'],
+  ['Clash of Clans', 'Strategy', 'Years in. The base is the save file.'],
+  ['Subway Surfers', 'Endless runner', 'The classic time-killer.']
+];
+
+const STEAM_IDS = {
+  'Minecraft': null,          // not on Steam
+  'Call of Duty: Mobile': null,
+  'Free Fire': null,
+  'eFootball': null,
+  'EA Sports FC': null,
+  'Valorant': null,
+  'GTA V': 271590,
+  'Among Us': 945360,
+  'Clash of Clans': null,
+  'Subway Surfers': null
+};
+
+const gamesBody = `        <div class="eyebrow">What I play</div>
+        <h1>Games</h1>
+        <p class="lede">The rotation. Mostly mobile and football, with a few PC staples that never get uninstalled.</p>
+
+        <h2>Daily</h2>
+        <div class="media-grid">
+${FAVOURITE_GAMES.slice(0, 5).map(([name, kind, why]) => {
+  const id = STEAM_IDS[name];
+  const cover = id
+    ? `<img loading="lazy" src="https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/header.jpg" alt="${name}" onerror="this.remove()">`
+    : `<div class="media-ph">${name.charAt(0)}</div>`;
+  return `            <article class="media-card">
+                <div class="media-art">${cover}</div>
+                <div class="media-body">
+                    <span class="tag">${kind}</span>
+                    <h3>${name}</h3>
+                    <p>${why}</p>
+                </div>
+            </article>`;
+}).join('\n')}
+        </div>
+
+        <h2>Also in the rotation</h2>
+        <div class="media-grid">
+${FAVOURITE_GAMES.slice(5).map(([name, kind, why]) => {
+  const id = STEAM_IDS[name];
+  const cover = id
+    ? `<img loading="lazy" src="https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/header.jpg" alt="${name}" onerror="this.remove()">`
+    : `<div class="media-ph">${name.charAt(0)}</div>`;
+  return `            <article class="media-card">
+                <div class="media-art">${cover}</div>
+                <div class="media-body">
+                    <span class="tag">${kind}</span>
+                    <h3>${name}</h3>
+                    <p>${why}</p>
+                </div>
+            </article>`;
+}).join('\n')}
+        </div>`;
+
 // -------------------------------------------------------------------- write
+
 
 const PAGES = [
   ['projects', 'Projects', 'Everything Heisbroken has shipped — 10 npm packages, platforms, APIs and client work.', projectsBody],
   ['uses', 'Uses', 'The tools and stack Akewushola Heisbroken actually uses in production.', usesBody],
   ['now', 'Now', 'What Heisbroken is building this week, and what he is open to.', nowBody],
-  ['guestbook', 'Guestbook', 'Leave a message for Heisbroken. No account needed.', guestbookBody]
+  ['guestbook', 'Guestbook', 'Leave a message for Heisbroken. No account needed.', guestbookBody],
+  ['anime', 'Anime', 'Anime Heisbroken has watched and is keeping up with, with live cover art and scores.', animeBody],
+  ['games', 'Games', 'The games Heisbroken actually plays — Minecraft, CODM, Free Fire, eFootball and more.', gamesBody]
 ];
 
 for (const [slug, title, description, body] of PAGES) {

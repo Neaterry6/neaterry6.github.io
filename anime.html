@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime — brokenXoxo</title>
+    <meta name="description" content="Anime Heisbroken has watched and is keeping up with, with live cover art and scores.">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://neaterry6.github.io/anime.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="brokenXoxo">
+    <meta property="og:url" content="https://neaterry6.github.io/anime.html">
+    <meta property="og:title" content="Anime — brokenXoxo">
+    <meta property="og:description" content="Anime Heisbroken has watched and is keeping up with, with live cover art and scores.">
+    <meta property="og:image" content="https://neaterry6.github.io/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Anime — brokenXoxo">
+    <meta name="twitter:description" content="Anime Heisbroken has watched and is keeping up with, with live cover art and scores.">
+    <meta name="twitter:image" content="https://neaterry6.github.io/og-image.png">
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/logo-mark.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/pages.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="brand">
+                <img src="/logo-mark.svg" alt="">
+                <span>broken<em>Xoxo</em></span>
+            </a>
+            <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/projects.html">Projects</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/anime.html" class="active">Anime</a>
+        <a href="/games.html">Games</a>
+        <a href="/uses.html">Uses</a>
+        <a href="/now.html">Now</a>
+        <a href="/guestbook.html">Guestbook</a>
+                <a href="https://github.com/Neaterry6" target="_blank" rel="noopener" class="nav-cta">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="eyebrow">Watchlist</div>
+        <h1>Anime</h1>
+        <p class="lede">Everything I have actually finished or am keeping up with. Covers and scores pull live from MyAnimeList, so this stays current.</p>
+
+        <div class="filter-row" id="animeFilters">
+            <input id="animeSearch" type="search" placeholder="Filter by title..." autocomplete="off">
+            <span id="animeCount" class="count"></span>
+        </div>
+
+        <div id="animeGrid" class="media-grid">
+            <div class="empty"><div class="glyph">&#127916;</div><p>Loading covers…</p></div>
+        </div>
+
+        <script src="/assets/anime.js"></script>
+    </main>
+
+    <footer>
+        &copy; 2020&ndash;2026 Heisbroken &middot;
+        <a href="/">Home</a> &middot;
+        <a href="/blog.html">Blog</a> &middot;
+        <a href="https://github.com/Neaterry6" target="_blank" rel="noopener">GitHub</a>
+    </footer>
+</body>
+</html>

@@ -249,3 +249,123 @@ footer {
 }
 footer a { color: #8d99ae; text-decoration: none; }
 footer a:hover { color: var(--cyan); }
+
+/* ---------------------------------------------------------------- media grid
+   Shared by the anime and games pages. Cards carry a 16:9 art slot on top and
+   text below, so a missing cover degrades to a letter tile instead of a hole. */
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.media-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.media-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 245, 212, 0.32);
+}
+
+.media-art {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #0d1117, #131a24);
+  overflow: hidden;
+}
+.media-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Fallback when there is no cover: a big letter on a gradient. Better than a
+   broken image icon, and it keeps the grid rhythm. */
+.media-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(135deg, rgba(0, 245, 212, 0.08), rgba(0, 187, 249, 0.05));
+}
+
+.media-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.media-body h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.3;
+}
+.media-body p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
+.media-meta {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #00f5d4;
+  letter-spacing: .02em;
+}
+
+.media-link {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8d99ae;
+  text-decoration: none;
+}
+.media-link:hover { color: #00f5d4; }
+
+/* ------------------------------------------------------------- filter row */
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.filter-row input[type="search"] {
+  flex: 1 1 240px;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+}
+.filter-row input[type="search"]:focus {
+  border-color: rgba(0, 245, 212, 0.45);
+}
+.filter-row .count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+}

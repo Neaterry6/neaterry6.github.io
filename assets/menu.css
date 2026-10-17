@@ -1,0 +1,162 @@
+/* Site menu — three-dot button and the sheet it opens.
+   Kept in one stylesheet so the menu looks identical on every page, including
+   the ones that do not load the main site CSS. */
+
+.bxx-menu-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9000;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 18, 22, 0.92);
+  color: #e5e7eb;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  transition: transform .16s ease, background .16s ease, border-color .16s ease;
+}
+.bxx-menu-btn:hover {
+  background: rgba(30, 30, 36, 0.98);
+  border-color: rgba(34, 211, 238, 0.45);
+  transform: translateY(-1px);
+}
+.bxx-menu-btn:active { transform: translateY(0); }
+
+.bxx-menu-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 9001;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.bxx-menu-scrim.open { opacity: 1; pointer-events: auto; }
+
+.bxx-menu-sheet {
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  z-index: 9002;
+  width: min(340px, calc(100vw - 40px));
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(14, 14, 18, 0.98);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(10px) scale(.98);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  overflow: hidden;
+}
+.bxx-menu-sheet.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.bxx-menu-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex: 0 0 auto;
+}
+.bxx-menu-title {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 700;
+}
+.bxx-menu-close {
+  background: none;
+  border: 0;
+  color: #6b7280;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 6px;
+}
+.bxx-menu-close:hover { color: #e5e7eb; }
+
+.bxx-menu-list {
+  overflow-y: auto;
+  padding: 6px;
+  flex: 1 1 auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bxx-menu-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background .12s ease;
+}
+.bxx-menu-item:hover { background: rgba(255, 255, 255, 0.055); }
+.bxx-menu-item.is-here { background: rgba(34, 211, 238, 0.09); }
+
+.bxx-menu-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+.bxx-menu-item.is-here .bxx-menu-label { color: #22d3ee; }
+
+.bxx-menu-note {
+  font-size: 11.5px;
+  color: #6b7280;
+  line-height: 1.35;
+}
+
+.bxx-menu-here {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 9.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #22d3ee;
+  opacity: .75;
+}
+
+.bxx-menu-foot {
+  padding: 10px 16px 13px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  flex: 0 0 auto;
+}
+.bxx-menu-gh {
+  font-size: 12px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-weight: 600;
+}
+.bxx-menu-gh:hover { color: #22d3ee; }
+
+/* Keep the button clear of the iOS home indicator and mobile bottom bars. */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .bxx-menu-btn { bottom: calc(20px + env(safe-area-inset-bottom)); }
+  .bxx-menu-sheet { bottom: calc(80px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 480px) {
+  .bxx-menu-btn { right: 14px; bottom: 14px; width: 44px; height: 44px; }
+  .bxx-menu-sheet { right: 10px; left: 10px; width: auto; bottom: 70px; }
+}

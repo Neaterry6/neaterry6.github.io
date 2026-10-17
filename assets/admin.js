@@ -218,6 +218,53 @@
     // disabled so a second press cannot start a second flow.
   }
 
+  /**
+   * Passwordless sign-in.
+   *
+   * Sends a one-time link to the owner's address. This exists because it is the
+   * one route that does not depend on anything outside our control: GitHub
+   * sign-in needs the OAuth app's callback URL to point at this project, and a
+   * password needs a password to exist. A confirmed account plus a working mail
+   * send is enough.
+   *
+   * The address is fixed to the owner's rather than taken from the input, so
+   * the button cannot be used to spray mail at arbitrary addresses from the
+   * site.
+   */
+  var OWNER_EMAIL = 'trusto2856@gmail.com';
+
+  async function emailSignInLink() {
+    var btn = $('otpBtn');
+    var msg = $('loginMsg');
+    msg.classList.add('hidden');
+
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
+
+    var res = await db.auth.signInWithOtp({
+      email: OWNER_EMAIL,
+      options: {
+        // Back to this exact page, which is where the dashboard lives.
+        emailRedirectTo: window.location.origin + window.location.pathname,
+        shouldCreateUser: false
+      }
+    });
+
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Email me a sign-in link';
+    }
+
+    if (res.error) {
+      msg.textContent = res.error.message;
+      msg.classList.remove('hidden');
+      return;
+    }
+
+    msg.textContent = 'Link sent to ' + OWNER_EMAIL + ' \u2014 open it on this device.';
+    msg.classList.remove('hidden');
+    msg.style.color = '#22d3ee';
+  }
+
   async function signOut() {
     await db.auth.signOut();
     state.user = null;
@@ -468,6 +515,7 @@
   document.addEventListener('DOMContentLoaded', async function () {
     $('loginForm').addEventListener('submit', signIn);
     $('ghBtn').addEventListener('click', signInWithGitHub);
+    $('otpBtn').addEventListener('click', emailSignInLink);
     $('logoutBtn').addEventListener('click', signOut);
     $('newPostBtn').addEventListener('click', function () { openEditor(null); });
     $('backBtn').addEventListener('click', function () {
@@ -565,5 +613,27 @@
 
     var session = await db.auth.getSession();
     await gate(session.data && session.data.session ? session.data.session.user : null);
+
+    /**
+     * Surface an OAuth failure instead of silently showing the login form again.
+     *
+     * When the redirect back from a provider is rejected — which is exactly what
+     * happens when the OAuth app's callback URL points at a different project —
+     * supabase-js puts the reason in the URL fragment and then shows no session.
+     * Without this, that looks identical to "nothing happened", which is the
+     * least useful thing a login page can do.
+     */
+    var hash = window.location.hash || '';
+    if (hash.indexOf('error') !== -1) {
+      var params = new URLSearchParams(hash.replace(/^#/, ''));
+      var why = params.get('error_description') || params.get('error');
+      if (why) {
+        var msg = $('loginMsg');
+        msg.textContent = 'Sign-in did not complete: ' + why.replace(/\+/g, ' ');
+        msg.classList.remove('hidden');
+      }
+      // Clear it so a refresh does not re-show a stale error.
+      history.replaceState(null, '', window.location.pathname);
+    }
   });
 })();

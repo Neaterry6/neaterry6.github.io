@@ -227,6 +227,28 @@
             transition: border-color 0.25s, transform 0.25s;
         }
         .shot-card:hover { border-color: rgba(0, 245, 212, 0.3); }
+
+        /* The assistant writes package names and URLs, which are single long
+           tokens. Without an explicit break rule they overflow the 320px
+           bubble and get clipped, so the answer reads as cut off. */
+        #chat-messages > div {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        #chat-messages ul {
+            margin: 0.35rem 0 0;
+            padding-left: 1rem;
+            list-style: disc;
+        }
+        #chat-messages li { margin: 0.15rem 0; }
+        #chat-messages code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            padding: 0.05rem 0.25rem;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.35);
+        }
+        .light #chat-messages code { background: #e6ecf2; color: #0a6f66; }
         .shot-frame {
             aspect-ratio: 1280 / 660;
             background: #0a0a0a;

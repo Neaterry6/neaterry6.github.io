@@ -200,10 +200,30 @@
    */
   function renderReply(text) {
     var safe = escapeHtml(text);
-    safe = safe.replace(/`([^`]+)`/g, '<code class="px-1 rounded bg-black/40 text-cyan-300">$1</code>');
+
+    // Inline code and bold first, so the list pass below sees clean lines.
+    safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
     safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white">$1</strong>');
-    safe = safe.replace(/\n/g, '<br>');
-    return safe;
+
+    // The model writes "- item" lines. Rendering those as <br>-separated text
+    // leaves a stray dash on its own line whenever the item wraps, which reads
+    // as broken markup. Group consecutive dashes into a real list instead.
+    var out = [];
+    var list = null;
+
+    safe.split('\n').forEach(function (line) {
+      var m = /^\s*[-*\u2022]\s+(.*)$/.exec(line);
+      if (m) {
+        if (!list) { list = []; }
+        list.push('<li>' + m[1] + '</li>');
+        return;
+      }
+      if (list) { out.push('<ul>' + list.join('') + '</ul>'); list = null; }
+      if (line.trim()) out.push('<div>' + line + '</div>');
+    });
+    if (list) out.push('<ul>' + list.join('') + '</ul>');
+
+    return out.join('');
   }
 
   function bubble(html, mine) {

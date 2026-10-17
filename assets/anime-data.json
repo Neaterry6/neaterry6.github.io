@@ -1,0 +1,322 @@
+[
+  {
+    "name": "Attack on Titan",
+    "matched": "Shingeki no Kyojin",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-buvcRTBx4NSm.jpg",
+    "color": "#f1a143",
+    "score": 85,
+    "episodes": 25,
+    "year": 2013,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Drama",
+      "Fantasy"
+    ],
+    "url": "https://anilist.co/anime/16498"
+  },
+  {
+    "name": "Jujutsu Kaisen",
+    "matched": "Jujutsu Kaisen",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113415-LHBAeoZDIsnF.jpg",
+    "color": "#e45d5d",
+    "score": 84,
+    "episodes": 24,
+    "year": 2020,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Drama",
+      "Supernatural"
+    ],
+    "url": "https://anilist.co/anime/113415"
+  },
+  {
+    "name": "Demon Slayer",
+    "matched": "Kimetsu no Yaiba",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-WBsBl0ClmgYL.jpg",
+    "color": "#f1c9ae",
+    "score": 82,
+    "episodes": 26,
+    "year": 2019,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Drama"
+    ],
+    "url": "https://anilist.co/anime/101922"
+  },
+  {
+    "name": "One Piece",
+    "matched": "ONE PIECE",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg",
+    "color": "#e49335",
+    "score": 87,
+    "episodes": null,
+    "year": 1999,
+    "status": "RELEASING",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Comedy"
+    ],
+    "url": "https://anilist.co/anime/21"
+  },
+  {
+    "name": "Naruto Shippuden",
+    "matched": "NARUTO: Shippuuden",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1735-kGfVm0YqCPcu.png",
+    "color": "#e4865d",
+    "score": 82,
+    "episodes": 500,
+    "year": 2007,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Comedy"
+    ],
+    "url": "https://anilist.co/anime/1735"
+  },
+  {
+    "name": "Death Note",
+    "matched": "DEATH NOTE",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1535-kUgkcrfOrkUM.jpg",
+    "color": null,
+    "score": 84,
+    "episodes": 37,
+    "year": 2006,
+    "status": "FINISHED",
+    "genres": [
+      "Mystery",
+      "Psychological",
+      "Supernatural"
+    ],
+    "url": "https://anilist.co/anime/1535"
+  },
+  {
+    "name": "Fullmetal Alchemist: Brotherhood",
+    "matched": "Hagane no Renkinjutsushi: FULLMETAL ALCHEMIST",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5114-nSWCgQlmOMtj.jpg",
+    "color": "#e4c993",
+    "score": 90,
+    "episodes": 64,
+    "year": 2009,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Drama"
+    ],
+    "url": "https://anilist.co/anime/5114"
+  },
+  {
+    "name": "Steins;Gate",
+    "matched": "Steins;Gate",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9253-tIUXF2gfU8Sg.jpg",
+    "color": "#ffd6ae",
+    "score": 89,
+    "episodes": 24,
+    "year": 2011,
+    "status": "FINISHED",
+    "genres": [
+      "Drama",
+      "Psychological",
+      "Sci-Fi"
+    ],
+    "url": "https://anilist.co/anime/9253"
+  },
+  {
+    "name": "Hunter x Hunter",
+    "matched": "HUNTER\u00d7HUNTER (2011)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx11061-y5gsT1hoHuHw.png",
+    "color": "#f1d65d",
+    "score": 89,
+    "episodes": 148,
+    "year": 2011,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+    ],
+    "url": "https://anilist.co/anime/11061"
+  },
+  {
+    "name": "Vinland Saga",
+    "matched": "VINLAND SAGA",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101348-2fhDFPCuMNiz.jpg",
+    "color": "#f16b5d",
+    "score": 87,
+    "episodes": 24,
+    "year": 2019,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Drama"
+    ],
+    "url": "https://anilist.co/anime/101348"
+  },
+  {
+    "name": "Mob Psycho 100",
+    "matched": "Mob Psycho 100",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21507-6YUSbh2m0N1p.jpg",
+    "color": "#d65d1a",
+    "score": 84,
+    "episodes": 12,
+    "year": 2016,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Comedy",
+      "Drama"
+    ],
+    "url": "https://anilist.co/anime/21507"
+  },
+  {
+    "name": "Chainsaw Man",
+    "matched": "Chainsaw Man",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx127230-DdP4vAdssLoz.png",
+    "color": "#6b1a1a",
+    "score": 83,
+    "episodes": 12,
+    "year": 2022,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Drama",
+      "Horror"
+    ],
+    "url": "https://anilist.co/anime/127230"
+  },
+  {
+    "name": "Spy x Family",
+    "matched": "SPY\u00d7FAMILY",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx140960-Kb6R5nYQfjmP.jpg",
+    "color": "#c9f1f1",
+    "score": 83,
+    "episodes": 12,
+    "year": 2022,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Comedy",
+      "Slice of Life"
+    ],
+    "url": "https://anilist.co/anime/140960"
+  },
+  {
+    "name": "Tokyo Revengers",
+    "matched": "Tokyo Revengers",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx120120-cWDmnmeEntSe.jpg",
+    "color": "#f1865d",
+    "score": 77,
+    "episodes": 24,
+    "year": 2021,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Drama",
+      "Romance"
+    ],
+    "url": "https://anilist.co/anime/120120"
+  },
+  {
+    "name": "Blue Lock",
+    "matched": "Blue Lock",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx137822-U8naszP96vzC.png",
+    "color": "#286be4",
+    "score": 79,
+    "episodes": 24,
+    "year": 2022,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Drama",
+      "Sports"
+    ],
+    "url": "https://anilist.co/anime/137822"
+  },
+  {
+    "name": "Haikyuu!!",
+    "matched": "Haikyuu!!",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20464-ooZUyBe4ptp9.png",
+    "color": "#e48635",
+    "score": 83,
+    "episodes": 25,
+    "year": 2014,
+    "status": "FINISHED",
+    "genres": [
+      "Comedy",
+      "Drama",
+      "Sports"
+    ],
+    "url": "https://anilist.co/anime/20464"
+  },
+  {
+    "name": "Dr. Stone",
+    "matched": "Dr. STONE",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx105333-GybuoSoOZfpH.jpg",
+    "color": "#c9d678",
+    "score": 81,
+    "episodes": 24,
+    "year": 2019,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Comedy"
+    ],
+    "url": "https://anilist.co/anime/105333"
+  },
+  {
+    "name": "Black Clover",
+    "matched": "Black Clover",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97940-fyh8o7gNbha0.png",
+    "color": "#d6c96b",
+    "score": 79,
+    "episodes": 170,
+    "year": 2017,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Comedy"
+    ],
+    "url": "https://anilist.co/anime/97940"
+  },
+  {
+    "name": "Solo Leveling",
+    "matched": "Ore dake Level Up na Ken",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151807-it355ZgzquUd.png",
+    "color": "#35bbf1",
+    "score": 80,
+    "episodes": 12,
+    "year": 2024,
+    "status": "FINISHED",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+    ],
+    "url": "https://anilist.co/anime/151807"
+  },
+  {
+    "name": "Frieren",
+    "matched": "Sousou no Frieren",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx154587-qQTzQnEJJ3oB.jpg",
+    "color": "#bbf1a1",
+    "score": 91,
+    "episodes": 28,
+    "year": 2023,
+    "status": "FINISHED",
+    "genres": [
+      "Adventure",
+      "Drama",
+      "Fantasy"
+    ],
+    "url": "https://anilist.co/anime/154587"
+  }
+]

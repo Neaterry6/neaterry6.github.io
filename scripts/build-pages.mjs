@@ -90,6 +90,8 @@ ${body}
         <a href="/blog.html">Blog</a> &middot;
         <a href="https://github.com/Neaterry6" target="_blank" rel="noopener">GitHub</a>
     </footer>
+    <link rel="stylesheet" href="/assets/menu.css">
+    <script defer src="/assets/menu.js"></script>
 </body>
 </html>
 `;
@@ -312,9 +314,32 @@ const FAVOURITE_ANIME = [
   ['Frieren', 'Sousou no Frieren', 'Quiet, melancholy and better written than most of this list.']
 ];
 
+const ANIME_NOTES = {
+  'Attack on Titan': 'The one that got me into seasonal anime. The basement reveal still holds up.',
+  'Jujutsu Kaisen': 'Fight choreography that actually reads on screen. Mappa at full stretch.',
+  'Demon Slayer': 'Ufotable animation is the whole argument. Watch it for the fights.',
+  'One Piece': 'Twenty-plus years and still the best world-building in the medium.',
+  'Naruto Shippuden': 'Grew up on it. The Pain arc is still the high point.',
+  'Death Note': 'The first half is a perfect thriller.',
+  'Fullmetal Alchemist: Brotherhood': 'No wasted episodes. The standard everything else gets measured against.',
+  'Steins;Gate': 'Slow first half, then it does not let go.',
+  'Hunter x Hunter': 'Best power system in shonen. Chimera Ant arc is a whole genre shift.',
+  'Vinland Saga': 'A revenge story that argues against revenge.',
+  'Mob Psycho 100': 'The most expressive animation of the last decade.',
+  'Chainsaw Man': 'Loud, ugly and completely deliberate about it.',
+  'Spy x Family': 'Comfort watch. Anya carries it.',
+  'Tokyo Revengers': 'Time loops and gang politics. Messy but it hooks.',
+  'Blue Lock': 'Football as a psychological war. Absurd and I love it.',
+  'Haikyuu!!': 'The best sports anime, and it is not close.',
+  'Dr. Stone': 'Science as the power system. Genuinely educational.',
+  'Black Clover': 'Underdog shonen with a great ensemble.',
+  'Solo Leveling': 'Power fantasy executed properly.',
+  'Frieren': 'Quiet, melancholy and better written than most of this list.'
+};
+
 const animeBody = `        <div class="eyebrow">Watchlist</div>
         <h1>Anime</h1>
-        <p class="lede">Everything I have actually finished or am keeping up with. Covers and scores pull live from MyAnimeList, so this stays current.</p>
+        <p class="lede">Everything I have actually finished or am keeping up with. Cover art, scores and episode counts come from AniList.</p>
 
         <div class="filter-row" id="animeFilters">
             <input id="animeSearch" type="search" placeholder="Filter by title..." autocomplete="off">
@@ -325,7 +350,7 @@ const animeBody = `        <div class="eyebrow">Watchlist</div>
             <div class="empty"><div class="glyph">&#127916;</div><p>Loading covers…</p></div>
         </div>
 
-        <script src="/assets/anime.js"></script>`;
+        <script>window.ANIME_NOTES = ${JSON.stringify(ANIME_NOTES)};</script>\n        <script src="/assets/anime.js?v=2"></script>`;
 
 // ------------------------------------------------------------------- games
 //

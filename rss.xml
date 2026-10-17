@@ -5,8 +5,30 @@
     <link>https://neaterry6.github.io/blog.html</link>
     <description>Notes on building things: WhatsApp bots, AI agents, scrapers, and the unglamorous parts.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 17 Oct 2026 21:47:25 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2026 22:51:43 GMT</lastBuildDate>
     <atom:link href="https://neaterry6.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Anthropic says it is hiring fewer juniors, and everyone is in more meetings</title>
+      <link>https://neaterry6.github.io/blog.html?post=anthropic-fewer-junior-hires-more-meetings</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=anthropic-fewer-junior-hires-more-meetings</guid>
+      <pubDate>Sat, 17 Oct 2026 22:50:09 GMT</pubDate>
+      <description>Anthropic&apos;s own workplace report says junior technical staff fell from 21% to 14%, junior technical hires from 27% to 9%, and meeting time is up 20% in a year.</description>
+      <category>ai</category>
+      <category>anthropic</category>
+      <category>work</category>
+      <category>news</category>
+    </item>
+    <item>
+      <title>Meta quietly dropped the terms line that looked like a licence to scrape every publisher&apos;s site</title>
+      <link>https://neaterry6.github.io/blog.html?post=meta-scraping-terms-removed</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=meta-scraping-terms-removed</guid>
+      <pubDate>Sat, 17 Oct 2026 22:31:26 GMT</pubDate>
+      <description>Meta&apos;s updated commercial terms said it could use content from a business account&apos;s domains, web pages and URLs to train its models. After lawyers and reporters noticed, the provision is gone.</description>
+      <category>ai</category>
+      <category>meta</category>
+      <category>policy</category>
+      <category>news</category>
+    </item>
     <item>
       <title>Meta is running a $1M hackathon, and applications close on October 25</title>
       <link>https://neaterry6.github.io/blog.html?post=meta-global-ai-developer-hackathon</link>

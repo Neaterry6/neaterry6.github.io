@@ -1,0 +1,6 @@
+# Allow the site, but keep the dashboard out of every index.
+User-agent: *
+Disallow: /bhr6ojytu5baa3tfox3o.html
+Allow: /
+
+Sitemap: https://neaterry6.github.io/sitemap.xml

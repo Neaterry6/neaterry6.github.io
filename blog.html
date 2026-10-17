@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — brokenXoxo</title>
+    <meta name="description" content="Notes on building things: WhatsApp bots, AI agents, scraping, and shipping on a small budget. By Akewushola Heisbroken.">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://neaterry6.github.io/blog.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="brokenXoxo">
+    <meta property="og:url" content="https://neaterry6.github.io/blog.html">
+    <meta property="og:title" content="Blog — brokenXoxo">
+    <meta property="og:description" content="Notes on building things: WhatsApp bots, AI agents, scraping, and shipping on a small budget.">
+    <meta property="og:image" content="https://neaterry6.github.io/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog — brokenXoxo">
+    <meta name="twitter:description" content="Notes on building things.">
+    <meta name="twitter:image" content="https://neaterry6.github.io/og-image.png">
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/logo-mark.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { 900: '#050508', 800: '#0a0a0f', 700: '#0f0f18' },
+                        cyan: { 400: '#00f5d4', 500: '#00bbf9' },
+                        purple: { 500: '#9d4edd', 600: '#7b2cbf' },
+                        pink: { 500: '#ff006e' },
+                        gray: { 400: '#8d99ae', 500: '#6b7280', 600: '#4a5568' }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { scrollbar-width: thin; scrollbar-color: #30363d transparent; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+        :root {
+            --bg: #050508;
+            --text: #c9d1d9;
+            --card: rgba(15, 15, 24, 0.6);
+            --border: rgba(255, 255, 255, 0.05);
+        }
+        .light {
+            --bg: #f6f8fa;
+            --text: #1f2328;
+            --card: rgba(255, 255, 255, 0.9);
+            --border: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            transition: background 0.3s, color 0.3s;
+        }
+        .bg-grid {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 245, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 212, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        .light .bg-grid { opacity: 0.4; }
+        .nav-blur { background: rgba(5, 5, 8, 0.8); backdrop-filter: blur(20px); }
+        .light .nav-blur { background: rgba(246, 248, 250, 0.85); }
+        .gradient-text {
+            background: linear-gradient(135deg, #00f5d4 0%, #00bbf9 50%, #9d4edd 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .post-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: border-color 0.25s, transform 0.25s;
+        }
+        .post-card:hover { border-color: rgba(0, 245, 212, 0.3); transform: translateY(-2px); }
+
+        /* Article typography. Markdown is rendered into these elements, so the
+           spacing lives here rather than in inline styles on every tag. */
+        .prose-blog { font-size: 1.0625rem; line-height: 1.75; }
+        .prose-blog h2 { font-size: 1.5rem; font-weight: 700; color: #fff; margin: 2.25rem 0 0.85rem; letter-spacing: -0.01em; }
+        .prose-blog h3 { font-size: 1.2rem; font-weight: 600; color: #fff; margin: 1.85rem 0 0.65rem; }
+        .light .prose-blog h2, .light .prose-blog h3 { color: #111; }
+        .prose-blog p { margin: 0 0 1.15rem; }
+        .prose-blog ul, .prose-blog ol { margin: 0 0 1.15rem; padding-left: 1.4rem; }
+        .prose-blog ul { list-style: disc; }
+        .prose-blog ol { list-style: decimal; }
+        .prose-blog li { margin: 0.35rem 0; }
+        .prose-blog a { color: #00f5d4; text-decoration: underline; text-underline-offset: 2px; }
+        .light .prose-blog a { color: #0a6f66; }
+        .prose-blog code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.875em;
+            background: rgba(0, 0, 0, 0.4); padding: 0.12rem 0.35rem; border-radius: 4px;
+            color: #00f5d4;
+        }
+        .light .prose-blog code { background: #e6ecf2; color: #0a6f66; }
+        .prose-blog pre {
+            background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; margin: 0 0 1.3rem;
+        }
+        .light .prose-blog pre { background: #eef2f6; }
+        .prose-blog pre code { background: none; padding: 0; color: #c9d1d9; font-size: 0.85rem; line-height: 1.6; }
+        .prose-blog blockquote {
+            border-left: 3px solid rgba(0, 245, 212, 0.5);
+            padding-left: 1rem; margin: 0 0 1.15rem; color: #8d99ae; font-style: italic;
+        }
+        .prose-blog hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+        .prose-blog img { border-radius: 12px; margin: 0.5rem 0 1.3rem; max-width: 100%; }
+
+        .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="bg-grid"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-white/5">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2.5">
+                <img src="/logo-mark.svg" alt="" class="w-8 h-8">
+                <span class="font-bold text-white">broken<span class="gradient-text">Xoxo</span></span>
+            </a>
+            <div class="flex items-center gap-6">
+                <a href="/" class="text-sm text-gray-400 hover:text-cyan-400 transition-colors">Home</a>
+                <a href="/blog.html" class="text-sm text-cyan-400 font-medium">Blog</a>
+                <a href="https://github.com/Neaterry6" target="_blank" rel="noopener"
+                   class="text-sm px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:border-cyan-400/40 hover:text-cyan-400 transition-all">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-28 pb-24 px-6">
+        <div class="max-w-3xl mx-auto">
+
+            <!-- Index -->
+            <div id="blogIndex">
+                <div class="mb-12">
+                    <h1 class="text-4xl font-bold mb-3 gradient-text">Blog</h1>
+                    <p class="text-gray-400 text-lg">Notes on what I'm building — bots, agents, scrapers, and the unglamorous parts.</p>
+                </div>
+
+                <!-- Tag filter, populated only when there are tags to filter by -->
+                <div id="tagFilter" class="flex flex-wrap gap-2 mb-10 hidden"></div>
+
+                <div id="postList" class="space-y-5">
+                    <div class="post-card rounded-2xl p-6 h-32 skeleton"></div>
+                    <div class="post-card rounded-2xl p-6 h-32 skeleton"></div>
+                </div>
+            </div>
+
+            <!-- Single post -->
+            <article id="blogPost" class="hidden">
+                <a href="/blog.html" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-cyan-400 transition-colors mb-8">
+                    <span>&larr;</span><span>All posts</span>
+                </a>
+                <div id="postHead"></div>
+                <div id="postCover" class="mb-8"></div>
+                <div id="postBody" class="prose-blog"></div>
+                <div class="mt-14 pt-8 border-t border-white/5 flex items-center justify-between gap-4 flex-wrap">
+                    <div class="text-sm text-gray-500">Written by <span class="text-white font-medium">Akewushola Heisbroken</span></div>
+                    <a href="/" class="text-sm text-cyan-400 hover:underline">More about me &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Not found / error -->
+            <div id="blogEmpty" class="hidden text-center py-20">
+                <div class="text-5xl mb-4">&#128221;</div>
+                <h2 class="text-xl font-bold text-white mb-2" id="emptyTitle">Nothing here yet</h2>
+                <p class="text-gray-400 mb-6" id="emptyBody">Posts will appear here as they're published.</p>
+                <a href="/" class="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-500 text-gray-900 font-semibold">Back home</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 py-10 px-6">
+        <div class="max-w-5xl mx-auto text-center text-sm text-gray-500">
+            &copy; 2020&ndash;<span id="year">2026</span> Heisbroken &middot;
+            <a href="/" class="hover:text-cyan-400 transition-colors">Home</a> &middot;
+            <a href="https://github.com/Neaterry6" target="_blank" rel="noopener" class="hover:text-cyan-400 transition-colors">GitHub</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/blog.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Deliberately not indexed and not linked from anywhere on the site. -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <title>Dashboard</title>
+    <meta name="theme-color" content="#050508">
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { 900: '#050508', 800: '#0a0a0f', 700: '#0f0f18' },
+                        cyan: { 400: '#00f5d4', 500: '#00bbf9' },
+                        purple: { 500: '#9d4edd', 600: '#7b2cbf' },
+                        gray: { 400: '#8d99ae', 500: '#6b7280', 600: '#4a5568' }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { scrollbar-width: thin; scrollbar-color: #30363d transparent; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+        body {
+            background: #050508;
+            color: #c9d1d9;
+            font-family: 'Inter', sans-serif;
+        }
+        .bg-grid {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 245, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 212, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00f5d4 0%, #00bbf9 50%, #9d4edd 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .panel { background: rgba(15, 15, 24, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); }
+
+        /* Form controls, styled once so every field matches. */
+        .fld {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.875rem;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .fld:focus { border-color: rgba(0, 245, 212, 0.5); }
+        .fld::placeholder { color: #4a5568; }
+        .fld-mono { font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; line-height: 1.7; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+            padding: 0.55rem 1rem; border-radius: 10px; font-size: 0.8125rem; font-weight: 600;
+            transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+            cursor: pointer; white-space: nowrap;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: linear-gradient(135deg, #00f5d4, #00bbf9); color: #050508; }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-ghost { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); color: #c9d1d9; }
+        .btn-ghost:hover:not(:disabled) { border-color: rgba(0, 245, 212, 0.4); color: #00f5d4; }
+        .btn-danger { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; }
+        .btn-danger:hover:not(:disabled) { background: rgba(239, 68, 68, 0.2); }
+
+        .pill { font-size: 0.6875rem; padding: 0.15rem 0.55rem; border-radius: 999px; border: 1px solid; }
+        .pill-draft { border-color: rgba(245, 158, 11, 0.35); color: #f59e0b; background: rgba(245, 158, 11, 0.08); }
+        .pill-live { border-color: rgba(34, 197, 94, 0.35); color: #22c55e; background: rgba(34, 197, 94, 0.08); }
+
+        /* Preview pane mirrors the blog's article typography. */
+        .preview-body { font-size: 0.9375rem; line-height: 1.7; }
+        .preview-body h2 { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 1.5rem 0 0.6rem; }
+        .preview-body h3 { font-size: 1.05rem; font-weight: 600; color: #fff; margin: 1.25rem 0 0.5rem; }
+        .preview-body p { margin: 0 0 0.85rem; }
+        .preview-body ul, .preview-body ol { margin: 0 0 0.85rem; padding-left: 1.3rem; }
+        .preview-body ul { list-style: disc; }
+        .preview-body ol { list-style: decimal; }
+        .preview-body code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: rgba(0,0,0,0.4); padding: 0.1rem 0.3rem; border-radius: 4px; color: #00f5d4; }
+        .preview-body pre { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 0.85rem; overflow-x: auto; margin: 0 0 1rem; }
+        .preview-body pre code { background: none; padding: 0; color: #c9d1d9; }
+        .preview-body blockquote { border-left: 3px solid rgba(0,245,212,0.5); padding-left: 0.85rem; color: #8d99ae; font-style: italic; margin: 0 0 0.85rem; }
+        .preview-body a { color: #00f5d4; text-decoration: underline; }
+        .preview-body hr { border: 0; border-top: 1px solid rgba(255,255,255,0.06); margin: 1.5rem 0; }
+
+        .toast {
+            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(120%);
+            padding: 0.7rem 1.1rem; border-radius: 12px; font-size: 0.8125rem; font-weight: 500;
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100;
+            max-width: 90vw;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast-ok { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.35); color: #4ade80; }
+        .toast-err { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; }
+
+        .spin { animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="bg-grid"></div>
+
+    <!-- ============================================================ login -->
+    <div id="loginView" class="min-h-screen flex items-center justify-center px-6">
+        <div class="w-full max-w-sm">
+            <div class="text-center mb-8">
+                <img src="/logo-mark.svg" alt="" class="w-12 h-12 mx-auto mb-4">
+                <h1 class="text-2xl font-bold text-white">Dashboard</h1>
+                <p class="text-sm text-gray-500 mt-1">Sign in to manage the blog.</p>
+            </div>
+
+            <form id="loginForm" class="panel rounded-2xl p-6 space-y-4">
+                <div>
+                    <label for="email" class="block text-xs font-medium text-gray-400 mb-1.5">Email</label>
+                    <input id="email" type="email" class="fld" autocomplete="username" required placeholder="you@example.com">
+                </div>
+                <div>
+                    <label for="password" class="block text-xs font-medium text-gray-400 mb-1.5">Password</label>
+                    <input id="password" type="password" class="fld" autocomplete="current-password" required placeholder="••••••••">
+                </div>
+                <p id="loginMsg" class="text-xs text-red-400 hidden"></p>
+                <button type="submit" id="loginBtn" class="btn btn-primary w-full">Sign in</button>
+            </form>
+
+            <p class="text-center text-xs text-gray-600 mt-6">Not a public page. There is nothing here for visitors.</p>
+        </div>
+    </div>
+
+    <!-- ======================================================== dashboard -->
+    <div id="dashView" class="hidden">
+        <!-- Top bar -->
+        <header class="sticky top-0 z-40 bg-dark-900/85 backdrop-blur-xl border-b border-white/5">
+            <div class="max-w-6xl mx-auto px-5 h-14 flex items-center gap-4">
+                <img src="/logo-mark.svg" alt="" class="w-7 h-7">
+                <span class="font-bold text-white text-sm">Blog admin</span>
+                <div class="ml-auto flex items-center gap-2">
+                    <a href="/blog.html" target="_blank" rel="noopener" class="btn btn-ghost text-xs">View blog &nearr;</a>
+                    <button id="newPostBtn" class="btn btn-primary text-xs">New post</button>
+                    <button id="logoutBtn" class="btn btn-ghost text-xs">Sign out</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-5 py-8">
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="panel rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Published</div>
+                    <div class="text-2xl font-bold text-white" id="statPublished">—</div>
+                </div>
+                <div class="panel rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Drafts</div>
+                    <div class="text-2xl font-bold text-white" id="statDrafts">—</div>
+                </div>
+                <div class="panel rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Total views</div>
+                    <div class="text-2xl font-bold text-white" id="statViews">—</div>
+                </div>
+                <div class="panel rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Signed in as</div>
+                    <div class="text-sm font-medium text-cyan-400 truncate" id="statUser">—</div>
+                </div>
+            </div>
+
+            <!-- Post list -->
+            <div class="panel rounded-2xl overflow-hidden">
+                <div class="px-5 py-4 border-b border-white/5 flex items-center gap-3">
+                    <h2 class="font-semibold text-white text-sm">Posts</h2>
+                    <input id="searchPosts" class="fld ml-auto max-w-xs text-xs" placeholder="Search titles…">
+                </div>
+                <div id="postRows"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ========================================================== editor -->
+    <div id="editorView" class="hidden">
+        <header class="sticky top-0 z-40 bg-dark-900/85 backdrop-blur-xl border-b border-white/5">
+            <div class="max-w-6xl mx-auto px-5 h-14 flex items-center gap-3">
+                <button id="backBtn" class="btn btn-ghost text-xs">&larr; Back</button>
+                <span id="editorTitle" class="font-semibold text-white text-sm truncate">New post</span>
+                <span id="editorState" class="text-xs text-gray-500"></span>
+                <div class="ml-auto flex items-center gap-2">
+                    <button id="previewBtn" class="btn btn-ghost text-xs">Preview</button>
+                    <button id="saveDraftBtn" class="btn btn-ghost text-xs">Save draft</button>
+                    <button id="publishBtn" class="btn btn-primary text-xs">Publish</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-5 py-8 grid lg:grid-cols-2 gap-6">
+            <!-- Editor column -->
+            <div class="space-y-4">
+                <div>
+                    <label for="fTitle" class="block text-xs font-medium text-gray-400 mb-1.5">Title</label>
+                    <input id="fTitle" class="fld text-base font-semibold" placeholder="What happened today">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="fSlug" class="block text-xs font-medium text-gray-400 mb-1.5">Slug</label>
+                        <input id="fSlug" class="fld fld-mono" placeholder="what-happened-today">
+                        <p class="text-[11px] text-gray-600 mt-1">The URL. Lowercase, hyphens only.</p>
+                    </div>
+                    <div>
+                        <label for="fTags" class="block text-xs font-medium text-gray-400 mb-1.5">Tags</label>
+                        <input id="fTags" class="fld" placeholder="whatsapp, ai, scraping">
+                        <p class="text-[11px] text-gray-600 mt-1">Comma separated.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="fExcerpt" class="block text-xs font-medium text-gray-400 mb-1.5">Excerpt</label>
+                    <textarea id="fExcerpt" class="fld" rows="2" maxlength="300" placeholder="One line that makes someone want to read it."></textarea>
+                    <p class="text-[11px] text-gray-600 mt-1"><span id="excerptCount">0</span>/300</p>
+                </div>
+
+                <div>
+                    <label for="fCover" class="block text-xs font-medium text-gray-400 mb-1.5">Cover image</label>
+                    <div class="flex items-center gap-2">
+                        <input id="fCover" class="fld" placeholder="https://… or upload →">
+                        <button id="uploadBtn" class="btn btn-ghost text-xs shrink-0">Upload</button>
+                        <input id="coverFile" type="file" accept="image/*" class="hidden">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="fBody" class="block text-xs font-medium text-gray-400">Body</label>
+                        <span class="text-[11px] text-gray-600" id="bodyCount">0 words</span>
+                    </div>
+                    <textarea id="fBody" class="fld fld-mono" rows="20"
+                        placeholder="# Heading&#10;&#10;Write in Markdown. **Bold**, *italic*, `code`, [links](https://example.com), - lists, > quotes, ``` code blocks ```"></textarea>
+                </div>
+            </div>
+
+            <!-- Preview column -->
+            <div class="hidden lg:block">
+                <div class="sticky top-24">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs font-medium text-gray-400">Live preview</span>
+                        <span class="text-[11px] text-gray-600">updates as you type</span>
+                    </div>
+                    <div class="panel rounded-2xl p-6 max-h-[calc(100vh-9rem)] overflow-y-auto">
+                        <div id="previewPane" class="preview-body text-gray-300">
+                            <p class="text-gray-600 text-sm">Start typing to see the preview.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/admin.js?v=1"></script>
+</body>
+</html>

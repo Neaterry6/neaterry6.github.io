@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>brokenXoxo — Blog</title>
+    <link>https://neaterry6.github.io/blog.html</link>
+    <description>Notes on building things: WhatsApp bots, AI agents, scrapers, and the unglamorous parts.</description>
+    <language>en</language>
+    <lastBuildDate>Sat, 17 Oct 2026 14:13:17 GMT</lastBuildDate>
+    <atom:link href="https://neaterry6.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Building SnippetLab, and the three bugs that only showed up live</title>
+      <link>https://neaterry6.github.io/blog.html?post=building-snippetlab</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=building-snippetlab</guid>
+      <pubDate>Sat, 17 Oct 2026 12:30:00 GMT</pubDate>
+      <description>A shelf for code snippets sounds trivial until you build one. Notes on real-time chat, row-level security, and the bugs that only appear when you actually use the thing.</description>
+      <category>snippetlab</category>
+      <category>supabase</category>
+      <category>lessons</category>
+    </item>
+  </channel>
+</rss>

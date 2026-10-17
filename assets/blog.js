@@ -25,6 +25,94 @@
       .replace(/'/g, '&#39;');
   }
 
+  /**
+   * A stable id for this browser, so one person counts as one like.
+   *
+   * Not an identity — it exists so a double-tap or a reload cannot stack likes.
+   * localStorage throws in private mode on some browsers, so the fallback keeps
+   * the button working with a per-load id rather than breaking the page.
+   */
+  function likerKey() {
+    try {
+      var k = localStorage.getItem('snippetlab-liker');
+      if (!k || k.length < 8) {
+        k = 'v:' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem('snippetlab-liker', k);
+      }
+      return k;
+    } catch (e) {
+      return 't:' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
+  }
+
+  function hasLiked(postId) {
+    try {
+      return localStorage.getItem('liked:' + postId) === '1';
+    } catch (e) { return false; }
+  }
+
+  function markLiked(postId, on) {
+    try {
+      if (on) localStorage.setItem('liked:' + postId, '1');
+      else localStorage.removeItem('liked:' + postId);
+    } catch (e) { /* storage unavailable; the server count is still correct */ }
+  }
+
+  /** The heart button markup. Shared by the card and the article. */
+  function likeButton(postId, count, liked) {
+    return '<button class="like-btn flex items-center gap-1.5 text-xs ' +
+      (liked ? 'text-pink-500' : 'text-gray-500 hover:text-pink-500') +
+      ' transition-colors" data-like="' + esc(postId) + '" aria-pressed="' + (liked ? 'true' : 'false') + '">' +
+      '<span class="like-icon">' + (liked ? '&#9829;' : '&#9825;') + '</span>' +
+      '<span class="like-count">' + (count || 0) + '</span>' +
+      '</button>';
+  }
+
+  /**
+   * Toggle a like and repaint every button for that post.
+   *
+   * The server returns both the new count and whether this liker is now in, so
+   * the button never has to guess — which matters because the same post can be
+   * on screen twice (a card and, after navigation, the article).
+   */
+  async function toggleLike(postId) {
+    var wasLiked = hasLiked(postId);
+
+    // Optimistic, so the heart responds on the press rather than a round trip.
+    markLiked(postId, !wasLiked);
+    paintLike(postId, !wasLiked, null);
+
+    var res = await db.rpc('blog_toggle_like', { target: postId, liker: likerKey() });
+
+    if (res.error || !res.data || !res.data[0]) {
+      markLiked(postId, wasLiked);
+      paintLike(postId, wasLiked, null);
+      return;
+    }
+
+    var row = res.data[0];
+    markLiked(postId, row.liked);
+    paintLike(postId, row.liked, row.total);
+  }
+
+  /** Update every like button for a post already on the page. */
+  function paintLike(postId, liked, total) {
+    var buttons = document.querySelectorAll('[data-like="' + postId + '"]');
+    Array.prototype.forEach.call(buttons, function (btn) {
+      btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+      btn.classList.toggle('text-pink-500', liked);
+      btn.classList.toggle('text-gray-500', !liked);
+
+      var icon = btn.querySelector('.like-icon');
+      if (icon) icon.innerHTML = liked ? '&#9829;' : '&#9825;';
+
+      if (total != null) {
+        var count = btn.querySelector('.like-count');
+        if (count) count.textContent = total;
+      }
+    });
+  }
+
   function fmtDate(iso) {
     if (!iso) return '';
     try {
@@ -128,7 +216,7 @@
     var empty = $('blogEmpty');
 
     var res = await db.from('blog_posts')
-      .select('slug,title,excerpt,cover_url,tags,published_at,views')
+      .select('id,slug,title,excerpt,cover_url,tags,published_at,views')
       .eq('status', 'published')
       .order('published_at', { ascending: false })
       .limit(100);
@@ -139,6 +227,13 @@
     }
 
     var posts = res.data || [];
+
+    // One call for every card's count, rather than one per card.
+    var counts = {};
+    try {
+      var lc = await db.rpc('blog_like_counts');
+      (lc.data || []).forEach(function (r) { counts[r.post_id] = r.total; });
+    } catch (e) { /* counts are decorative; the page still works without them */ }
 
     if (!posts.length) {
       list.innerHTML = '';
@@ -186,6 +281,7 @@
           + '<div class="flex items-center gap-3 text-xs text-gray-500 mb-2">'
           +   '<time datetime="' + esc(p.published_at) + '">' + esc(fmtDate(p.published_at)) + '</time>'
           +   (p.views ? '<span>&middot;</span><span>' + esc(String(p.views)) + ' views</span>' : '')
+          +   '<span class="ml-auto">' + likeButton(p.id, counts[p.id] || 0, hasLiked(p.id)) + '</span>'
           + '</div>'
           + '<h2 class="text-xl font-bold text-white mb-2 leading-snug">' + esc(p.title) + '</h2>'
           + (p.excerpt ? '<p class="text-gray-400 text-sm leading-relaxed">' + esc(p.excerpt) + '</p>' : '')
@@ -213,7 +309,7 @@
 
   async function loadPost(slug) {
     var res = await db.from('blog_posts')
-      .select('slug,title,excerpt,body,cover_url,tags,published_at,views')
+      .select('id,slug,title,excerpt,body,cover_url,tags,published_at,views')
       .eq('slug', slug)
       .eq('status', 'published')
       .maybeSingle();
@@ -234,6 +330,14 @@
 
     document.title = p.title + ' — brokenXoxo';
 
+    // Count comes from the database, not from local state — two visitors on
+    // different devices must see the same number.
+    var likeTotal = 0;
+    try {
+      var lr = await db.rpc('blog_like_count', { target: p.id });
+      likeTotal = lr.data || 0;
+    } catch (e) { /* decorative */ }
+
     $('postHead').innerHTML =
       '<div class="flex items-center gap-3 text-xs text-gray-500 mb-3">'
       + '<time datetime="' + esc(p.published_at) + '">' + esc(fmtDate(p.published_at)) + '</time>'
@@ -241,11 +345,12 @@
       + '</div>'
       + '<h1 class="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">' + esc(p.title) + '</h1>'
       + (p.excerpt ? '<p class="text-lg text-gray-400 leading-relaxed mb-6">' + esc(p.excerpt) + '</p>' : '')
-      + ((p.tags || []).length
-          ? '<div class="flex flex-wrap gap-2 mb-8">' + p.tags.map(function (t) {
-              return '<span class="text-xs px-2.5 py-1 rounded-full border border-white/10 text-gray-500">' + esc(t) + '</span>';
-            }).join('') + '</div>'
-          : '');
+      + '<div class="flex flex-wrap items-center gap-2 mb-8">'
+      +   (p.tags || []).map(function (t) {
+            return '<span class="text-xs px-2.5 py-1 rounded-full border border-white/10 text-gray-500">' + esc(t) + '</span>';
+          }).join('')
+      +   '<span class="ml-auto">' + likeButton(p.id, likeTotal, hasLiked(p.id)) + '</span>'
+      + '</div>';
 
     if (p.cover_url) {
       $('postCover').innerHTML = '<img src="' + esc(p.cover_url) + '" alt="" class="w-full rounded-2xl border border-white/5">';
@@ -263,6 +368,15 @@
   }
 
   // ================================================================= wiring
+
+  // One delegate for every heart on the page.
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-like]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    toggleLike(btn.getAttribute('data-like'));
+  });
 
   document.addEventListener('DOMContentLoaded', function () {
     var year = $('year');

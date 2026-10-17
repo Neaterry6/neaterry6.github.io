@@ -1,0 +1,93 @@
+name: Auto news
+
+# Posts one fresh story to the blog every 30 minutes.
+#
+# This cannot run from the site itself. neaterry6.github.io is static files on
+# GitHub Pages — no server, no scheduler — so something outside the page has to
+# do the work. Actions is the right place: it is free, it lives in the repo, and
+# it keeps running whether or not anyone has the site open.
+#
+# REQUIRED REPOSITORY SECRETS (Settings -> Secrets and variables -> Actions):
+#   SUPABASE_URL          https://<project>.supabase.co
+#   SUPABASE_SERVICE_KEY  the service_role key — NOT the publishable one, since
+#                         this job writes without a signed-in user
+#
+# Without those the job fails loudly at the first step rather than quietly
+# doing nothing.
+
+on:
+  schedule:
+    # GitHub's scheduler is best-effort and often runs several minutes late,
+    # which is fine for a news feed.
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Log the post instead of publishing it'
+        type: boolean
+        default: false
+
+# Never let two runs overlap — the second would fight the first over the same
+# story and one of them would lose the unique-index race for nothing.
+concurrency:
+  group: auto-news
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check secrets are present
+        env:
+          SUPA_URL: ${{ secrets.SUPABASE_URL }}
+          SUPA_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          if [ -z "$SUPA_URL" ] || [ -z "$SUPA_KEY" ]; then
+            echo "::error::SUPABASE_URL and SUPABASE_SERVICE_KEY must be set as repository secrets."
+            echo "Settings -> Secrets and variables -> Actions -> New repository secret"
+            exit 1
+          fi
+          echo "Secrets present."
+
+      - name: Publish a news post
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+        run: node scripts/news-bot.mjs
+
+      # RSS is a real file on disk, because GitHub Pages serves static files
+      # and an RSS reader cannot poll an endpoint that does not exist. Rebuild
+      # it after every post and commit it, so subscribers see the new entry.
+      - name: Rebuild the RSS feed
+        if: ${{ !inputs.dry_run }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: node scripts/build-rss.mjs
+
+      - name: Commit the feed
+        if: ${{ !inputs.dry_run }}
+        run: |
+          if git diff --quiet rss.xml; then
+            echo "Feed unchanged."
+            exit 0
+          fi
+          git config user.name  "news-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rss.xml
+          git commit -m "chore: rebuild RSS feed [skip ci]"
+          git push

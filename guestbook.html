@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guestbook — brokenXoxo</title>
+    <meta name="description" content="Leave a message for Heisbroken. No account needed.">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://neaterry6.github.io/guestbook.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="brokenXoxo">
+    <meta property="og:url" content="https://neaterry6.github.io/guestbook.html">
+    <meta property="og:title" content="Guestbook — brokenXoxo">
+    <meta property="og:description" content="Leave a message for Heisbroken. No account needed.">
+    <meta property="og:image" content="https://neaterry6.github.io/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Guestbook — brokenXoxo">
+    <meta name="twitter:description" content="Leave a message for Heisbroken. No account needed.">
+    <meta name="twitter:image" content="https://neaterry6.github.io/og-image.png">
+
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/logo-mark.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/pages.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="brand">
+                <img src="/logo-mark.svg" alt="">
+                <span>broken<em>Xoxo</em></span>
+            </a>
+            <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/projects.html">Projects</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/uses.html">Uses</a>
+        <a href="/now.html">Now</a>
+        <a href="/guestbook.html" class="active">Guestbook</a>
+                <a href="https://github.com/Neaterry6" target="_blank" rel="noopener" class="nav-cta">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="eyebrow">Say something</div>
+        <h1>Guestbook</h1>
+        <p class="lede">Leave a note. No account needed — just a name and a message.</p>
+
+        <form id="gbForm" class="card" style="margin-bottom:28px">
+            <div style="margin-bottom:12px">
+                <label for="gbName" style="display:block;font-size:12px;font-weight:600;color:#8d99ae;margin-bottom:6px">Your name</label>
+                <input id="gbName" maxlength="40" required placeholder="Ada"
+                    style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--text);outline:none;font-family:inherit">
+            </div>
+            <div style="margin-bottom:12px">
+                <label for="gbBody" style="display:block;font-size:12px;font-weight:600;color:#8d99ae;margin-bottom:6px">Message</label>
+                <textarea id="gbBody" rows="3" maxlength="500" required placeholder="Nice site. That chatroom is wild."
+                    style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--text);outline:none;resize:vertical;font-family:inherit"></textarea>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+                <button type="submit" id="gbSend"
+                    style="padding:10px 20px;border-radius:10px;border:0;background:linear-gradient(135deg,#00f5d4,#00bbf9);color:#050508;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Sign it</button>
+                <span id="gbMsg" style="font-size:12px;color:#6b7280"></span>
+            </div>
+        </form>
+
+        <h2>Messages</h2>
+        <div id="gbList" class="grid">
+            <div class="empty"><div class="glyph">&#128172;</div><p>Loading…</p></div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="/assets/guestbook.js?v=1"></script>
+    </main>
+
+    <footer>
+        &copy; 2020&ndash;2026 Heisbroken &middot;
+        <a href="/">Home</a> &middot;
+        <a href="/blog.html">Blog</a> &middot;
+        <a href="https://github.com/Neaterry6" target="_blank" rel="noopener">GitHub</a>
+    </footer>
+</body>
+</html>

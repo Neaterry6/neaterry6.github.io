@@ -179,6 +179,45 @@
     loadPosts();
   }
 
+  /**
+   * Sign in with GitHub.
+   *
+   * Supabase handles the whole round trip: it redirects to GitHub, GitHub
+   * comes back to the project's callback, and Supabase returns here with a
+   * session in the URL. onAuthStateChange picks that up on load, so there is
+   * nothing to handle in this function beyond starting it.
+   *
+   * The admin check still applies on the way back. A GitHub sign-in from any
+   * account that is not the owner's is a normal member, and gets bounced.
+   */
+  async function signInWithGitHub() {
+    var btn = $('ghBtn');
+    var msg = $('loginMsg');
+    msg.classList.add('hidden');
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Redirecting to GitHub\u2026';
+    }
+
+    var res = await db.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        // Back to this exact page, so the session lands where the dashboard is.
+        redirectTo: window.location.origin + window.location.pathname,
+        scopes: 'read:user user:email'
+      }
+    });
+
+    if (res.error) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Continue with GitHub'; }
+      msg.textContent = res.error.message;
+      msg.classList.remove('hidden');
+    }
+    // On success the browser is already navigating to GitHub; leave the button
+    // disabled so a second press cannot start a second flow.
+  }
+
   async function signOut() {
     await db.auth.signOut();
     state.user = null;
@@ -428,6 +467,7 @@
 
   document.addEventListener('DOMContentLoaded', async function () {
     $('loginForm').addEventListener('submit', signIn);
+    $('ghBtn').addEventListener('click', signInWithGitHub);
     $('logoutBtn').addEventListener('click', signOut);
     $('newPostBtn').addEventListener('click', function () { openEditor(null); });
     $('backBtn').addEventListener('click', function () {
@@ -488,17 +528,42 @@
       }
     });
 
-    // Resume an existing session so a refresh does not force a re-login.
-    var session = await db.auth.getSession();
-    var user = session.data && session.data.session ? session.data.session.user : null;
+    /**
+     * Decide what to show for a given user.
+     *
+     * Called on load and again whenever auth state changes, because an OAuth
+     * return does not necessarily resolve by the time getSession() first runs:
+     * supabase-js parses the session out of the URL asynchronously, so the
+     * first read can come back empty even though the sign-in succeeded.
+     */
+    async function gate(user) {
+      if (!user) { show('login'); return; }
 
-    if (user && user.app_metadata && user.app_metadata.role === 'admin') {
-      state.user = user;
-      show('dash');
-      loadPosts();
-    } else {
-      if (user) await db.auth.signOut();
+      if (user.app_metadata && user.app_metadata.role === 'admin') {
+        state.user = user;
+        show('dash');
+        loadPosts();
+        return;
+      }
+
+      // Signed in, but not the owner. Say who they are so the owner can be
+      // told which account to promote — a bare "not an admin" leaves them
+      // guessing which identity GitHub actually handed over.
+      var who = user.email || (user.user_metadata && user.user_metadata.user_name) || user.id;
+      await db.auth.signOut();
+      state.user = null;
       show('login');
+      var msg = $('loginMsg');
+      msg.textContent = 'Signed in as ' + who + ' — that account is not an admin.';
+      msg.classList.remove('hidden');
     }
+
+    // OAuth returns land here rather than in the click handler.
+    db.auth.onAuthStateChange(function (_event, session) {
+      if (session && session.user) gate(session.user);
+    });
+
+    var session = await db.auth.getSession();
+    await gate(session.data && session.data.session ? session.data.session.user : null);
   });
 })();

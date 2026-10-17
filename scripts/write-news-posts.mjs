@@ -106,13 +106,17 @@ Hard rules — breaking any of these makes the post worthless:
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'openai',
-      max_tokens: 1200,
+      max_tokens: 900,
       messages: [{ role: 'user', content: prompt }]
     }),
     signal: AbortSignal.timeout(120000)
   });
 
-  if (!res.ok) throw new Error(`AI HTTP ${res.status}`);
+  if (!res.ok) {
+    const err = new Error(`AI HTTP ${res.status}`);
+    err.status = res.status;
+    throw err;
+  }
   const data = await res.json();
   let body = data?.choices?.[0]?.message?.content;
   if (!body || body.trim().length < 120) throw new Error('AI returned nothing usable');
@@ -142,7 +146,21 @@ for (const story of stories) {
     }
     console.error(`   ${text.length} chars of source text`);
 
-    const body = await write(story, text);
+    let body;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      try {
+        body = await write(story, text);
+        break;
+      } catch (e) {
+        // 402 is the free tier's rolling window, not a permanent failure.
+        if (e.status === 402 && attempt < 4) {
+          console.error(`   retry ${attempt} after rate limit`);
+          await new Promise((r) => setTimeout(r, 20000));
+          continue;
+        }
+        throw e;
+      }
+    }
 
     // The first line of body should be the H2; the title is that heading with
     // the markdown stripped, so the card and the page agree.

@@ -151,24 +151,13 @@
                 Email me a sign-in link
             </button>
 
-            <div class="flex items-center gap-3 mb-3">
-                <span class="flex-1 h-px bg-white/10"></span>
-                <span class="text-[11px] text-gray-600">or use email</span>
-                <span class="flex-1 h-px bg-white/10"></span>
-            </div>
-
-            <form id="loginForm" class="panel rounded-2xl p-6 space-y-4">
-                <div>
-                    <label for="email" class="block text-xs font-medium text-gray-400 mb-1.5">Email</label>
-                    <input id="email" type="email" class="fld" autocomplete="username" required placeholder="you@example.com">
-                </div>
-                <div>
-                    <label for="password" class="block text-xs font-medium text-gray-400 mb-1.5">Password</label>
-                    <input id="password" type="password" class="fld" autocomplete="current-password" required placeholder="••••••••">
-                </div>
-                <p id="loginMsg" class="text-xs text-red-400 hidden"></p>
-                <button type="submit" id="loginBtn" class="btn btn-primary w-full">Sign in</button>
-            </form>
+            <!-- Sign-in is passwordless on purpose. The owner account has no
+                 password to forget, rotate or leak, and the link is the one
+                 route that does not depend on GitHub's app configuration. -->
+            <p id="loginMsg" class="text-xs text-red-400 hidden text-center px-2"></p>
+            <p class="text-[11.5px] text-gray-500 leading-relaxed text-center mt-1 px-4">
+                A one-time link goes to your inbox. Open it on this device and you land back here, signed in.
+            </p>
 
             <p class="text-center text-xs text-gray-600 mt-6">Not a public page. There is nothing here for visitors.</p>
         </div>

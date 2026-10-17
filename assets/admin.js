@@ -18,7 +18,29 @@
   var SUPABASE_KEY = 'sb_publishable_wo_nSWO14-b20rx7xL_anw_2Z6PS8mg';
   var COVER_BUCKET = 'blog-covers';
 
-  var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  /**
+   * Session persistence.
+   *
+   * Stated explicitly rather than left to the default, because staying signed
+   * in is the requirement: the session is written to localStorage, survives a
+   * refresh, a closed tab and a browser restart, and supabase-js refreshes the
+   * access token in the background before it expires. The only things that end
+   * it are pressing Sign out or clearing site data.
+   *
+   * A consequence worth knowing: on a shared machine the session outlives the
+   * tab, so Sign out is the way to hand it over, not closing the window.
+   */
+  var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: {
+      storage: window.localStorage,
+      storageKey: 'bxx-admin-auth',
+      persistSession: true,
+      autoRefreshToken: true,
+      // Parse the session out of the URL after a magic-link or OAuth return.
+      detectSessionInUrl: true,
+      flowType: 'pkce'
+    }
+  });
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -138,46 +160,9 @@
 
   // =================================================================== auth
 
-  async function signIn(e) {
-    e.preventDefault();
-
-    var btn = $('loginBtn');
-    var msg = $('loginMsg');
-    msg.classList.add('hidden');
-    btn.disabled = true;
-    btn.textContent = 'Signing in\u2026';
-
-    // Fields are read into locals and assembled with bracket assignment. A
-    // literal field-name-equals-value pair in source trips secret scanners,
-    // which cannot tell a DOM read from a hardcoded value.
-    var creds = { email: $('email').value.trim() };
-    creds['pass' + 'word'] = $('password').value;
-
-    var res = await db.auth.signInWithPassword(creds);
-
-    btn.disabled = false;
-    btn.textContent = 'Sign in';
-
-    if (res.error) {
-      msg.textContent = res.error.message;
-      msg.classList.remove('hidden');
-      return;
-    }
-
-    // Signing in successfully is not the same as being allowed in. A valid
-    // member account is bounced here rather than shown a dashboard whose
-    // every action would fail.
-    if (!isAdmin()) {
-      await db.auth.signOut();
-      msg.textContent = 'That account is not an admin.';
-      msg.classList.remove('hidden');
-      return;
-    }
-
-    state.user = res.data.user;
-    show('dash');
-    loadPosts();
-  }
+  // Password sign-in was removed. There is one owner, the account has no
+  // password set, and a password field on a page nobody else can use is just a
+  // thing to leak. The magic link below replaces it.
 
   /**
    * Sign in with GitHub.
@@ -513,7 +498,6 @@
   // ================================================================= wiring
 
   document.addEventListener('DOMContentLoaded', async function () {
-    $('loginForm').addEventListener('submit', signIn);
     $('ghBtn').addEventListener('click', signInWithGitHub);
     $('otpBtn').addEventListener('click', emailSignInLink);
     $('logoutBtn').addEventListener('click', signOut);

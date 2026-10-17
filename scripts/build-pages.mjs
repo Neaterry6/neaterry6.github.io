@@ -100,21 +100,19 @@ ${body}
 // --------------------------------------------------------------- projects
 
 const PROJECTS = [
-  ['SnippetLab', 'Full-stack', 'Community shelf for code snippets. Realtime chatroom with voice notes, replies and reactions, saved snippets, comments, per-snippet reader lists, an inbox for script requests, admin moderation, and a Cmd-K palette.', ['Supabase', 'Realtime', 'RLS'], 'https://snippetlab-neaterry6s-projects.vercel.app'],
-  ['Broken-agent', 'AI', 'AI chat workspace with a code editor, live preview pane, admin dashboard and multi-model routing.', ['AI', 'Multi-model'], 'https://broken-agent.vercel.app'],
-  ['whatapp-ai', 'AI', 'WhatsApp AI assistant with tool calling, media handling and conversation memory.', ['Baileys', 'Tool calling'], null],
-  ['SL-FLIX-WEB', 'Streaming', 'Streaming front end and API layer for movies and series, with HLS playback.', ['TypeScript', 'HLS'], 'https://sl-flix-web.vercel.app'],
-  ['StreamMe', 'Streaming', 'Streaming site with a live chatroom.', ['Realtime'], 'https://streamme-chatroom-id.vercel.app'],
-  ['Jespire Stories', 'Web app', 'Writer platform on Next.js and Firebase — drafts, publishing and reader feeds.', ['Next.js 14', 'Firebase'], 'https://jespire-stories-ssl1.vercel.app/feed'],
-  ['DIRE\'S Bakes & Fries', 'Client work', 'Bakery storefront — cakes, small chops and event decorations, with a catalogue and ordering flow.', ['E-commerce'], 'https://bakes-fries-and-co.vercel.app'],
-  ['Glamour Africa', 'Client work', 'Fashion and beauty site built for the African market.', ['Web'], 'https://glamour.vercel.app'],
-  ['Spyro Sticker Store', 'Web app', 'Sticker pack store for SpyroChat — browsable packs with a download flow.', ['Web'], 'https://stickers-delta-one.vercel.app'],
-  ['Anon VZN', 'Web app', 'Anonymous messaging front end — minimal, built for quick drop-and-go notes.', ['Web'], 'https://anon-vzn.vercel.app'],
-  ['neon-breakout', 'Game', 'Neon arcade breakout in a single dependency-free HTML file, with a regression test suite.', ['Canvas', 'Zero deps', 'Tested'], null],
-  ['music-movie-search-API', 'API', 'Unified search API across music and film catalogues.', ['REST'], null],
-  ['translator-api', 'API', 'Multi-language translation service, also shipped as the zero-dependency broken-translate package.', ['REST'], null],
-  ['roast-api', 'API', 'Roast API with five tones and per-user personalisation.', ['REST'], null],
-  ['blocklist-manager', 'Tool', 'Phone blocklist manager with import and export.', ['Node.js'], null]
+  ['Hi Photos', 'AI · Image Discovery', 'Pinterest-inspired image platform with AI-powered search and chat. Built with React, Node.js, Express and Supabase.', ['React', 'Node.js', 'Supabase', 'AI'], 'https://hi-photos.vercel.app'],
+  ['broken-movies', 'Streaming', 'Netflix-style platform with real playable movies, TV series, anime, Nollywood, BL and K-Dramas. My List, watch history, quality selector.', ['JavaScript', 'HLS.js', 'REST API'], null],
+  ['flixmovies', 'Streaming', 'Modern movie discovery platform with a clean responsive interface. TMDB-backed with direct stream links.', ['React', 'TMDB API'], 'https://flixmovies.vercel.app'],
+  ['Brokenvzn AI', 'AI Assistant', 'Intelligent conversational AI with memory, tool calling and grounded knowledge base. Answers from facts, never invents.', ['React', 'Node.js', 'LLM'], 'https://brokenvzn-ai.vercel.app'],
+  ['Codex Agent', 'AI Coding', 'AI coding assistant that helps developers write, understand and improve code. Gemini-powered.', ['React', 'Node.js', 'Gemini'], 'https://codex-agent.vercel.app'],
+  ['Phoenix Learn Code', 'Education', 'Interactive coding education platform for learning programming with modern UI and hands-on exercises.', ['React', 'Node.js'], 'https://phoenix-learn.vercel.app'],
+  ['Story Writer AI', 'Creative Writing', 'Generate stories and creative writing with Artificial Intelligence. Multi-genre support.', ['React', 'AI'], 'https://story-writer.vercel.app'],
+  ['Glamour', 'Fashion & Beauty', 'Elegant beauty and fashion website built with a modern design system.', ['React', 'Tailwind CSS'], 'https://glamour.vercel.app'],
+  ['BROKEN API', 'Backend', 'Massive multi-purpose REST API: movie/anime streaming, social video, AI, trading, temp mail, GIFs, analytics, 600+ endpoints.', ['Node.js', 'Express', 'Docker'], null],
+  ['Trading Bot', 'Finance', 'Multi-strategy trading bot with real market data, RSI/MA/MACD strategies, backtesting, paper trading and Telegram alerts.', ['Node.js', 'Binance', 'Yahoo Finance'], null],
+  ['Amazing Bot', 'WhatsApp', 'Powerful multi-device WhatsApp bot with 600+ commands: AI chat, image reactions, downloads, sports, games.', ['WhatsApp', 'Baileys', 'Node.js'], null],
+  ['Trust Lab API', 'Backend', 'Movie + live sports API platform with 80+ endpoints, React docs playground frontend and admin panel.', ['Express', 'React', 'Vite'], 'https://trustlab-api.vercel.app'],
+  ['Anon', 'Social', 'Anonymous social platform focused on anonymous messages, social posting and community-style interactions.', ['React', 'Next.js', 'TypeScript'], 'https://anon-v2.vercel.app'],
 ];
 
 const NPM = [
@@ -234,8 +232,12 @@ const nowBody = `        <div class="eyebrow">Right now</div>
                 <p>WhatsApp API and SDK on Baileys — multi-session, buttons, webhooks. On npm.</p>
             </div>
             <div class="card">
-                <h3>SL-FLIX-WEB</h3>
-                <p>Streaming front end with HLS playback over a TypeScript API layer.</p>
+                <h3>FlixMovies</h3>
+                <p>Modern movie discovery platform with a clean responsive interface.</p>
+            </div>
+            <div class="card">
+                <h3>Hi Photos</h3>
+                <p>Pinterest-inspired image discovery platform with AI-powered search.</p>
             </div>
         </div>
 

@@ -874,7 +874,39 @@
       msg.classList.remove('hidden');
     }
 
-    // OAuth returns land here rather than in the click handler.
+    /**
+     * Read the URL hash directly and hand it to Supabase as a session.
+     *
+     * This is the piece that kept failing. getSession() resolves *before*
+     * supabase-js finishes parsing the hash, and onAuthStateChange registers
+     * after the parse event has already fired — so the magic-link tokens landed
+     * in the URL but the dashboard never saw them. Reading the hash synchronously
+     * and calling setSession() directly is the reliable path.
+     */
+    function consumeHashSession() {
+      var hash = window.location.hash || '';
+      if (!hash) return;
+      var params = new URLSearchParams(hash.replace(/^#/, ''));
+      var accessToken = params.get('access_token');
+      var refreshToken = params.get('refresh_token');
+      if (accessToken && refreshToken) {
+        var expiresIn = parseInt(params.get('expires_in'), 10) || 3600;
+        var expiresAt = parseInt(params.get('expires_at'), 10) ||
+                        Math.floor(Date.now() / 1000) + expiresIn;
+        db.auth.setSession({
+          access_token: accessToken,
+          token_type: params.get('token_type') || 'bearer',
+          expires_in: expiresIn,
+          expires_at: expiresAt,
+          refresh_token: refreshToken
+        });
+      }
+      // Always clear the hash so a refresh does not re-emit it.
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    consumeHashSession();
+
     db.auth.onAuthStateChange(function (_event, session) {
       if (session && session.user) gate(session.user);
     });

@@ -19,7 +19,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://neaterry6.github.io';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://wfgpcsfypnzvqvivmxnq.supabase.co';
-const KEY = process.env.SUPABASE_SERVICE_KEY || 'sb_publishable_vkKUPbVR14Oho0zgZgegAA_xfShW7CX';
+const KEY = process.env.SUPABASE_SERVICE_KEY || 'sb_publishable_wo_nSWO14-b20rx7xL_anw_2Z6PS8mg';
 
 function esc(s) {
   return String(s == null ? '' : s)

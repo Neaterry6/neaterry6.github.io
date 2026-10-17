@@ -90,6 +90,8 @@ ${body}
         <a href="/blog.html">Blog</a> &middot;
         <a href="https://github.com/Neaterry6" target="_blank" rel="noopener">GitHub</a>
     </footer>
+    <link rel="stylesheet" href="/assets/mobile-nav.css">
+    <script defer src="/assets/mobile-nav.js"></script>
 </body>
 </html>
 `;

@@ -5,8 +5,108 @@
     <link>https://neaterry6.github.io/blog.html</link>
     <description>Notes on building things: WhatsApp bots, AI agents, scrapers, and the unglamorous parts.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 17 Oct 2026 14:13:17 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2026 16:37:28 GMT</lastBuildDate>
     <atom:link href="https://neaterry6.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Gemini 4 Argon is out, and Google is pricing it aggressively</title>
+      <link>https://neaterry6.github.io/blog.html?post=gemini-4-argon-launches</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=gemini-4-argon-launches</guid>
+      <pubDate>Sat, 17 Oct 2026 15:40:00 GMT</pubDate>
+      <description>Gemini 4 Argon is out, and Google is pricing it aggressively</description>
+      <category>ai</category>
+      <category>news</category>
+      <category>google</category>
+    </item>
+    <item>
+      <title>Replit says it is no longer working with Anthropic, and insiders disagree</title>
+      <link>https://neaterry6.github.io/blog.html?post=replit-drops-anthropic</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=replit-drops-anthropic</guid>
+      <pubDate>Sat, 17 Oct 2026 15:20:00 GMT</pubDate>
+      <description>Replit says it is no longer working with Anthropic, and insiders disagree</description>
+      <category>ai</category>
+      <category>news</category>
+      <category>replit</category>
+    </item>
+    <item>
+      <title>Meta&apos;s new open-weight model runs locally on a Mac, if you have a terabyte of RAM</title>
+      <link>https://neaterry6.github.io/blog.html?post=meta-muse-spark-open</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=meta-muse-spark-open</guid>
+      <pubDate>Sat, 17 Oct 2026 15:00:00 GMT</pubDate>
+      <description>Meta&apos;s new open-weight model runs locally on a Mac, if you have a terabyte of RAM</description>
+      <category>ai</category>
+      <category>news</category>
+      <category>meta</category>
+    </item>
+    <item>
+      <title>Jev became Vercel&apos;s fastest-adopted model in two weeks</title>
+      <link>https://neaterry6.github.io/blog.html?post=jev-vercel-fastest-adoption</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=jev-vercel-fastest-adoption</guid>
+      <pubDate>Sat, 17 Oct 2026 14:40:00 GMT</pubDate>
+      <description>Jev became Vercel&apos;s fastest-adopted model in two weeks</description>
+      <category>ai</category>
+      <category>news</category>
+      <category>vercel</category>
+    </item>
+    <item>
+      <title>Waymo is taking its robotaxis to Canada, starting with Toronto</title>
+      <link>https://neaterry6.github.io/blog.html?post=waymo-toronto-canada</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=waymo-toronto-canada</guid>
+      <pubDate>Sat, 17 Oct 2026 14:20:00 GMT</pubDate>
+      <description>Waymo is taking its robotaxis to Canada, starting with Toronto</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>waymo</category>
+    </item>
+    <item>
+      <title>Ray-Ban Meta glasses recorded conversations without the wake word</title>
+      <link>https://neaterry6.github.io/blog.html?post=ray-ban-meta-recording-bug</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=ray-ban-meta-recording-bug</guid>
+      <pubDate>Sat, 17 Oct 2026 14:00:00 GMT</pubDate>
+      <description>Ray-Ban Meta glasses recorded conversations without the wake word</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>privacy</category>
+    </item>
+    <item>
+      <title>Internal AI models hacked a crypto wallet and breached more websites</title>
+      <link>https://neaterry6.github.io/blog.html?post=ai-agents-hacked-crypto-wallet</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=ai-agents-hacked-crypto-wallet</guid>
+      <pubDate>Sat, 17 Oct 2026 13:40:00 GMT</pubDate>
+      <description>Internal AI models hacked a crypto wallet and breached more websites</description>
+      <category>ai</category>
+      <category>news</category>
+      <category>security</category>
+    </item>
+    <item>
+      <title>India is the latest country to report rogue AI agents in live systems</title>
+      <link>https://neaterry6.github.io/blog.html?post=india-rogue-ai-agents</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=india-rogue-ai-agents</guid>
+      <pubDate>Sat, 17 Oct 2026 13:20:00 GMT</pubDate>
+      <description>India is the latest country to report rogue AI agents in live systems</description>
+      <category>ai</category>
+      <category>news</category>
+      <category>security</category>
+    </item>
+    <item>
+      <title>Blue Origin is building for 150 New Glenn launches a year</title>
+      <link>https://neaterry6.github.io/blog.html?post=blue-origin-new-glenn-expansion</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=blue-origin-new-glenn-expansion</guid>
+      <pubDate>Sat, 17 Oct 2026 13:00:00 GMT</pubDate>
+      <description>Blue Origin is building for 150 New Glenn launches a year</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>space</category>
+    </item>
+    <item>
+      <title>KDE turns 30, ships Plasma 6.8, and ends native X11 sessions</title>
+      <link>https://neaterry6.github.io/blog.html?post=kde-30-plasma-6-8</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=kde-30-plasma-6-8</guid>
+      <pubDate>Sat, 17 Oct 2026 12:40:00 GMT</pubDate>
+      <description>KDE turns 30, ships Plasma 6.8, and ends native X11 sessions</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>linux</category>
+    </item>
     <item>
       <title>Building SnippetLab, and the three bugs that only showed up live</title>
       <link>https://neaterry6.github.io/blog.html?post=building-snippetlab</link>
@@ -16,6 +116,56 @@
       <category>snippetlab</category>
       <category>supabase</category>
       <category>lessons</category>
+    </item>
+    <item>
+      <title>Polymarket saw $600 million in trades after the elections had ended</title>
+      <link>https://neaterry6.github.io/blog.html?post=polymarket-post-election-trades</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=polymarket-post-election-trades</guid>
+      <pubDate>Sat, 17 Oct 2026 12:20:00 GMT</pubDate>
+      <description>Polymarket saw $600 million in trades after the elections had ended</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>prediction-markets</category>
+    </item>
+    <item>
+      <title>Targeted ads were used to deliver zero-click exploits and mercenary malware</title>
+      <link>https://neaterry6.github.io/blog.html?post=targeted-ads-zero-click-exploits</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=targeted-ads-zero-click-exploits</guid>
+      <pubDate>Sat, 17 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Targeted ads were used to deliver zero-click exploits and mercenary malware</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>security</category>
+    </item>
+    <item>
+      <title>A US bill would give game buyers ownership instead of a licence</title>
+      <link>https://neaterry6.github.io/blog.html?post=game-ownership-bill</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=game-ownership-bill</guid>
+      <pubDate>Sat, 17 Oct 2026 11:40:00 GMT</pubDate>
+      <description>A US bill would give game buyers ownership instead of a licence</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>gaming</category>
+    </item>
+    <item>
+      <title>Google&apos;s Playground lets you create and share custom games</title>
+      <link>https://neaterry6.github.io/blog.html?post=google-playground-games</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=google-playground-games</guid>
+      <pubDate>Sat, 17 Oct 2026 11:20:00 GMT</pubDate>
+      <description>Google&apos;s Playground lets you create and share custom games</description>
+      <category>ai</category>
+      <category>news</category>
+      <category>gaming</category>
+    </item>
+    <item>
+      <title>Tesla showed a SpaceX-powered Roadster that flies</title>
+      <link>https://neaterry6.github.io/blog.html?post=tesla-spacex-roadster</link>
+      <guid isPermaLink="true">https://neaterry6.github.io/blog.html?post=tesla-spacex-roadster</guid>
+      <pubDate>Sat, 17 Oct 2026 11:00:00 GMT</pubDate>
+      <description>Tesla showed a SpaceX-powered Roadster that flies</description>
+      <category>tech</category>
+      <category>news</category>
+      <category>tesla</category>
     </item>
   </channel>
 </rss>

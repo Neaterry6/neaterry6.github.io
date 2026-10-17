@@ -875,65 +875,97 @@
     }
 
     /**
-     * Read the URL hash directly and hand it to Supabase as a session.
+     * Sign-in on load.
      *
-     * This is the piece that kept failing. getSession() resolves *before*
-     * supabase-js finishes parsing the hash, and onAuthStateChange registers
-     * after the parse event has already fired — so the magic-link tokens landed
-     * in the URL but the dashboard never saw them. Reading the hash synchronously
-     * and calling setSession() directly is the reliable path.
+     * The order here is the whole fix. Two earlier attempts failed because of
+     * timing, not logic:
+     *
+     *   1. getSession() was called before supabase-js finished parsing the URL
+     *      hash, so it returned null even though the tokens were right there.
+     *   2. setSession() was fired without being awaited, and onAuthStateChange
+     *      was registered *after* it — so the SIGNED_IN event it emitted could
+     *      fire before any listener existed to hear it.
+     *
+     * Either way the page fell through to the login form with a perfectly valid
+     * session sitting in the URL. So: read the hash ourselves, await the result,
+     * and decide from that directly. No event has to arrive for this to work.
      */
-    function consumeHashSession() {
-      var hash = window.location.hash || '';
-      if (!hash) return;
-      var params = new URLSearchParams(hash.replace(/^#/, ''));
-      var accessToken = params.get('access_token');
-      var refreshToken = params.get('refresh_token');
-      if (accessToken && refreshToken) {
-        var expiresIn = parseInt(params.get('expires_in'), 10) || 3600;
-        var expiresAt = parseInt(params.get('expires_at'), 10) ||
-                        Math.floor(Date.now() / 1000) + expiresIn;
-        db.auth.setSession({
-          access_token: accessToken,
-          token_type: params.get('token_type') || 'bearer',
-          expires_in: expiresIn,
-          expires_at: expiresAt,
-          refresh_token: refreshToken
-        });
-      }
-      // Always clear the hash so a refresh does not re-emit it.
-      history.replaceState(null, '', window.location.pathname);
-    }
-
-    consumeHashSession();
-
-    db.auth.onAuthStateChange(function (_event, session) {
-      if (session && session.user) gate(session.user);
-    });
-
-    var session = await db.auth.getSession();
-    await gate(session.data && session.data.session ? session.data.session.user : null);
+    // Captured once, before anything clears it. Both the error path and the
+    // token path read from this rather than re-reading a hash we may have wiped.
+    var initialHash = window.location.hash || '';
 
     /**
-     * Surface an OAuth failure instead of silently showing the login form again.
+     * Surface a provider error instead of silently showing the login form.
      *
-     * When the redirect back from a provider is rejected — which is exactly what
-     * happens when the OAuth app's callback URL points at a different project —
-     * supabase-js puts the reason in the URL fragment and then shows no session.
-     * Without this, that looks identical to "nothing happened", which is the
+     * When a redirect back from a provider is rejected — which is exactly what
+     * happens when an OAuth app's callback URL points at a different project —
+     * the reason arrives in the URL fragment and there is no session. Without
+     * this that is indistinguishable from "nothing happened", which is the
      * least useful thing a login page can do.
      */
-    var hash = window.location.hash || '';
-    if (hash.indexOf('error') !== -1) {
-      var params = new URLSearchParams(hash.replace(/^#/, ''));
-      var why = params.get('error_description') || params.get('error');
+    if (initialHash.indexOf('error') !== -1) {
+      var errParams = new URLSearchParams(initialHash.replace(/^#/, ''));
+      var why = errParams.get('error_description') || errParams.get('error');
       if (why) {
-        var msg = $('loginMsg');
-        msg.textContent = 'Sign-in did not complete: ' + why.replace(/\+/g, ' ');
-        msg.classList.remove('hidden');
+        var errMsg = $('loginMsg');
+        errMsg.textContent = 'Sign-in did not complete: ' + why.replace(/\+/g, ' ');
+        errMsg.classList.remove('hidden');
       }
-      // Clear it so a refresh does not re-show a stale error.
-      history.replaceState(null, '', window.location.pathname);
     }
+
+    function readHashTokens() {
+      var hash = initialHash;
+      if (hash.indexOf('access_token') === -1) return null;
+      var p = new URLSearchParams(hash.replace(/^#/, ''));
+      var accessToken = p.get('access_token');
+      var refreshToken = p.get('refresh_token');
+      if (!accessToken || !refreshToken) return null;
+      var expiresIn = parseInt(p.get('expires_in'), 10) || 3600;
+      return {
+        access_token: accessToken,
+        token_type: p.get('token_type') || 'bearer',
+        expires_in: expiresIn,
+        expires_at: parseInt(p.get('expires_at'), 10) ||
+                    Math.floor(Date.now() / 1000) + expiresIn,
+        refresh_token: refreshToken
+      };
+    }
+
+    // Registered before anything can emit an event, so nothing is missed.
+    // The callback does not await — awaiting inside it deadlocks supabase-js v2.
+    db.auth.onAuthStateChange(function (_event, session) {
+      if (session && session.user) setTimeout(function () { gate(session.user); }, 0);
+    });
+
+    var tokens = readHashTokens();
+    var signedIn = null;
+
+    if (tokens) {
+      // Clear the hash first. If setSession throws, the tokens are not left
+      // sitting in the address bar to be replayed on every refresh.
+      history.replaceState(null, '', window.location.pathname);
+      try {
+        var set = await db.auth.setSession(tokens);
+        if (set && set.data && set.data.session && set.data.session.user) {
+          signedIn = set.data.session.user;
+        } else if (set && set.error) {
+          var msg = $('loginMsg');
+          msg.textContent = 'That sign-in link could not be used: ' + set.error.message;
+          msg.classList.remove('hidden');
+        }
+      } catch (err) {
+        var m = $('loginMsg');
+        m.textContent = 'That sign-in link could not be used.';
+        m.classList.remove('hidden');
+      }
+    }
+
+    // Only consult stored state when the URL did not carry a session.
+    if (!signedIn) {
+      var got = await db.auth.getSession();
+      signedIn = got && got.data && got.data.session ? got.data.session.user : null;
+    }
+
+    await gate(signedIn);
   });
 })();

@@ -1,162 +1,196 @@
-/* Site menu — three-dot button and the sheet it opens.
-   Kept in one stylesheet so the menu looks identical on every page, including
-   the ones that do not load the main site CSS. */
+/* Site menu — a "More" tab that sits inline with the nav links.
+   Matches the surrounding nav type so it reads as part of the menu bar rather
+   than a floating widget. */
 
-.bxx-menu-btn {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 9000;
-  width: 48px;
-  height: 48px;
-  display: flex;
+/* The wrapper is the positioning context for the panel. */
+.bxx-menu-wrap {
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(18, 18, 22, 0.92);
-  color: #e5e7eb;
+}
+
+/* ---------------------------------------------------------------- the tab */
+
+.bxx-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: #9ca3af;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
   cursor: pointer;
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-  transition: transform .16s ease, background .16s ease, border-color .16s ease;
+  transition: color .15s ease, background .15s ease, border-color .15s ease;
 }
-.bxx-menu-btn:hover {
-  background: rgba(30, 30, 36, 0.98);
-  border-color: rgba(34, 211, 238, 0.45);
-  transform: translateY(-1px);
+.bxx-tab:hover {
+  color: #22d3ee;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
 }
-.bxx-menu-btn:active { transform: translateY(0); }
+.bxx-tab[aria-expanded="true"] {
+  color: #22d3ee;
+  background: rgba(34, 211, 238, 0.09);
+  border-color: rgba(34, 211, 238, 0.28);
+}
+.bxx-tab-caret {
+  opacity: .55;
+  transition: transform .18s ease;
+}
+.bxx-tab[aria-expanded="true"] .bxx-tab-caret { transform: rotate(180deg); }
 
-.bxx-menu-scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 9001;
-  background: rgba(0, 0, 0, 0.55);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s ease;
-}
-.bxx-menu-scrim.open { opacity: 1; pointer-events: auto; }
+/* -------------------------------------------------------------- the panel */
 
-.bxx-menu-sheet {
-  position: fixed;
-  right: 20px;
-  bottom: 80px;
-  z-index: 9002;
-  width: min(340px, calc(100vw - 40px));
-  max-height: min(70vh, 560px);
-  display: flex;
-  flex-direction: column;
-  border-radius: 18px;
+.bxx-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 9000;
+  width: 292px;
+  padding: 6px;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(14, 14, 18, 0.98);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
   opacity: 0;
-  transform: translateY(10px) scale(.98);
+  transform: translateY(-6px) scale(.98);
+  transform-origin: top right;
   pointer-events: none;
-  transition: opacity .2s ease, transform .2s ease;
-  overflow: hidden;
+  transition: opacity .16s ease, transform .16s ease;
 }
-.bxx-menu-sheet.open {
+.bxx-panel.open {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
 }
 
-.bxx-menu-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px 10px;
+.bxx-panel-head {
+  padding: 8px 10px 7px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  flex: 0 0 auto;
+  margin-bottom: 4px;
 }
-.bxx-menu-title {
-  font-size: 11px;
+.bxx-panel-title {
+  font-size: 10.5px;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: #6b7280;
   font-weight: 700;
 }
-.bxx-menu-close {
-  background: none;
-  border: 0;
-  color: #6b7280;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0 4px;
-  border-radius: 6px;
-}
-.bxx-menu-close:hover { color: #e5e7eb; }
 
-.bxx-menu-list {
+.bxx-panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-height: min(64vh, 430px);
   overflow-y: auto;
-  padding: 6px;
-  flex: 1 1 auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.bxx-menu-item {
+.bxx-item {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 9px 11px;
-  border-radius: 10px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 9px;
   text-decoration: none;
   transition: background .12s ease;
 }
-.bxx-menu-item:hover { background: rgba(255, 255, 255, 0.055); }
-.bxx-menu-item.is-here { background: rgba(34, 211, 238, 0.09); }
+.bxx-item:hover { background: rgba(255, 255, 255, 0.055); }
+.bxx-item.is-here { background: rgba(34, 211, 238, 0.1); }
 
-.bxx-menu-label {
-  font-size: 14px;
+.bxx-item-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #8d99ae;
+}
+.bxx-item:hover .bxx-item-icon { color: #22d3ee; border-color: rgba(34, 211, 238, 0.3); }
+.bxx-item.is-here .bxx-item-icon { color: #22d3ee; border-color: rgba(34, 211, 238, 0.35); }
+
+.bxx-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.bxx-item-label {
+  font-size: 13.5px;
   font-weight: 600;
   color: #f3f4f6;
+  line-height: 1.25;
 }
-.bxx-menu-item.is-here .bxx-menu-label { color: #22d3ee; }
-
-.bxx-menu-note {
-  font-size: 11.5px;
+.bxx-item.is-here .bxx-item-label { color: #22d3ee; }
+.bxx-item-note {
+  font-size: 11px;
   color: #6b7280;
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
-.bxx-menu-here {
-  display: inline-block;
-  margin-top: 3px;
-  font-size: 9.5px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+/* ------------------------------------------------------------------ scrim */
+
+.bxx-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 8999;
+  background: transparent;
+  display: none;
+}
+.bxx-scrim.open { display: block; }
+
+/* ------------------------------------------------- fallback bar (no nav) */
+
+.bxx-fallback-bar {
+  position: sticky;
+  top: 0;
+  z-index: 8000;
+  background: rgba(8, 8, 10, 0.92);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.bxx-fallback-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.bxx-fallback-brand {
+  font-size: 14px;
   font-weight: 700;
-  color: #22d3ee;
-  opacity: .75;
-}
-
-.bxx-menu-foot {
-  padding: 10px 16px 13px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  flex: 0 0 auto;
-}
-.bxx-menu-gh {
-  font-size: 12px;
-  color: #9ca3af;
+  color: #f3f4f6;
   text-decoration: none;
-  font-weight: 600;
+  letter-spacing: -0.01em;
 }
-.bxx-menu-gh:hover { color: #22d3ee; }
+.bxx-fallback-brand:hover { color: #22d3ee; }
 
-/* Keep the button clear of the iOS home indicator and mobile bottom bars. */
-@supports (padding: env(safe-area-inset-bottom)) {
-  .bxx-menu-btn { bottom: calc(20px + env(safe-area-inset-bottom)); }
-  .bxx-menu-sheet { bottom: calc(80px + env(safe-area-inset-bottom)); }
-}
+/* ----------------------------------------------------------------- mobile */
 
-@media (max-width: 480px) {
-  .bxx-menu-btn { right: 14px; bottom: 14px; width: 44px; height: 44px; }
-  .bxx-menu-sheet { right: 10px; left: 10px; width: auto; bottom: 70px; }
+@media (max-width: 768px) {
+  .bxx-tab span:not(.bxx-tab-caret) { display: none; }
+  .bxx-tab { padding: 7px 9px; }
+  .bxx-panel {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 12px;
+    width: auto;
+    transform: translateY(10px);
+    transform-origin: bottom center;
+  }
+  .bxx-panel.open { transform: translateY(0); }
 }

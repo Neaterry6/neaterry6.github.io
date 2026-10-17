@@ -1,33 +1,69 @@
 /**
  * Site menu.
  *
- * A single three-dot button that opens a sheet listing every page, including
- * the ones that do not fit in the top nav. Injected from one file rather than
- * pasted into nine pages, so adding a page is a one-line change here instead of
- * nine edits that will drift apart.
+ * A "More" tab that sits inline with the other nav links and opens a dropdown
+ * panel listing every page. Not a floating button: this is a menu bar tab, so it
+ * lives in the bar, aligns with its neighbours and inherits their type.
  *
- * Works without a build step and without a framework: it appends its own DOM on
- * load and closes on outside click, Escape, or navigation.
+ * One script rather than markup pasted into nine pages, so adding a page is a
+ * one-line change here instead of nine edits that drift apart. If a page has no
+ * nav bar (the 404, the admin dashboard) it appends its own bar so the menu is
+ * still reachable.
+ *
+ * Icons are inline SVG, not emoji: emoji render differently on every platform
+ * and read as placeholders next to real iconography.
  */
 (function () {
   'use strict';
 
+  // Every page, with an icon path drawn on a 24x24 grid.
   var PAGES = [
-    { href: '/', label: 'Home', note: 'Start here' },
-    { href: '/projects.html', label: 'Projects', note: 'Everything I have built' },
-    { href: '/blog.html', label: 'Blog', note: 'Writing and news' },
-    { href: '/anime.html', label: 'Anime', note: 'What I am watching' },
-    { href: '/games.html', label: 'Games', note: 'What I play' },
-    { href: '/uses.html', label: 'Uses', note: 'My setup and stack' },
-    { href: '/now.html', label: 'Now', note: 'What I am on this week' },
-    { href: '/guestbook.html', label: 'Guestbook', note: 'Say something' },
-    { href: '/resume.html', label: 'Resume', note: 'The formal version' },
-    { href: '/bhr6ojytu5baa3tfox3o.html', label: 'Admin', note: 'Dashboard, private' }
+    {
+      href: '/', label: 'Home', note: 'Start here',
+      icon: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/>'
+    },
+    {
+      href: '/projects.html', label: 'Projects', note: 'Everything I have built',
+      icon: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7"/>'
+    },
+    {
+      href: '/blog.html', label: 'Blog', note: 'Writing and news',
+      icon: '<path d="M5 4h11l3 3v13H5z"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/>'
+    },
+    {
+      href: '/anime.html', label: 'Anime', note: 'What I am watching',
+      icon: '<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M2.5 10h19M7 6v4M12 6v4M17 6v4"/>'
+    },
+    {
+      href: '/games.html', label: 'Games', note: 'What I play',
+      icon: '<path d="M7.5 9.5v5M5 12h5"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="13.5" r="1"/><path d="M6.5 6.5h11a4 4 0 0 1 3.9 4.9l-.8 4a3 3 0 0 1-5.2 1.4l-1-1.3h-4.8l-1 1.3a3 3 0 0 1-5.2-1.4l-.8-4a4 4 0 0 1 3.9-4.9Z"/>'
+    },
+    {
+      href: '/uses.html', label: 'Uses', note: 'My setup and stack',
+      icon: '<rect x="2.5" y="4.5" width="19" height="12" rx="2"/><path d="M8 20h8M12 16.5V20"/>'
+    },
+    {
+      href: '/now.html', label: 'Now', note: 'What I am on this week',
+      icon: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/>'
+    },
+    {
+      href: '/guestbook.html', label: 'Guestbook', note: 'Say something',
+      icon: '<path d="M20 15.5a2 2 0 0 1-2 2H8l-4 3v-15a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/>'
+    },
+    {
+      href: '/resume.html', label: 'Resume', note: 'The formal version',
+      icon: '<path d="M6 3.5h8l4 4v13H6z"/><path d="M14 3.5v4h4"/><path d="M9 13h6M9 16.5h4"/>'
+    },
+    {
+      href: '/bhr6ojytu5baa3tfox3o.html', label: 'Admin', note: 'Dashboard, private',
+      icon: '<rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>'
+    }
   ];
 
-  // Pages are served from the site root on GitHub Pages, so a leading slash
-  // resolves correctly from every page without per-page path juggling.
-  var here = window.location.pathname.replace(/\/index\.html$/, '/') || '/';
+  var ICON_MORE =
+    '<circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/>';
+
+  var here = (window.location.pathname || '/').replace(/\/index\.html$/, '/');
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -36,85 +72,123 @@
     return n;
   }
 
+  function svg(paths, size) {
+    var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('viewBox', '0 0 24 24');
+    s.setAttribute('width', size || 15);
+    s.setAttribute('height', size || 15);
+    s.setAttribute('fill', 'none');
+    s.setAttribute('stroke', 'currentColor');
+    s.setAttribute('stroke-width', '1.7');
+    s.setAttribute('stroke-linecap', 'round');
+    s.setAttribute('stroke-linejoin', 'round');
+    s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = paths;
+    return s;
+  }
+
   function build() {
-    // ---- trigger
-    var btn = el('button', 'bxx-menu-btn');
-    btn.type = 'button';
-    btn.setAttribute('aria-label', 'All pages');
-    btn.setAttribute('aria-expanded', 'false');
-    btn.innerHTML =
-      '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
-      '<circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+    // ---- the tab itself
+    var tab = el('button', 'bxx-tab');
+    tab.type = 'button';
+    tab.setAttribute('aria-haspopup', 'true');
+    tab.setAttribute('aria-expanded', 'false');
+    tab.appendChild(svg(ICON_MORE, 16));
+    tab.appendChild(el('span', '', 'More'));
+    var caret = svg('<path d="m6 9 6 6 6-6"/>', 12);
+    caret.classList.add('bxx-tab-caret');
+    tab.appendChild(caret);
 
-    // ---- sheet
-    var sheet = el('div', 'bxx-menu-sheet');
-    sheet.setAttribute('role', 'menu');
-    sheet.setAttribute('aria-hidden', 'true');
+    // ---- the panel
+    var panel = el('div', 'bxx-panel');
+    panel.setAttribute('role', 'menu');
+    panel.setAttribute('aria-hidden', 'true');
 
-    var head = el('div', 'bxx-menu-head');
-    head.appendChild(el('span', 'bxx-menu-title', 'All pages'));
-    var close = el('button', 'bxx-menu-close', '\u00d7');
-    close.type = 'button';
-    close.setAttribute('aria-label', 'Close menu');
-    head.appendChild(close);
-    sheet.appendChild(head);
+    var head = el('div', 'bxx-panel-head');
+    head.appendChild(el('span', 'bxx-panel-title', 'All pages'));
+    panel.appendChild(head);
 
-    var list = el('div', 'bxx-menu-list');
+    var list = el('div', 'bxx-panel-list');
+
     PAGES.forEach(function (p) {
-      var a = el('a', 'bxx-menu-item');
+      var a = el('a', 'bxx-item');
       a.href = p.href;
       a.setAttribute('role', 'menuitem');
 
-      var isHere = here === p.href || (p.href === '/' && here === '/');
+      var isHere = here === p.href;
       if (isHere) a.classList.add('is-here');
 
-      var t = el('span', 'bxx-menu-label', p.label);
-      a.appendChild(t);
-      if (isHere) a.appendChild(el('span', 'bxx-menu-here', 'you are here'));
-      a.appendChild(el('span', 'bxx-menu-note', p.note));
+      var ic = el('span', 'bxx-item-icon');
+      ic.appendChild(svg(p.icon, 16));
+      a.appendChild(ic);
+
+      var text = el('span', 'bxx-item-text');
+      text.appendChild(el('span', 'bxx-item-label', p.label));
+      text.appendChild(el('span', 'bxx-item-note', isHere ? 'You are here' : p.note));
+      a.appendChild(text);
+
       list.appendChild(a);
     });
-    sheet.appendChild(list);
 
-    var foot = el('div', 'bxx-menu-foot');
-    var gh = el('a', 'bxx-menu-gh', 'GitHub \u2197');
-    gh.href = 'https://github.com/Neaterry6';
-    gh.target = '_blank';
-    gh.rel = 'noopener';
-    foot.appendChild(gh);
-    sheet.appendChild(foot);
+    panel.appendChild(list);
 
-    var scrim = el('div', 'bxx-menu-scrim');
+    // ---- placement
+    // Prefer the page's own nav so the tab sits inline with the existing links.
+    // Falls back to building a bar on pages that have none.
+    var host = null;
+    var candidates = document.querySelectorAll(
+      'nav .nav-links, nav div[class*="items-center"], .nav-links, header nav'
+    );
+    for (var i = 0; i < candidates.length; i++) {
+      if (candidates[i].querySelector('a')) { host = candidates[i]; break; }
+    }
 
+    var wrap = el('div', 'bxx-menu-wrap');
+    wrap.appendChild(tab);
+    wrap.appendChild(panel);
+
+    if (host) {
+      host.appendChild(wrap);
+      // The panel is absolutely positioned, so it needs a positioned ancestor.
+      host.classList.add('bxx-host');
+    } else {
+      var bar = el('div', 'bxx-fallback-bar');
+      var inner = el('div', 'bxx-fallback-inner');
+      var brand = el('a', 'bxx-fallback-brand', 'brokenXoxo');
+      brand.href = '/';
+      inner.appendChild(brand);
+      inner.appendChild(wrap);
+      bar.appendChild(inner);
+      document.body.appendChild(bar);
+      document.body.classList.add('has-bxx-bar');
+    }
+
+    var scrim = el('div', 'bxx-scrim');
     document.body.appendChild(scrim);
-    document.body.appendChild(sheet);
-    document.body.appendChild(btn);
 
     function open() {
-      sheet.classList.add('open');
+      panel.classList.add('open');
       scrim.classList.add('open');
-      sheet.setAttribute('aria-hidden', 'false');
-      btn.setAttribute('aria-expanded', 'true');
-      document.documentElement.style.overflow = 'hidden';
+      panel.setAttribute('aria-hidden', 'false');
+      tab.setAttribute('aria-expanded', 'true');
     }
-
     function shut() {
-      sheet.classList.remove('open');
+      panel.classList.remove('open');
       scrim.classList.remove('open');
-      sheet.setAttribute('aria-hidden', 'true');
-      btn.setAttribute('aria-expanded', 'false');
-      document.documentElement.style.overflow = '';
+      panel.setAttribute('aria-hidden', 'true');
+      tab.setAttribute('aria-expanded', 'false');
     }
 
-    btn.addEventListener('click', function (e) {
+    tab.addEventListener('click', function (e) {
       e.stopPropagation();
-      sheet.classList.contains('open') ? shut() : open();
+      panel.classList.contains('open') ? shut() : open();
     });
-    close.addEventListener('click', shut);
     scrim.addEventListener('click', shut);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') shut();
     });
+    // Clicking a link should close it before the navigation paints.
+    list.addEventListener('click', shut);
   }
 
   if (document.readyState === 'loading') {

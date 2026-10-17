@@ -49,7 +49,10 @@
     posts: [],
     editing: null,   // the post row being edited, or null for a new one
     dirty: false,
-    saving: false
+    saving: false,
+    statusFilter: 'all',  // all | published | draft
+    likes: {},            // post_id -> like count
+    guestbook: []         // newest guestbook rows
   };
 
   function esc(s) {
@@ -279,13 +282,236 @@
     $('statPublished').textContent = pub.length;
     $('statDrafts').textContent = drafts.length;
     $('statViews').textContent = views.toLocaleString();
-    $('statUser').textContent = state.user ? state.user.email : '—';
+
+    var nav = $('navPostCount');
+    if (nav) nav.textContent = state.posts.length;
+
+    // Likes and guestbook are counted from the database rather than the loaded
+    // posts, because the post list only carries what this page fetched and the
+    // totals have to be real.
+    loadEngagement();
+
+    renderRecent();
+    renderTopPosts();
+    renderActivity();
+  }
+
+  /**
+   * Engagement totals.
+   *
+   * Likes come from the aggregate function so the number is the true count, not
+   * a sum over the page of results. The guestbook is a plain count. Both fail
+   * quietly: a dashboard that throws because a count failed is worse than one
+   * showing a dash.
+   */
+  async function loadEngagement() {
+    try {
+      var likesRes = await db.rpc('blog_like_counts');
+      if (!likesRes.error && Array.isArray(likesRes.data)) {
+        state.likes = {};
+        var total = 0;
+        likesRes.data.forEach(function (r) {
+          state.likes[r.post_id] = r.total;
+          total += r.total;
+        });
+        $('statLikes').textContent = total.toLocaleString();
+        renderLikesByPost();
+      }
+    } catch (e) { /* leave the dash */ }
+
+    try {
+      var gbRes = await db.from('guestbook').select('*').order('created_at', { ascending: false }).limit(50);
+      if (!gbRes.error) {
+        state.guestbook = gbRes.data || [];
+        $('gbCount').textContent = state.guestbook.length + ' signed';
+        renderGuestbook();
+      }
+    } catch (e) { /* leave the dash */ }
+  }
+
+  function fmtRelative(iso) {
+    if (!iso) return '';
+    var then = new Date(iso).getTime();
+    if (isNaN(then)) return '';
+    var mins = Math.round((Date.now() - then) / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return mins + 'm ago';
+    var hrs = Math.round(mins / 60);
+    if (hrs < 24) return hrs + 'h ago';
+    var days = Math.round(hrs / 24);
+    if (days < 30) return days + 'd ago';
+    return fmtDate(iso);
+  }
+
+  function renderRecent() {
+    var host = $('recentRows');
+    if (!host) return;
+
+    var rows = state.posts.slice().sort(function (a, b) {
+      return new Date(b.updated_at || b.created_at || 0) - new Date(a.updated_at || a.created_at || 0);
+    }).slice(0, 6);
+
+    if (!rows.length) {
+      host.innerHTML = '<div class="adm-empty">No posts yet.</div>';
+      return;
+    }
+
+    host.innerHTML = rows.map(function (p) {
+      var live = p.status === 'published';
+      return '<div class="adm-recent-row" data-edit="' + esc(p.id) + '">' +
+        '<span class="adm-dot ' + (live ? 'is-live' : 'is-draft') + '"></span>' +
+        '<div class="adm-recent-main">' +
+          '<div class="adm-recent-title">' + esc(p.title) + '</div>' +
+          '<div class="adm-recent-meta">' + (live ? 'published ' + fmtRelative(p.published_at) : 'draft, edited ' + fmtRelative(p.updated_at)) + '</div>' +
+        '</div>' +
+        '<span class="adm-recent-views">' + (p.views || 0) + ' views</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderTopPosts() {
+    var host = $('topPosts');
+    if (!host) return;
+
+    var rows = state.posts.slice()
+      .filter(function (p) { return (p.views || 0) > 0; })
+      .sort(function (a, b) { return (b.views || 0) - (a.views || 0); })
+      .slice(0, 5);
+
+    if (!rows.length) {
+      host.innerHTML = '<div class="adm-empty">No views recorded yet.</div>';
+      return;
+    }
+
+    var max = rows[0].views || 1;
+    host.innerHTML = rows.map(function (p) {
+      var pct = Math.max(3, Math.round(((p.views || 0) / max) * 100));
+      return '<div class="adm-bar-row">' +
+        '<div class="adm-bar-top">' +
+          '<span class="adm-bar-name">' + esc(p.title) + '</span>' +
+          '<span class="adm-bar-num">' + (p.views || 0) + '</span>' +
+        '</div>' +
+        '<div class="adm-bar-track"><div class="adm-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderLikesByPost() {
+    var host = $('likesByPost');
+    if (!host) return;
+
+    var rows = state.posts.map(function (p) {
+      return { title: p.title, n: (state.likes && state.likes[p.id]) || 0 };
+    }).filter(function (r) { return r.n > 0; })
+      .sort(function (a, b) { return b.n - a.n; })
+      .slice(0, 6);
+
+    if (!rows.length) {
+      host.innerHTML = '<div class="adm-empty">No likes yet.</div>';
+      return;
+    }
+
+    var max = rows[0].n || 1;
+    host.innerHTML = rows.map(function (r) {
+      var pct = Math.max(3, Math.round((r.n / max) * 100));
+      return '<div class="adm-bar-row">' +
+        '<div class="adm-bar-top">' +
+          '<span class="adm-bar-name">' + esc(r.title) + '</span>' +
+          '<span class="adm-bar-num">' + r.n + '</span>' +
+        '</div>' +
+        '<div class="adm-bar-track"><div class="adm-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderGuestbook() {
+    var host = $('adminGuestbook');
+    if (!host) return;
+
+    var rows = state.guestbook || [];
+    if (!rows.length) {
+      host.innerHTML = '<div class="adm-empty">Nobody has signed it yet.</div>';
+      return;
+    }
+
+    host.innerHTML = rows.map(function (g) {
+      return '<div class="adm-gb-row">' +
+        '<div class="adm-gb-top">' +
+          '<span class="adm-gb-name">' + esc(g.name) + '</span>' +
+          '<span class="adm-gb-time">' + fmtRelative(g.created_at) + '</span>' +
+        '</div>' +
+        '<div class="adm-gb-body">' + esc(g.body) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  /**
+   * Activity feed.
+   *
+   * Built from what the data can actually support: publish and edit times, plus
+   * guestbook signatures. No invented events — an activity feed that shows
+   * things that did not happen is worse than no feed.
+   */
+  function renderActivity() {
+    var host = $('activityList');
+    if (!host) return;
+
+    var events = [];
+
+    state.posts.forEach(function (p) {
+      if (p.status === 'published' && p.published_at) {
+        events.push({
+          when: p.published_at,
+          kind: 'published',
+          text: '<strong>' + esc(p.title) + '</strong> went live'
+        });
+      } else if (p.updated_at) {
+        events.push({
+          when: p.updated_at,
+          kind: 'edited',
+          text: '<strong>' + esc(p.title) + '</strong> was edited'
+        });
+      }
+    });
+
+    (state.guestbook || []).slice(0, 8).forEach(function (g) {
+      events.push({
+        when: g.created_at,
+        kind: 'guestbook',
+        text: '<strong>' + esc(g.name) + '</strong> signed the guestbook'
+      });
+    });
+
+    events = events
+      .filter(function (e) { return e.when; })
+      .sort(function (a, b) { return new Date(b.when) - new Date(a.when); })
+      .slice(0, 8);
+
+    if (!events.length) {
+      host.innerHTML = '<div class="adm-empty">Nothing yet.</div>';
+      return;
+    }
+
+    var icons = {
+      published: '<span class="adm-act-icon" style="background:rgba(34,197,94,.14);color:#4ade80"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>',
+      edited: '<span class="adm-act-icon" style="background:rgba(245,158,11,.14);color:#fbbf24"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L20 8l-4-4L4 16z"/></svg></span>',
+      guestbook: '<span class="adm-act-icon" style="background:rgba(168,85,247,.14);color:#c084fc"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5a2 2 0 0 1-2 2H8l-4 3v-15a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/></svg></span>'
+    };
+
+    host.innerHTML = events.map(function (e) {
+      return '<div class="adm-act-row">' + (icons[e.kind] || '') +
+        '<div><div class="adm-act-text">' + e.text + '</div>' +
+        '<div class="adm-act-time">' + fmtRelative(e.when) + '</div></div>' +
+      '</div>';
+    }).join('');
   }
 
   function renderRows() {
     var q = ($('searchPosts').value || '').toLowerCase();
     var rows = state.posts.filter(function (p) {
-      return !q || p.title.toLowerCase().indexOf(q) !== -1 || p.slug.indexOf(q) !== -1;
+      if (q && p.title.toLowerCase().indexOf(q) === -1 && p.slug.indexOf(q) === -1) return false;
+      if (state.statusFilter && state.statusFilter !== 'all' && p.status !== state.statusFilter) return false;
+      return true;
     });
 
     var host = $('postRows');
@@ -523,6 +749,59 @@
     $('coverFile').addEventListener('change', function (e) { uploadCover(e.target.files[0]); });
 
     $('searchPosts').addEventListener('input', renderRows);
+
+    // ------------------------------------------------------------ sections
+    // One panel visible at a time. The heading and subtitle follow, so the
+    // header always says where you are rather than staying on "Overview".
+    var SECTION_COPY = {
+      overview: ['Overview', 'Everything at a glance.'],
+      posts: ['Posts', 'Write, edit, publish and delete.'],
+      engagement: ['Engagement', 'What readers are doing.']
+    };
+
+    function showSection(name) {
+      var buttons = document.querySelectorAll('.adm-nav-item');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.toggle('is-active', buttons[i].getAttribute('data-section') === name);
+      }
+      var panels = document.querySelectorAll('.adm-section');
+      for (var j = 0; j < panels.length; j++) {
+        panels[j].classList.toggle('hidden', panels[j].getAttribute('data-panel') !== name);
+      }
+      var copy = SECTION_COPY[name] || SECTION_COPY.overview;
+      var t = $('admTitle');
+      var sub = $('admSub');
+      if (t) t.textContent = copy[0];
+      if (sub) sub.textContent = copy[1];
+      window.scrollTo(0, 0);
+    }
+
+    document.addEventListener('click', function (e) {
+      var navBtn = e.target.closest && e.target.closest('.adm-nav-item');
+      if (navBtn) { showSection(navBtn.getAttribute('data-section')); return; }
+
+      var goto = e.target.closest && e.target.closest('[data-goto]');
+      if (goto) { showSection(goto.getAttribute('data-goto')); return; }
+
+      // A row in Recent posts opens that post's editor.
+      var row = e.target.closest && e.target.closest('.adm-recent-row');
+      if (row && row.getAttribute('data-edit')) {
+        var id = row.getAttribute('data-edit');
+        var post = state.posts.filter(function (p) { return String(p.id) === String(id); })[0];
+        if (post) openEditor(post);
+      }
+    });
+
+    // Status filter on the posts table.
+    document.addEventListener('click', function (e) {
+      var seg = e.target.closest && e.target.closest('.adm-seg-btn');
+      if (!seg) return;
+      var group = seg.parentNode.querySelectorAll('.adm-seg-btn');
+      for (var i = 0; i < group.length; i++) group[i].classList.remove('is-active');
+      seg.classList.add('is-active');
+      state.statusFilter = seg.getAttribute('data-status');
+      renderRows();
+    });
 
     $('postRows').addEventListener('click', function (e) {
       var edit = e.target.closest('[data-edit]');

@@ -120,6 +120,7 @@
     </style>
   <link rel="stylesheet" href="/assets/menu.css">
   <script defer src="/assets/menu.js"></script>
+  <link rel="stylesheet" href="/assets/dashboard.css">
 </head>
 <body class="min-h-screen">
     <div class="bg-grid"></div>
@@ -165,50 +166,180 @@
 
     <!-- ======================================================== dashboard -->
     <div id="dashView" class="hidden">
-        <!-- Top bar -->
-        <header class="sticky top-0 z-40 bg-dark-900/85 backdrop-blur-xl border-b border-white/5">
-            <div class="max-w-6xl mx-auto px-5 h-14 flex items-center gap-4">
-                <img src="/logo-mark.svg" alt="" class="w-7 h-7">
-                <span class="font-bold text-white text-sm">Blog admin</span>
-                <div class="ml-auto flex items-center gap-2">
-                    <a href="/blog.html" target="_blank" rel="noopener" class="btn btn-ghost text-xs">View blog &nearr;</a>
-                    <button id="newPostBtn" class="btn btn-primary text-xs">New post</button>
-                    <button id="logoutBtn" class="btn btn-ghost text-xs">Sign out</button>
+        <div class="adm-shell">
+
+            <!-- Sidebar. A real dashboard has persistent navigation rather than
+                 a single scrolling page, so the sections are separated here. -->
+            <aside class="adm-side">
+                <a href="/" class="adm-brand">
+                    <img src="/logo-mark.svg" alt="" width="26" height="26">
+                    <span>broken<span class="adm-brand-accent">Xoxo</span></span>
+                </a>
+
+                <nav class="adm-nav" aria-label="Dashboard sections">
+                    <button class="adm-nav-item is-active" data-section="overview" type="button">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+                        <span>Overview</span>
+                    </button>
+                    <button class="adm-nav-item" data-section="posts" type="button">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg>
+                        <span>Posts</span>
+                        <em class="adm-nav-count" id="navPostCount">0</em>
+                    </button>
+                    <button class="adm-nav-item" data-section="engagement" type="button">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6a5.4 5.4 0 0 0-8.8-2.5 5.4 5.4 0 0 0-8.8 6.1L12 21l8.8-8.8a5.4 5.4 0 0 0 0-3.6Z"/></svg>
+                        <span>Engagement</span>
+                    </button>
+                </nav>
+
+                <div class="adm-side-foot">
+                    <a href="/blog.html" target="_blank" rel="noopener" class="adm-side-link">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+                        View blog
+                    </a>
+                    <a href="/" class="adm-side-link">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/></svg>
+                        Site
+                    </a>
+                    <button id="logoutBtn" class="adm-side-link" type="button">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2"/><path d="M19 12H9"/><path d="m16 9 3 3-3 3"/></svg>
+                        Sign out
+                    </button>
+                </div>
+            </aside>
+
+            <div class="adm-main">
+                <header class="adm-top">
+                    <div>
+                        <h1 class="adm-title" id="admTitle">Overview</h1>
+                        <p class="adm-sub" id="admSub">Everything at a glance.</p>
+                    </div>
+                    <div class="adm-top-actions">
+                        <button id="newPostBtn" class="adm-btn adm-btn-primary" type="button">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                            New post
+                        </button>
+                    </div>
+                </header>
+
+                <div class="adm-body">
+
+                    <!-- ---------------------------------------------------- overview -->
+                    <section class="adm-section" data-panel="overview">
+
+                        <div class="adm-cards">
+                            <div class="adm-card">
+                                <div class="adm-card-head">
+                                    <span class="adm-card-label">Published</span>
+                                    <span class="adm-card-icon is-green">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                </div>
+                                <div class="adm-card-value" id="statPublished">—</div>
+                                <div class="adm-card-foot" id="statPublishedFoot">live on the blog</div>
+                            </div>
+
+                            <div class="adm-card">
+                                <div class="adm-card-head">
+                                    <span class="adm-card-label">Drafts</span>
+                                    <span class="adm-card-icon is-amber">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8 9l4 4 4-4"/><path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/></svg>
+                                    </span>
+                                </div>
+                                <div class="adm-card-value" id="statDrafts">—</div>
+                                <div class="adm-card-foot">not visible yet</div>
+                            </div>
+
+                            <div class="adm-card">
+                                <div class="adm-card-head">
+                                    <span class="adm-card-label">Views</span>
+                                    <span class="adm-card-icon is-cyan">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="2.6"/></svg>
+                                    </span>
+                                </div>
+                                <div class="adm-card-value" id="statViews">—</div>
+                                <div class="adm-card-foot" id="statViewsFoot">across all posts</div>
+                            </div>
+
+                            <div class="adm-card">
+                                <div class="adm-card-head">
+                                    <span class="adm-card-label">Likes</span>
+                                    <span class="adm-card-icon is-pink">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6a5.4 5.4 0 0 0-8.8-2.5 5.4 5.4 0 0 0-8.8 6.1L12 21l8.8-8.8a5.4 5.4 0 0 0 0-3.6Z"/></svg>
+                                    </span>
+                                </div>
+                                <div class="adm-card-value" id="statLikes">—</div>
+                                <div class="adm-card-foot" id="statLikesFoot">on published posts</div>
+                            </div>
+                        </div>
+
+                        <div class="adm-grid-2">
+                            <div class="adm-panel">
+                                <div class="adm-panel-head">
+                                    <h2>Recent posts</h2>
+                                    <button class="adm-link" data-goto="posts" type="button">See all</button>
+                                </div>
+                                <div id="recentRows" class="adm-recent"></div>
+                            </div>
+
+                            <div class="adm-panel">
+                                <div class="adm-panel-head">
+                                    <h2>Activity</h2>
+                                </div>
+                                <div id="activityList" class="adm-activity"></div>
+                            </div>
+                        </div>
+
+                        <div class="adm-panel">
+                            <div class="adm-panel-head">
+                                <h2>Most read</h2>
+                                <span class="adm-hint">by view count</span>
+                            </div>
+                            <div id="topPosts" class="adm-bars"></div>
+                        </div>
+                    </section>
+
+                    <!-- ------------------------------------------------------- posts -->
+                    <section class="adm-section hidden" data-panel="posts">
+                        <div class="adm-panel">
+                            <div class="adm-panel-head">
+                                <h2>All posts</h2>
+                                <div class="adm-filters">
+                                    <input id="searchPosts" class="adm-input" placeholder="Search titles…" type="search">
+                                    <div class="adm-seg" role="group" aria-label="Filter by status">
+                                        <button class="adm-seg-btn is-active" data-status="all" type="button">All</button>
+                                        <button class="adm-seg-btn" data-status="published" type="button">Live</button>
+                                        <button class="adm-seg-btn" data-status="draft" type="button">Drafts</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="postRows"></div>
+                        </div>
+                    </section>
+
+                    <!-- -------------------------------------------------- engagement -->
+                    <section class="adm-section hidden" data-panel="engagement">
+                        <div class="adm-grid-2">
+                            <div class="adm-panel">
+                                <div class="adm-panel-head">
+                                    <h2>Guestbook</h2>
+                                    <span class="adm-hint" id="gbCount">—</span>
+                                </div>
+                                <div id="adminGuestbook" class="adm-gb"></div>
+                            </div>
+
+                            <div class="adm-panel">
+                                <div class="adm-panel-head">
+                                    <h2>Likes by post</h2>
+                                </div>
+                                <div id="likesByPost" class="adm-bars"></div>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
             </div>
-        </header>
-
-        <main class="max-w-6xl mx-auto px-5 py-8">
-
-            <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="panel rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Published</div>
-                    <div class="text-2xl font-bold text-white" id="statPublished">—</div>
-                </div>
-                <div class="panel rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Drafts</div>
-                    <div class="text-2xl font-bold text-white" id="statDrafts">—</div>
-                </div>
-                <div class="panel rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Total views</div>
-                    <div class="text-2xl font-bold text-white" id="statViews">—</div>
-                </div>
-                <div class="panel rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Signed in as</div>
-                    <div class="text-sm font-medium text-cyan-400 truncate" id="statUser">—</div>
-                </div>
-            </div>
-
-            <!-- Post list -->
-            <div class="panel rounded-2xl overflow-hidden">
-                <div class="px-5 py-4 border-b border-white/5 flex items-center gap-3">
-                    <h2 class="font-semibold text-white text-sm">Posts</h2>
-                    <input id="searchPosts" class="fld ml-auto max-w-xs text-xs" placeholder="Search titles…">
-                </div>
-                <div id="postRows"></div>
-            </div>
-        </main>
+        </div>
     </div>
 
     <!-- ========================================================== editor -->

@@ -98,19 +98,19 @@ ${body}
 // --------------------------------------------------------------- projects
 
 const PROJECTS = [
-  ['Hi Photos', 'AI · Image Discovery', 'Pinterest-inspired image platform with AI-powered search and chat. Built with React, Node.js, Express and Supabase.', ['React', 'Node.js', 'Supabase', 'AI'], 'https://hi-photos.vercel.app'],
-  ['broken-movies', 'Streaming', 'Netflix-style platform with real playable movies, TV series, anime, Nollywood, BL and K-Dramas. My List, watch history, quality selector.', ['JavaScript', 'HLS.js', 'REST API'], null],
-  ['flixmovies', 'Streaming', 'Modern movie discovery platform with a clean responsive interface. TMDB-backed with direct stream links.', ['React', 'TMDB API'], 'https://flixmovies.vercel.app'],
+  ['Hi Photos', 'AI · Image Discovery', 'Pinterest-inspired image platform with AI-powered search and chat. Built with React, Node.js, Express and Supabase.', ['React', 'Node.js', 'Supabase', 'AI'], 'https://hi-photos-production.up.railway.app/'],
+  ['BROKEN Movies', 'Streaming', 'Netflix-style platform with real playable movies, TV series, anime, Nollywood, BL and K-Dramas. My List, watch history, quality selector.', ['JavaScript', 'HLS.js', 'REST API'], 'https://neaterry6.github.io/BROKEN-Movies/'],
+  ['flixmovies', 'Streaming', 'Modern movie discovery platform with a clean responsive interface. TMDB-backed with direct stream links.', ['React', 'TMDB API'], 'https://flixmovies-production.up.railway.app/'],
   ['Brokenvzn AI', 'AI Assistant', 'Intelligent conversational AI with memory, tool calling and grounded knowledge base. Answers from facts, never invents.', ['React', 'Node.js', 'LLM'], 'https://brokenvzn-ai.vercel.app'],
-  ['Codex Agent', 'AI Coding', 'AI coding assistant that helps developers write, understand and improve code. Gemini-powered.', ['React', 'Node.js', 'Gemini'], 'https://codex-agent.vercel.app'],
-  ['Phoenix Learn Code', 'Education', 'Interactive coding education platform for learning programming with modern UI and hands-on exercises.', ['React', 'Node.js'], 'https://phoenix-learn.vercel.app'],
-  ['Story Writer AI', 'Creative Writing', 'Generate stories and creative writing with Artificial Intelligence. Multi-genre support.', ['React', 'AI'], 'https://story-writer.vercel.app'],
-  ['Glamour', 'Fashion & Beauty', 'Elegant beauty and fashion website built with a modern design system.', ['React', 'Tailwind CSS'], 'https://glamour.vercel.app'],
-  ['BROKEN API', 'Backend', 'Massive multi-purpose REST API: movie/anime streaming, social video, AI, trading, temp mail, GIFs, analytics, 600+ endpoints.', ['Node.js', 'Express', 'Docker'], null],
-  ['Trading Bot', 'Finance', 'Multi-strategy trading bot with real market data, RSI/MA/MACD strategies, backtesting, paper trading and Telegram alerts.', ['Node.js', 'Binance', 'Yahoo Finance'], null],
-  ['Amazing Bot', 'WhatsApp', 'Powerful multi-device WhatsApp bot with 600+ commands: AI chat, image reactions, downloads, sports, games.', ['WhatsApp', 'Baileys', 'Node.js'], null],
-  ['Trust Lab API', 'Backend', 'Movie + live sports API platform with 80+ endpoints, React docs playground frontend and admin panel.', ['Express', 'React', 'Vite'], 'https://trustlab-api.vercel.app'],
-  ['Anon', 'Social', 'Anonymous social platform focused on anonymous messages, social posting and community-style interactions.', ['React', 'Next.js', 'TypeScript'], 'https://anon-v2.vercel.app'],
+  ['Codex Agent', 'AI Coding', 'AI coding assistant that helps developers write, understand and improve code. Gemini-powered.', ['React', 'Node.js', 'Gemini'], 'https://codexagent-production.up.railway.app/'],
+  ['Phoenix Learn Code', 'Education', 'Interactive coding education platform for learning programming with modern UI and hands-on exercises.', ['React', 'Node.js'], 'https://phoenix-learn-code.vercel.app/'],
+  ['Story Writer AI', 'Creative Writing', 'Generate stories and creative writing with Artificial Intelligence. Multi-genre support.', ['React', 'AI'], 'https://my-story-writer-ai.vercel.app/'],
+  ['Glamour', 'Fashion & Beauty', 'Elegant beauty and fashion website built with a modern design system.', ['React', 'Tailwind CSS'], 'https://glamour-net.vercel.app/'],
+  ['BROKEN API', 'Backend', 'Massive multi-purpose REST API: movie/anime streaming, social video, AI, trading, temp mail, GIFs, analytics, 600+ endpoints.', ['Node.js', 'Express', 'Docker'], 'https://api.brokenvzn.de5.net/'],
+  ['Trading Bot', 'Finance', 'Multi-strategy trading bot with real market data, RSI/MA/MACD strategies, backtesting, paper trading and Telegram alerts.', ['Node.js', 'Binance', 'Yahoo Finance'], 'https://github.com/Neaterry6/trading-bot'],
+  ['Amazing Bot', 'WhatsApp', 'Powerful multi-device WhatsApp bot with 600+ commands: AI chat, image reactions, downloads, sports, games.', ['WhatsApp', 'Baileys', 'Node.js'], 'https://github.com/Neaterry6/Amazing-Botv2'],
+  ['Trust Lab API', 'Backend', 'Movie + live sports API platform with 80+ endpoints, React docs playground frontend and admin panel.', ['Express', 'React', 'Vite'], 'https://github.com/Neaterry6'],
+  ['Anon', 'Social', 'Anonymous social platform focused on anonymous messages, social posting and community-style interactions.', ['React', 'Next.js', 'TypeScript'], 'https://anon-v2-indol.vercel.app/'],
 ];
 
 const NPM = [

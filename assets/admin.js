@@ -38,7 +38,12 @@
       autoRefreshToken: true,
       // Parse the session out of the URL after a magic-link or OAuth return.
       detectSessionInUrl: true,
-      flowType: 'pkce'
+      // 'implicit', not 'pkce'. The magic link returns its tokens in the URL
+      // fragment (#access_token=...), and the pkce flow only looks for a
+      // ?code= parameter — so with pkce the session was silently dropped and
+      // the page redrew the login form. The fragment tokens are the contract
+      // here, so the client has to be told to read them.
+      flowType: 'implicit'
     }
   });
 

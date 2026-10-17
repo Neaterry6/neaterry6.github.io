@@ -217,6 +217,33 @@
             border: 1px solid var(--border);
         }
         .project-card:hover { border-color: rgba(0, 245, 212, 0.3); }
+
+        /* Screenshot cards. The frame keeps a fixed 1280x660 ratio so a row of
+           them lines up regardless of what each site happens to render, and
+           the image scales to cover rather than letterboxing. */
+        .shot-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: border-color 0.25s, transform 0.25s;
+        }
+        .shot-card:hover { border-color: rgba(0, 245, 212, 0.3); }
+        .shot-frame {
+            aspect-ratio: 1280 / 660;
+            background: #0a0a0a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .shot-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .shot-card:hover .shot-frame img { transform: scale(1.03); }
+        .light .shot-card { background: #ffffff; border-color: #d8e0e8; }
+        .light .shot-card:hover { border-color: #0a6f66; }
+        .light .shot-frame { background: #eef2f6; border-color: #d8e0e8; }
         
         .skill-tag {
             background: var(--card);
@@ -298,6 +325,7 @@
                 <a href="#about" class="nav-link text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">About</a>
                 <a href="#stats" class="nav-link text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Stats</a>
                 <a href="#projects" class="nav-link text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Projects</a>
+                <a href="#screenshots" class="nav-link text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Screenshots</a>
                 <a href="#skills" class="nav-link text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Skills</a>
                 <a href="#contact" class="nav-link text-gray-400 hover:text-cyan-400 transition-colors text-sm font-medium">Contact</a>
                 <a href="https://github.com/Neaterry6" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
@@ -651,6 +679,97 @@
         </div>
     </section>
     
+    <!-- Screenshots of the live builds. Real captures, not mockups — every one
+         of these links to the running site. -->
+    <section id="screenshots" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4 gradient-text">Built &amp; Shipped</h2>
+            <p class="text-center text-gray-500 mb-14 max-w-2xl mx-auto">
+                Live screenshots of the platforms and products behind the packages. Click any one to open the real thing.
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <a href="https://snippetlab-neaterry6s-projects.vercel.app" target="_blank" rel="noopener" class="shot-card rounded-2xl overflow-hidden card-hover block group">
+                    <div class="shot-frame overflow-hidden">
+                        <img src="assets/shots/snippetlab.jpg" alt="SnippetLab — live site screenshot"
+                             loading="lazy" decoding="async" width="1280" height="660">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-bold text-white text-base leading-tight">SnippetLab</h3>
+                            <span class="text-xs text-cyan-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Visit &rarr;</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-1 leading-relaxed">Community code shelf — realtime chatroom, saved snippets, comments, Cmd-K palette.</p>
+                    </div>
+                </a>
+                <a href="https://snippetlab-neaterry6s-projects.vercel.app" target="_blank" rel="noopener" class="shot-card rounded-2xl overflow-hidden card-hover block group">
+                    <div class="shot-frame overflow-hidden">
+                        <img src="assets/shots/snippetlab-chat.jpg" alt="SnippetLab · chatroom — live site screenshot"
+                             loading="lazy" decoding="async" width="1280" height="660">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-bold text-white text-base leading-tight">SnippetLab · chatroom</h3>
+                            <span class="text-xs text-cyan-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Visit &rarr;</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-1 leading-relaxed">Voice notes, threaded replies and emoji reactions on Supabase Realtime.</p>
+                    </div>
+                </a>
+                <a href="https://broken-agent.vercel.app" target="_blank" rel="noopener" class="shot-card rounded-2xl overflow-hidden card-hover block group">
+                    <div class="shot-frame overflow-hidden">
+                        <img src="assets/shots/broken-agent.jpg" alt="Broken-agent — live site screenshot"
+                             loading="lazy" decoding="async" width="1280" height="660">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-bold text-white text-base leading-tight">Broken-agent</h3>
+                            <span class="text-xs text-cyan-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Visit &rarr;</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-1 leading-relaxed">AI workspace: chat, code editor, live preview and an admin dashboard.</p>
+                    </div>
+                </a>
+                <a href="https://sl-flix-web.vercel.app" target="_blank" rel="noopener" class="shot-card rounded-2xl overflow-hidden card-hover block group">
+                    <div class="shot-frame overflow-hidden">
+                        <img src="assets/shots/sl-flix.jpg" alt="SL-FLIX-WEB — live site screenshot"
+                             loading="lazy" decoding="async" width="1280" height="660">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-bold text-white text-base leading-tight">SL-FLIX-WEB</h3>
+                            <span class="text-xs text-cyan-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Visit &rarr;</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-1 leading-relaxed">Streaming front end with HLS playback over a TypeScript API layer.</p>
+                    </div>
+                </a>
+                <a href="https://streamme-chatroom-id.vercel.app" target="_blank" rel="noopener" class="shot-card rounded-2xl overflow-hidden card-hover block group">
+                    <div class="shot-frame overflow-hidden">
+                        <img src="assets/shots/streamme.jpg" alt="StreamMe — live site screenshot"
+                             loading="lazy" decoding="async" width="1280" height="660">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-bold text-white text-base leading-tight">StreamMe</h3>
+                            <span class="text-xs text-cyan-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Visit &rarr;</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-1 leading-relaxed">Streaming site with a live chatroom.</p>
+                    </div>
+                </a>
+                <a href="https://glamour.vercel.app" target="_blank" rel="noopener" class="shot-card rounded-2xl overflow-hidden card-hover block group">
+                    <div class="shot-frame overflow-hidden">
+                        <img src="assets/shots/glamour.jpg" alt="Glamour Africa — live site screenshot"
+                             loading="lazy" decoding="async" width="1280" height="660">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-bold text-white text-base leading-tight">Glamour Africa</h3>
+                            <span class="text-xs text-cyan-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Visit &rarr;</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-1 leading-relaxed">Fashion and beauty site built for the African market.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Skills -->
     <section id="skills" class="py-20 px-6">
         <div class="max-w-4xl mx-auto">
@@ -917,39 +1036,9 @@
             });
         });
         
-        // Chat
-        function toggleChat() {
-            document.querySelector('.chat-window').classList.toggle('hidden');
-        }
-        async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const msg = input.value.trim();
-            if (!msg) return;
-            const container = document.getElementById('chat-messages');
-            
-            // Add user message
-            container.innerHTML += `<div class="text-right text-sm text-gray-400 bg-white/5 rounded-lg p-3 ml-12">${msg.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
-            input.value = '';
-            
-            // Show typing indicator
-            const typingId = 'typing-' + Date.now();
-            container.innerHTML += `<div id="${typingId}" class="bg-cyan-500/10 rounded-lg p-3 text-sm text-cyan-300 mr-12">...</div>`;
-            container.scrollTop = container.scrollHeight;
-            
-            try {
-                const response = await fetch('https://text.pollinations.ai/' + encodeURIComponent(msg));
-                if (!response.ok) throw new Error('chat ' + response.status);
-                const data = (await response.text()).trim();
-                document.getElementById(typingId)?.remove();
-                if (!data) throw new Error('empty reply');
-                container.innerHTML += `<div class="bg-cyan-500/10 rounded-lg p-3 text-sm text-cyan-300 mr-12">${data.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`;
-            } catch (error) {
-                document.getElementById(typingId)?.remove();
-                container.innerHTML += `<div class="bg-red-500/10 rounded-lg p-3 text-sm text-red-400 mr-12">Couldn't reach the assistant. Email akewusholaabdulbakri101@gmail.com instead.</div>`;
-            }
-            container.scrollTop = container.scrollHeight;
-        }
-        document.getElementById('chat-input')?.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+        // Chat lives in assets/assistant.js — it carries a real knowledge base
+        // and conversation memory now, which is too much to inline here.
+
         
         // Contact form
         // The form used to just alert a demo message. It now opens the visitor's
@@ -975,5 +1064,8 @@
             setTimeout(() => note.remove(), 9000);
         });
     </script>
+
+<!-- The portfolio assistant: knowledge base + conversation memory. -->
+<script src="assets/assistant.js" defer></script>
 </body>
 </html>

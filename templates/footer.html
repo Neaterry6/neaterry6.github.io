@@ -1,0 +1,22 @@
+    <footer>
+        <p>&copy; 2020&ndash;2026 brokenXoxo &middot; <a href="/">Home</a> &middot; <a href="/projects.html">Projects</a> &middot; <a href="https://github.com/Neaterry6" target="_blank" rel="noopener">GitHub</a></p>
+    </footer>
+    
+    <script>
+        // Project block toggle functionality
+        document.querySelectorAll('.project-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const block = header.closest('.project-block');
+                block.classList.toggle('expanded');
+            });
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-list').classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

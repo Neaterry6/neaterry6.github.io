@@ -276,7 +276,11 @@
             }).join('') + '</div>'
           : '';
 
-        return '<a href="?post=' + encodeURIComponent(p.slug) + '" class="post-card rounded-2xl p-6 block">'
+        // Links to the real static page, not a query string. A query string is
+        // not a separate document to a link-preview crawler, so every shared
+        // post used to unfurl with the same site-wide title and image. The
+        // generated page carries its own og: tags and its own share card.
+        return '<a href="/blog/' + encodeURIComponent(p.slug) + '.html" class="post-card rounded-2xl p-6 block">'
           + cover
           + '<div class="flex items-center gap-3 text-xs text-gray-500 mb-2">'
           +   '<time datetime="' + esc(p.published_at) + '">' + esc(fmtDate(p.published_at)) + '</time>'
@@ -383,7 +387,15 @@
     if (year) year.textContent = new Date().getFullYear();
 
     var slug = new URLSearchParams(window.location.search).get('post');
-    if (slug) loadPost(slug);
-    else loadIndex();
+    if (slug) {
+      // Old share links used ?post=<slug>. Those still resolve, but they are
+      // not separate documents to a crawler — so every one of them unfurled
+      // with the index's generic title and image. Send them to the real page,
+      // which has its own metadata, and replace the history entry so the back
+      // button does not bounce between the two.
+      window.location.replace('/blog/' + encodeURIComponent(slug) + '.html');
+      return;
+    }
+    loadIndex();
   });
 })();

@@ -313,7 +313,7 @@ def fmt_date(iso):
 
 
 def main():
-    posts = json.load(open('/home/Data/posts.json'))
+    posts = json.load(open(os.path.join(ROOT, 'Data', 'posts.json')))
     os.makedirs(OUT_BLOG, exist_ok=True)
     os.makedirs(OUT_OG, exist_ok=True)
 

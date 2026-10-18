@@ -164,7 +164,9 @@ a.card { display: block; text-decoration: none; color: inherit; }
 a.card:hover { border-color: rgba(0, 245, 212, 0.3); transform: translateY(-2px); }
 
 .grid { display: grid; gap: 14px; }
-.grid-2 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+/* start, not stretch: a card carrying a screenshot is taller than its text-only
+   neighbours, and stretching them to match leaves a dead gap under their tags. */
+.grid-2 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); align-items: start; }
 
 .card h3 {
   font-size: 15px;
@@ -384,8 +386,21 @@ footer a:hover { color: var(--cyan); }
 
 .card-shot .shot-frame {
   display: block;
+  position: relative;
   border-bottom: 1px solid var(--border);
   background: #0b0d10;
+}
+
+/* A viewport capture always ends mid-row, because a masonry feed has no clean
+   bottom edge. Fading the last few pixels into the card makes that read as a
+   deliberate crop instead of a cut-off image. */
+.card-shot .shot-frame::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 34px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(11, 13, 16, 0), rgba(11, 13, 16, 0.92));
 }
 
 .card-shot .shot-frame img {

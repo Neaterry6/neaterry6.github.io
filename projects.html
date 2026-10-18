@@ -112,14 +112,21 @@
 
         <h2>Platforms &amp; products</h2>
         <div class="grid grid-2">
-            <a class="card" href="https://hi-photos-production.up.railway.app/" target="_blank" rel="noopener">
+            <!-- Not linked: the Railway deploy is down while it is redeployed,
+                 and a portfolio card that 404s is worse than one that does not
+                 pretend to be live. Becomes an <a> again when the app is up. -->
+            <div class="card card-shot">
+                <div class="shot-frame overflow-hidden">
+                    <img src="assets/shots/hi-photos.jpg" alt="Hi Photos — app screenshot"
+                         loading="lazy" decoding="async" width="1280" height="660">
+                </div>
                 <div class="card-top">
                     <h3>Hi Photos</h3>
-                    <span class="badge">AI · Image Discovery</span>
+                    <span class="badge badge-soon">Redeploying</span>
                 </div>
-                <p>Pinterest-inspired image platform with AI-powered search and chat. Built with React, Node.js, Express and Supabase.</p>
+                <p>Pinterest-inspired image platform with AI-powered search and chat. Masonry feed, vibe filters, reels, DMs. Built with React, Node.js, Express and Supabase.</p>
                 <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Supabase</span><span class="tag">AI</span></div>
-            </a>
+            </div>
             <a class="card" href="https://neaterry6.github.io/BROKEN-Movies/" target="_blank" rel="noopener">
                 <div class="card-top">
                     <h3>BROKEN Movies</h3>

@@ -369,3 +369,41 @@ footer a:hover { color: var(--cyan); }
   font-weight: 600;
   color: #6b7280;
 }
+
+/* ------------------------------------------------- screenshot project card
+   A project card that leads with a real capture of the running app.
+
+   The image sits flush to the card edges, so the card padding is removed and
+   re-applied to the text block instead; otherwise the shot floats in a border
+   and the card reads as two unrelated halves. */
+
+.card-shot {
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-shot .shot-frame {
+  display: block;
+  border-bottom: 1px solid var(--border);
+  background: #0b0d10;
+}
+
+.card-shot .shot-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1280 / 660;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.card-shot .card-top { margin: 18px 20px 10px; }
+.card-shot p { margin: 0 20px; }
+.card-shot .tags { margin: 12px 20px 20px; }
+
+/* Amber rather than the usual cyan: this marks a state, not a category. */
+.badge-soon {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}

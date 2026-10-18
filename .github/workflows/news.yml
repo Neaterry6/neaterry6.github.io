@@ -1,13 +1,23 @@
 name: Auto news
 
-# Posts one fresh story to the blog every 30 minutes.
+# Posts one fresh story to the blog, written by Gemini from the article text.
 #
 # This cannot run from the site itself. neaterry6.github.io is static files on
 # GitHub Pages — no server, no scheduler — so something outside the page has to
 # do the work. Actions is the right place: it is free, it lives in the repo, and
 # it keeps running whether or not anyone has the site open.
 #
+# SCHEDULE: every 75 minutes, not every 30.
+#
+# The Gemini free tier allows 20 generate requests per day per model. Every 30
+# minutes is 48 runs a day, so more than half of them would fail on quota before
+# lunchtime. 75 minutes is ~19 runs a day, which fits, with one to spare.
+#
+# To go back to 30 minutes you need billing enabled on the Gemini key. Change
+# the cron to '*/30 * * * *' after that and nothing else needs touching.
+#
 # REQUIRED REPOSITORY SECRETS (Settings -> Secrets and variables -> Actions):
+#   GEMINI_API_KEY        from https://aistudio.google.com/apikey
 #   SUPABASE_URL          https://<project>.supabase.co
 #   SUPABASE_SERVICE_KEY  the service_role key — NOT the publishable one, since
 #                         this job writes without a signed-in user
@@ -19,7 +29,7 @@ on:
   schedule:
     # GitHub's scheduler is best-effort and often runs several minutes late,
     # which is fine for a news feed.
-    - cron: '*/30 * * * *'
+    - cron: '17 */1 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -54,40 +64,48 @@ jobs:
         env:
           SUPA_URL: ${{ secrets.SUPABASE_URL }}
           SUPA_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEM: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          if [ -z "$SUPA_URL" ] || [ -z "$SUPA_KEY" ]; then
-            echo "::error::SUPABASE_URL and SUPABASE_SERVICE_KEY must be set as repository secrets."
+          missing=""
+          [ -z "$SUPA_URL" ] && missing="$missing SUPABASE_URL"
+          [ -z "$SUPA_KEY" ] && missing="$missing SUPABASE_SERVICE_KEY"
+          [ -z "$GEM" ] && missing="$missing GEMINI_API_KEY"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secrets:$missing"
             echo "Settings -> Secrets and variables -> Actions -> New repository secret"
             exit 1
           fi
-          echo "Secrets present."
+          echo "All secrets present."
 
       - name: Publish a news post
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
         run: node scripts/news-bot.mjs
 
-      # RSS is a real file on disk, because GitHub Pages serves static files
-      # and an RSS reader cannot poll an endpoint that does not exist. Rebuild
-      # it after every post and commit it, so subscribers see the new entry.
-      - name: Rebuild the RSS feed
+      # Rebuild the per-post pages and their share cards, so a new post is
+      # shareable with its own thumbnail the moment it lands.
+      - name: Rebuild post pages and share cards
         if: ${{ !inputs.dry_run }}
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: node scripts/build-rss.mjs
+        run: |
+          node scripts/dump-posts.mjs
+          python3 scripts/build-blog.mjs
+          node scripts/build-rss.mjs
 
-      - name: Commit the feed
+      - name: Commit the feed and new pages
         if: ${{ !inputs.dry_run }}
         run: |
-          if git diff --quiet rss.xml; then
-            echo "Feed unchanged."
-            exit 0
-          fi
           git config user.name  "news-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add rss.xml
-          git commit -m "chore: rebuild RSS feed [skip ci]"
+          git add rss.xml blog assets/og
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -m "chore: publish post, rebuild feed and share cards [skip ci]"
           git push

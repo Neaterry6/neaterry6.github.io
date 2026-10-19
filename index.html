@@ -843,23 +843,19 @@
                         <p class="text-gray-400 text-sm mt-1 leading-relaxed">The reader feed — published stories, bylines and reading flow on Next.js and Firebase.</p>
                     </div>
                 </a>
-                <!-- Hi Photos has no live URL right now: the Railway deploy is
-                     down while it is redeployed. Carded as a div rather than an
-                     anchor so nobody lands on a 404 from the portfolio. Swap it
-                     back to an <a> with the href when the app is up. -->
-                <div class="shot-card shot-static rounded-2xl overflow-hidden">
+                <a href="https://hi-photos-chi.vercel.app/" target="_blank" rel="noopener" class="shot-card rounded-2xl overflow-hidden card-hover block group">
                     <div class="shot-frame overflow-hidden">
-                        <img src="assets/shots/hi-photos.jpg" alt="Hi Photos — app screenshot"
+                        <img src="assets/shots/hi-photos.jpg" alt="Hi Photos — live site screenshot"
                              loading="lazy" decoding="async" width="1280" height="660">
                     </div>
                     <div class="p-4">
                         <div class="flex items-center justify-between gap-3">
                             <h3 class="font-bold text-white text-base leading-tight">Hi Photos</h3>
-                            <span class="text-xs text-amber-400 whitespace-nowrap">Redeploying</span>
+                            <span class="text-xs text-cyan-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Visit &rarr;</span>
                         </div>
                         <p class="text-gray-400 text-sm mt-1 leading-relaxed">Pinterest-style image discovery — masonry feed, vibe filters, reels, DMs and an AI search layer.</p>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
